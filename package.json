@@ -1,0 +1,29 @@
+{
+    "name": "sdk",
+    "version": "0.0.1",
+    "description": "Nationskollen JavaScript API client SDK",
+    "repository": "git@github.com:dsp-krabby/sdk.git",
+    "author": "Team Krabby",
+    "license": "MIT",
+    "private": true,
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/@dsp-krabby"
+    },
+    "main": "./lib/index.esm.js",
+    "typings": "./lib/index.d.ts",
+    "scripts": {
+        "build": "rollup -c",
+        "watch": "rollup -w"
+    },
+    "files": [
+        "lib"
+    ],
+    "devDependencies": {
+        "rollup": "^2.43.0",
+        "rollup-plugin-typescript2": "^0.30.0",
+        "typescript": "^4.2.3"
+    },
+    "dependencies": {
+        "@types/node": "^14.14.37"
+    }
+}
