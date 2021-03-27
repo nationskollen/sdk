@@ -1,11 +1,10 @@
 {
-    "name": "sdk",
+    "name": "@dsp-krabby/sdk",
     "version": "0.0.1",
     "description": "Nationskollen JavaScript API client SDK",
-    "repository": "git@github.com:dsp-krabby/sdk.git",
+    "repository": "git://github.com/dsp-krabby/sdk.git",
     "author": "Team Krabby",
     "license": "MIT",
-    "private": true,
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/@dsp-krabby"
     },
