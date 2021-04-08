@@ -1,0 +1,6 @@
+lib
+node_modules
+README.md
+.nyc_output/
+coverage/
+.github/
