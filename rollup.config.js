@@ -1,5 +1,4 @@
 import copy from 'rollup-plugin-copy'
-import clear from 'rollup-plugin-clear'
 import typescript from 'rollup-plugin-typescript2'
 
 const reactExamplePath = './examples/react-hooks/src/sdk'
