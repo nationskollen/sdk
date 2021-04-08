@@ -6,7 +6,7 @@ import Page from './Page'
 
 function App() {
     return (
-        <SDK.Provider development={false}>
+        <SDK.Provider development={true}>
             <Page />
         </SDK.Provider>
     )
