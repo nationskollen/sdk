@@ -1,12 +1,15 @@
 // ./sdk is equivalent with @dsp-krabby/sdk
 // We need to copy it into this example on compile,
 // since react can not read files from outside src/.
-import { Client } from './sdk'
-
-const client = new Client('test')
+import SDK from './sdk'
+import Page from './Page'
 
 function App() {
-    return <div>{client.baseUrl}</div>
+    return (
+        <SDK.Provider development={false}>
+            <Page />
+        </SDK.Provider>
+    )
 }
 
 export default App

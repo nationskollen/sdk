@@ -5,6 +5,7 @@ const reactExamplePath = './examples/react-hooks/src/sdk'
 
 export default [
     {
+        external: ['react'],
         input: './src/index.ts',
         output: [
             {

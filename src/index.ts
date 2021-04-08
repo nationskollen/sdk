@@ -1,7 +1,9 @@
-export class Client {
-    public baseUrl: string
+import { Context, useApi } from './context'
+import { Provider, Consumer } from './provider'
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl
-    }
+export default {
+    Provider,
+    Consumer,
+    Context,
+    useApi,
 }
