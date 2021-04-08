@@ -6,9 +6,7 @@ import { Client } from './sdk'
 const client = new Client('test')
 
 function App() {
-    console.log(client)
-
-    return <div>Example</div>
+    return <div>{client.baseUrl}</div>
 }
 
 export default App

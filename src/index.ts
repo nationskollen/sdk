@@ -1,5 +1,7 @@
 export class Client {
-    constructor(baseURL: string) {
-        console.log(baseURL)
+    public baseUrl: string
+
+    constructor(baseUrl: string) {
+        this.baseUrl = baseUrl
     }
 }
