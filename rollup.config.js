@@ -1,28 +1,24 @@
 import copy from 'rollup-plugin-copy'
+import clear from 'rollup-plugin-clear'
 import typescript from 'rollup-plugin-typescript2'
+
+const reactExamplePath = './examples/react-hooks/src/sdk'
 
 export default [
     {
         input: './src/index.ts',
         output: [
             {
-                file: './lib/index.esm.js',
+                file: './lib/index.js',
                 format: 'esm',
+                strict: false,
             },
         ],
         plugins: [
             typescript(),
             copy({
-                targets: [{ src: './lib/*', dest: './examples/react-hooks/src/sdk' }],
+                targets: [{ src: './lib/*', dest: reactExamplePath }],
             }),
         ],
-    },
-    {
-        input: './src/index.ts',
-        output: {
-            file: './lib/index.js',
-            format: 'cjs',
-        },
-        plugins: [typescript()],
     },
 ]

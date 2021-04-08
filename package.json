@@ -8,11 +8,13 @@
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/@dsp-krabby"
     },
-    "main": "./lib/index.esm.js",
+    "main": "./lib/index.js",
     "typings": "./lib/index.d.ts",
     "scripts": {
-        "dev": "rollup -cw",
+        "dev": "npx concurrently \"npm:watch\" \"npm:example\"",
+        "watch": "rollup -cw",
         "build": "rollup -c",
+        "example": "cd examples/react-hooks && npm run start",
         "lint": "eslint . --ext=.ts",
         "format": "prettier --write ."
     },
@@ -20,17 +22,17 @@
         "lib"
     ],
     "devDependencies": {
+        "@types/node": "^14.14.37",
         "@typescript-eslint/eslint-plugin": "^4.21.0",
         "@typescript-eslint/parser": "^4.21.0",
+        "concurrently": "^6.0.1",
         "eslint": "^7.23.0",
         "eslint-plugin-prettier": "^3.3.1",
         "prettier": "^2.2.1",
         "rollup": "^2.43.0",
+        "rollup-plugin-clear": "^2.0.7",
         "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-typescript2": "^0.30.0",
         "typescript": "^4.2.3"
-    },
-    "dependencies": {
-        "@types/node": "^14.14.37"
     }
 }

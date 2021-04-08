@@ -36,15 +36,17 @@ npm install --save @dsp-krabby/sdk
 Import the API client using:
 ```
 import { Client } from '@dsp-krabby/sdk'
-
-// or if you are using commonjs
-const SDK = require('@dsk-krabby/sdk')
-const client = new SDK.client(...)
 ```
 
 ## Development
+### Setup
+Install dependencies (`npm install`) in both root and `example/react-hooks`.
+
+* `npm run dev` - Watches for changes to source files and starts react example
 * `npm run build` - Build source files
 * `npm run watch` - Watch source files and rebuild on changes
+* `npm run lint` - Lint source code using ESLint
+* `npm run format` - Format source code using prettier
 * `npm publish` - Published the package to Github Packages
 
 ## Documentation
