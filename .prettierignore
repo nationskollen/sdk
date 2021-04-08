@@ -4,3 +4,4 @@ README.md
 .nyc_output/
 coverage/
 .github/
+examples/react-hooks/src/sdk/
