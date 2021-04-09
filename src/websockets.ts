@@ -1,4 +1,4 @@
-import WebSocket from 'isomorphic-ws'
+import { WS_URL, WS_URL_DEV } from './constants'
 
 export enum Subscriptions {
     Connected,
@@ -25,8 +25,8 @@ export class WebSocketConnection {
         [Subscriptions.Activity]: [],
     }
 
-    constructor(baseURL: string) {
-        this.$ws = new WebSocket(baseURL)
+    constructor(development: boolean) {
+        this.$ws = new WebSocket(development ? WS_URL_DEV : WS_URL)
         this.$alive = false
 
         this.$ws.onopen = () => this.onConnect()
@@ -34,8 +34,8 @@ export class WebSocketConnection {
         this.$ws.onclose = () => this.onDisconnect()
     }
 
-    private log(message: string) {
-        console.info(`[WS] ${message}`)
+    private log(message: string, ...args: any[]) {
+        console.info(`[WS] ${message}`, ...args)
     }
 
     private onConnect() {
@@ -43,16 +43,19 @@ export class WebSocketConnection {
         this.$alive = true
     }
 
-    private onMessage(data: any) {
-        const parsed = JSON.parse(data)
-        this.log(`Received: ${parsed}`)
+    private onMessage(message: any) {
+        const parsed = JSON.parse(message.data)
+
+        this.log(`Received:`, parsed)
 
         if (!parsed || !parsed.hasOwnProperty('type')) {
-            this.log(`Could not verify message: ${parsed}`)
+            this.log(`Could not verify message:`, parsed)
             return
         }
 
         switch (parsed.type) {
+            case Subscriptions.Connected:
+                break
             case Subscriptions.Activity:
                 this.$callbacks[Subscriptions.Activity].forEach((cb) => cb(parsed.data))
                 break

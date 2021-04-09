@@ -11,7 +11,7 @@
     "main": "./lib/index.js",
     "typings": "./lib/index.d.ts",
     "scripts": {
-        "dev": "npx concurrently \"npm:watch\" \"npm:example-*\"",
+        "dev": "npx concurrently \"npm:watch\" \"npm:example-react\"",
         "watch": "rollup -cw",
         "build": "rollup -c",
         "example-node": "cd examples/node && npm run start",
@@ -42,8 +42,6 @@
         "typescript": "^4.2.4"
     },
     "dependencies": {
-        "axios": "^0.21.1",
-        "isomorphic-ws": "^4.0.1",
-        "utf-8-validate": "^5.0.4"
+        "axios": "^0.21.1"
     }
 }

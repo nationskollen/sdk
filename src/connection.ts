@@ -25,13 +25,13 @@ export class Connection {
     private $ws: WebSocketConnection | null = null
 
 
-    constructor(config: ConnnectionConfigContract) {
-        const baseURL = config ? BASE_URL_DEV : BASE_URL
+    constructor({ development, useWebSockets }: ConnnectionConfigContract) {
+        const baseURL = development ? BASE_URL_DEV : BASE_URL
 
         this.$axios = axios.create({ baseURL })
 
-        if (config.useWebSockets) {
-            this.$ws = new WebSocketConnection(baseURL)
+        if (useWebSockets) {
+            this.$ws = new WebSocketConnection(development)
         }
 
         this.$token = null
