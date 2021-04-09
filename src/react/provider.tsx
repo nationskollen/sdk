@@ -1,5 +1,5 @@
 import { Context } from './context'
-import { Service } from './services/index'
+import { Service } from '../services/index'
 import React, { useRef } from 'react'
 
 export interface ProviderProps {
