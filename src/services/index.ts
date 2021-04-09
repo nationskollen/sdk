@@ -1,5 +1,5 @@
 import { NationService } from './nations'
-import { BASE_URL, BASE_URL_DEV } from '../constants'
+import { Connection } from '../connection'
 
 export interface ServiceConfigContract {
     development: boolean
@@ -7,10 +7,15 @@ export interface ServiceConfigContract {
 
 export type ServiceWrapper = ReturnType<typeof Service>
 
-export const Service = ({ development }: ServiceConfigContract) => ({
-    $config: {
-        development,
-        baseUrl: development ? BASE_URL_DEV : BASE_URL,
-    },
-    nations: NationService,
-})
+export const Service = ({ development }: ServiceConfigContract) => {
+    // All requests will be handled by the connection instance.
+    // This is where request caching etc. will be managed.
+    const connection = new Connection(development)
+
+    return {
+        nations: NationService(connection),
+        locations: {},
+        menus: {},
+        events: {},
+    }
+}

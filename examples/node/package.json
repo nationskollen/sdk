@@ -4,6 +4,7 @@
     "description": "Example",
     "main": "index.js",
     "license": "MIT",
+    "type": "module",
     "scripts": {
         "start": "npx rollup -cw",
         "test": "node ./dist/index.js"

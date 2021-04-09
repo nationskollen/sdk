@@ -3,6 +3,7 @@
         "outDir": "lib",
         "target": "esnext",
         "module": "esnext",
+        "moduleResolution": "node",
         "lib": ["es2015"],
         "sourceMap": true,
         "strict": true,

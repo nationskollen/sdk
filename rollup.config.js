@@ -1,5 +1,8 @@
+import json from 'rollup-plugin-json'
 import clear from 'rollup-plugin-clear'
 import copy from 'rollup-plugin-copy-watch'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
 
 const reactExamplePath = './examples/react-hooks/src/sdk'
@@ -22,6 +25,9 @@ export default [
                 targets: [reactExamplePath, nodeExamplePath],
                 hook: 'buildStart',
             }),
+            resolve(),
+            json(),
+            commonjs(),
             typescript(),
             copy({
                 targets: [],
@@ -53,6 +59,9 @@ export default [
                 targets: [reactExampleComponentsPath, nodeExampleComponentsPath],
                 hook: 'buildStart',
             }),
+            resolve(),
+            json(),
+            commonjs(),
             typescript(),
             copy({
                 targets: [
