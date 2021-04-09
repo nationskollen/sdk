@@ -1,3 +1,12 @@
+export enum ActivityLevels {
+    Closed,
+    Low,
+    Medium,
+    High,
+    VeryHigh,
+    Full,
+}
+
 export interface Nation {
     oid: number
     name: string

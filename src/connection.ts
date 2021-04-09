@@ -1,5 +1,11 @@
 import axios, { AxiosInstance } from 'axios'
 import { BASE_URL, BASE_URL_DEV } from './constants'
+import { WebSocketConnection, SubscriptionCallback, ActivityCallback } from './websockets'
+
+export interface ConnnectionConfigContract {
+    development: boolean
+    useWebSockets: boolean
+}
 
 export enum HttpMethod {
     GET = 'GET',
@@ -12,15 +18,21 @@ export interface Data {
     [key: string]: any
 
 }
-    
+
 export class Connection {
     private $axios: AxiosInstance
     private $token: string | null
+    private $ws: WebSocketConnection | null = null
 
-    constructor(development: boolean) {
-        this.$axios = axios.create({
-            baseURL: development ? BASE_URL_DEV : BASE_URL,
-        })
+
+    constructor(config: ConnnectionConfigContract) {
+        const baseURL = config ? BASE_URL_DEV : BASE_URL
+
+        this.$axios = axios.create({ baseURL })
+
+        if (config.useWebSockets) {
+            this.$ws = new WebSocketConnection(baseURL)
+        }
 
         this.$token = null
     }
@@ -29,22 +41,29 @@ export class Connection {
         headers['Authentication'] = `Bearer ${token}`
     }
 
-public async request<T>(method: HttpMethod, endpoint: string, data?: Data,
-                        isAuthenticated?: boolean): Promise<T> {
-    const headers = {}
+    public async request<T>(method: HttpMethod, endpoint: string, data?: Data, isAuthenticated?: boolean): Promise<T> {
+        const headers = {}
 
-    // Make sure the user is authenticated,
-    // and that the token is not null
-    if (isAuthenticated) {
-        if (this.$token) {
-            this.addRequestToken(headers, this.$token)
-        } else {
-            // TODO Maybe import exceptions (or create our own later on)
-            throw new Error("user token is null")
+        // Make sure the user is authenticated,
+        // and that the token is not null
+        if (isAuthenticated) {
+            if (this.$token) {
+                this.addRequestToken(headers, this.$token)
+            } else {
+                // TODO Maybe import exceptions (or create our own later on)
+                throw new Error("user token is null")
+            }
         }
+
+        const response = await this.$axios({ url: endpoint, method, headers, data })
+        return response.data
     }
 
-    const response = await this.$axios({ url: endpoint, method, headers, data })
-    return response.data
+    public subscribeToActivityCallback(cb: SubscriptionCallback<ActivityCallback>) {
+        if (!this.$ws) {
+            return
+        }
+
+        this.$ws.registerActivityCallback(cb)
     }
 }
