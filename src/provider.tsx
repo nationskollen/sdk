@@ -1,6 +1,6 @@
 import { Context } from './context'
 import { Service } from './services/index'
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 
 export interface ProviderProps {
     development: boolean
@@ -14,6 +14,6 @@ export interface ProviderState {
 export const Consumer = Context.Consumer
 
 export const Provider = ({ children, development }: ProviderProps) => {
-    const [service] = useState(Service({ development }))
-    return <Context.Provider value={service}>{children}</Context.Provider>
+    const service = useRef(Service({ development }))
+    return <Context.Provider value={service.current}>{children}</Context.Provider>
 }

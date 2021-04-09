@@ -1,14 +1,11 @@
 import SDK from './sdk'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Nations = () => {
     const api = SDK.useApi()
     const [nations, setNations] = useState([])
 
-    if (nations.length === 0) {
-        api.nations.all().then((data) => setNations(data))
-        return <p>No nations</p>
-    }
+    useEffect(() => api.nations.all().then((data) => setNations(data)), [api.nations])
 
     return (
         <div>

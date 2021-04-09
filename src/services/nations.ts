@@ -8,13 +8,23 @@ export const NationService = {
                 () =>
                     resolve([
                         {
-                            oid: 100,
+                            oid: 400,
                             name: 'vdala nation',
                             short_name: 'vdala',
                             description: 'description',
                             icon_img_src: null,
                             cover_img_src: null,
                             accent_color: '#abcabc',
+                            locations: [],
+                        },
+                        {
+                            oid: 300,
+                            name: 'norrlands nation',
+                            short_name: 'norrlands',
+                            description: 'description',
+                            icon_img_src: null,
+                            cover_img_src: null,
+                            accent_color: '#123123',
                             locations: [],
                         },
                     ]),
