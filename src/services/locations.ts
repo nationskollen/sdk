@@ -17,4 +17,31 @@ export const LocationService = (connection: Connection) => ({
         )
         return location
     },
+
+    create: async (oid: number, data: Location): Promise<Location> => {
+        const location = await connection.request<Location>(
+            HttpMethod.POST,
+                `/nations/${oid}/locations`,
+                data,
+        )
+
+        return location
+    },
+
+    update: async (oid: number, lid: number, change: Partial<Location> ):
+        Promise<Location> => {
+        const location = await connection.request<Location>(
+            HttpMethod.PUT,
+                `/nations/${oid}/locations/${lid}`,
+                change,
+        )
+        return location
+    },
+
+    delete: async (oid: number, lid: number): Promise<void> => {
+        await connection.request<Location>(
+            HttpMethod.DELETE,
+                `/nations/${oid}/locations/${lid}`
+        )
+    },
 })
