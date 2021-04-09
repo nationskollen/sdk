@@ -35,8 +35,5 @@
         "rollup-plugin-copy-watch": "^0.0.1",
         "rollup-plugin-typescript2": "^0.30.0",
         "typescript": "^4.2.3"
-    },
-    "peerDependencies": {
-        "react": "^17.0.2"
     }
 }
