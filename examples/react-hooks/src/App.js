@@ -1,3 +1,4 @@
+import Nation from './Nation'
 import Nations from './Nations'
 
 // ./sdk is equivalent with @dsp-krabby/sdk
@@ -9,6 +10,7 @@ function App() {
     return (
         <Provider development={true}>
             <Nations />
+            <Nation />
         </Provider>
     )
 }

@@ -1,2 +1,1 @@
-import { Service } from './services/index'
-export { Service }
+export { Service } from './services/index'
