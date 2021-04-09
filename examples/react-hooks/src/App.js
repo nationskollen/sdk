@@ -10,7 +10,6 @@ function App() {
     return (
         <Provider development={true}>
             <Nations />
-            <Nation />
         </Provider>
     )
 }

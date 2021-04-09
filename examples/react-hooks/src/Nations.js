@@ -1,5 +1,6 @@
 import { useApi } from './sdk/react'
 import { useState, useEffect } from 'react'
+import Nation from './Nation'
 
 const Nations = () => {
     const api = useApi()
@@ -10,7 +11,7 @@ const Nations = () => {
     return (
         <div>
             {nations.map((it) => (
-                <p key={it.oid}>{it.name}</p>
+                <Nation key={it.oid} data={it} />
             ))}
         </div>
     )

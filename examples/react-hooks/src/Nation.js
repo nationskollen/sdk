@@ -1,18 +1,20 @@
-import { useApi } from './sdk/react'
-import { useState, useEffect } from 'react'
+import Locations from './Locations'
 
-const Nation = () => {
-    const api = useApi()
-    const [nation, setNation] = useState([])
-
-    useEffect(() => api.nations.single(400).then((data) => setNation(data)), [api.nations])
+const Nation = ({ data }) => {
+    if (!data) {
+        return <p>Nothing</p>
+    }
 
     return (
         <div>
-            <p>{nation.name}</p>
-            <p>{nation.description}</p>
-            <p>{nation.accent_color}</p>
-            <img src={nation.cover_img_src} />
+            <h1>{data.name}</h1>
+            <p>{data.description}</p>
+            <p>{data.accent_color}</p>
+            <img src={data.cover_img_src} />
+            <div>
+                <h2>Locations</h2>
+                <Locations data={data.locations} />
+            </div>
         </div>
     )
 }

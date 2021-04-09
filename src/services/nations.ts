@@ -1,5 +1,5 @@
-import { NationCollection, Nation } from '../typings'
 import { Connection, HttpMethod } from '../connection'
+import { NationCollection, Nation } from '../typings'
 
 export const NationService = (connection: Connection) => ({
     all: async (): Promise<NationCollection> => {

@@ -22,5 +22,26 @@ export interface Location {
     cover_img_src: string | null
 }
 
+export interface Menu {
+    id: number
+    oid: number
+    location_id: number
+    name: string
+    hidden: boolean
+    items: MenuItemCollection
+}
+
+export interface MenuItem {
+    id: number
+    menu_id: number
+    name: string
+    description: string
+    price: number
+    cover_img_src: string
+    hidden: boolean
+}
+
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
+export type MenuCollection = Array<Menu>
+export type MenuItemCollection = Array<MenuItem>
