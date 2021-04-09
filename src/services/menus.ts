@@ -19,4 +19,32 @@ export const MenuService = (connection: Connection) => ({
 
         return menu
     },
+
+    create: async (locationId: number, menuData: Menu): Promise<Menu> => {
+        const menu = await connection.request<Menu>(
+            HttpMethod.POST,
+            `/locations/${locationId}/menus`,
+            menuData,
+        )
+
+        return menu
+    },
+
+    update: async (locationId: number, menuID: number, menuData:
+                   Partial<Menu>): Promise<Menu> => {
+        const menu = await connection.request<Menu>(
+            HttpMethod.POST,
+            `/locations/${locationId}/menus/${menuID}`,
+            menuData,
+        )
+
+        return menu
+    },
+
+    delete: async (locationId: number, menuID: number): Promise<void> => {
+        await connection.request<Menu>(
+            HttpMethod.POST,
+            `/locations/${locationId}/menus/${menuID}`,
+        )
+    },
 })
