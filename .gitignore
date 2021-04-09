@@ -3,3 +3,6 @@ lib/
 .DS_Store
 yarn-error.log
 examples/react-hooks/src/sdk/
+examples/node/src/sdk/
+examples/node/dist/
+examples/node/node_modules/

@@ -4,6 +4,8 @@ import typescript from 'rollup-plugin-typescript2'
 
 const reactExamplePath = './examples/react-hooks/src/sdk'
 const reactExampleComponentsPath = './examples/react-hooks/src/sdk/react'
+const nodeExamplePath = './examples/node/src/sdk'
+const nodeExampleComponentsPath = './examples/node/src/sdk/react'
 
 export default [
     {
@@ -17,12 +19,16 @@ export default [
         ],
         plugins: [
             clear({
-                targets: [reactExamplePath],
+                targets: [reactExamplePath, nodeExamplePath],
                 hook: 'buildStart',
             }),
             typescript(),
             copy({
-                targets: [{ src: './lib/*.(js|ts)', dest: reactExamplePath }],
+                targets: [],
+                targets: [
+                    { src: './lib/*.(js|ts)', dest: reactExamplePath },
+                    { src: './lib/*.(js|ts)', dest: nodeExamplePath },
+                ],
                 watch: 'src',
                 verbose: true,
                 hook: 'writeBundle',
@@ -44,12 +50,15 @@ export default [
         ],
         plugins: [
             clear({
-                targets: [reactExampleComponentsPath],
+                targets: [reactExampleComponentsPath, nodeExampleComponentsPath],
                 hook: 'buildStart',
             }),
             typescript(),
             copy({
-                targets: [{ src: './lib/react/*', dest: reactExampleComponentsPath }],
+                targets: [
+                    { src: './lib/react/*', dest: reactExampleComponentsPath },
+                    { src: './lib/react/*', dest: nodeExampleComponentsPath },
+                ],
                 watch: 'src/react',
                 verbose: true,
                 hook: 'writeBundle',
