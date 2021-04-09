@@ -6,7 +6,7 @@ const Nation = ({ data }) => {
     }
 
     return (
-        <div style={{backgroundColor:"#0be881", paddingLeft: "1rem"}}>
+        <div style={{backgroundColor: data.accent_color, paddingLeft: "1rem"}}>
             <h1>{data.name}</h1>
             <p>{data.description}</p>
             <p>{data.accent_color}</p>
