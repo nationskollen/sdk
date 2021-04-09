@@ -8,12 +8,12 @@ const Locations = ({ data }) => {
             {data.map((it) => {
                 return (
                     <div>
-                        <p>{it.nation_id}</p>
-                        <p>{it.name}</p>
-                        <p>{it.description}</p>
-                        <p>{it.address}</p>
-                        <p>{it.max_capacity}</p>
-                        <p>{it.activity_level}</p>
+                        <p>Location ID: {it.nation_id}</p>
+                        <p>Location Name: {it.name}</p>
+                        <p>Description: {it.description}</p>
+                        <p>Address:{it.address}</p>
+                        <p>Max Capacity: {it.max_capacity}</p>
+                        <p>Activity Level: {it.activity_level}</p>
                         <img src={it.cover_img_src} />
                     </div>
                 )
