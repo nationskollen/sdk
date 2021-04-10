@@ -9,8 +9,8 @@ export type SubscriptionCallback<T> = (data: T) => void
 
 export interface ActivityCallback {
     oid: number
-    location: number
-    activity: number
+    location_id: number
+    activity_level: number
 }
 
 interface Callbacks {

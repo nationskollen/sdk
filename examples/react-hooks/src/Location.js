@@ -7,8 +7,8 @@ const Location = ({ data }) => {
 
     useEffect(() => {
         api.activity.subscribe((message) => {
-            if (message.oid === data.nation_id && message.location === data.id) {
-                setActivity(message.activity)
+            if (message.oid === data.nation_id && message.location_id === data.id) {
+                setActivity(message.activity_level)
             }
         })
     }, [api.activity, data.id, data.nation_id])
