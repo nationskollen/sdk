@@ -30,7 +30,7 @@ export const MenuService = (connection: Connection) => ({
         return item
     },
 
-    // TODO check up on how to upload only "img src" 
+    // TODO check up on how to upload only "img src"
     /* upload: async (menuId: number, itemId: number, file: Partial<MenuItem>): Promise<void> => { */
     /*     await connection.request<Nation>( */
     /*         HttpMethod.POST, */
@@ -39,7 +39,11 @@ export const MenuService = (connection: Connection) => ({
     /*     ) */
     /* }, */
 
-    update: async (menuId: number, itemId: number, data: Partial<MenuItem>): Promise<MenuItemCollection> => {
+    update: async (
+        menuId: number,
+        itemId: number,
+        data: Partial<MenuItem>
+    ): Promise<MenuItemCollection> => {
         const item = await connection.request<MenuItemCollection>(
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
@@ -52,7 +56,7 @@ export const MenuService = (connection: Connection) => ({
     delete: async (menuId: number, itemId: number): Promise<void> => {
         await connection.request<MenuItemCollection>(
             HttpMethod.DELETE,
-            `/menus/${menuId}/items/${itemId}`,
+            `/menus/${menuId}/items/${itemId}`
         )
     },
 })

@@ -1,5 +1,4 @@
 import json from 'rollup-plugin-json'
-import clear from 'rollup-plugin-clear'
 import copy from 'rollup-plugin-copy-watch'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
@@ -12,7 +11,6 @@ const nodeExampleComponentsPath = './examples/node/src/sdk/react'
 
 export default [
     {
-        external: ['bufferutil', 'utf-8-validate', 'ws'],
         input: './src/index.ts',
         output: [
             {
@@ -22,10 +20,6 @@ export default [
             },
         ],
         plugins: [
-            clear({
-                targets: [reactExamplePath, nodeExamplePath],
-                hook: 'buildStart',
-            }),
             resolve(),
             json(),
             commonjs(),
@@ -46,7 +40,7 @@ export default [
         },
     },
     {
-        external: ['react', 'bufferutil', 'utf-8-validate', 'ws'],
+        external: ['react'],
         input: './src/react/index.ts',
         output: [
             {
@@ -56,10 +50,6 @@ export default [
             },
         ],
         plugins: [
-            clear({
-                targets: [reactExampleComponentsPath, nodeExampleComponentsPath],
-                hook: 'buildStart',
-            }),
             resolve(),
             json(),
             commonjs(),
