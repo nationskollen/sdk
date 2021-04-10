@@ -12,6 +12,7 @@ const nodeExampleComponentsPath = './examples/node/src/sdk/react'
 
 export default [
     {
+        external: ['bufferutil', 'utf-8-validate', 'ws'],
         input: './src/index.ts',
         output: [
             {
@@ -45,7 +46,7 @@ export default [
         },
     },
     {
-        external: ['react'],
+        external: ['react', 'bufferutil', 'utf-8-validate', 'ws'],
         input: './src/react/index.ts',
         output: [
             {

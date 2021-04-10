@@ -11,7 +11,7 @@
     "main": "./lib/index.js",
     "typings": "./lib/index.d.ts",
     "scripts": {
-        "dev": "npx concurrently \"npm:watch\" \"npm:example-*\"",
+        "dev": "npx concurrently \"npm:watch\" \"npm:example-react\"",
         "watch": "rollup -cw",
         "build": "rollup -c",
         "example-node": "cd examples/node && npm run start",

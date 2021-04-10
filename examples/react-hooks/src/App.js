@@ -1,4 +1,3 @@
-import Nation from './Nation'
 import Nations from './Nations'
 
 // ./sdk is equivalent with @dsp-krabby/sdk
@@ -8,7 +7,7 @@ import { Provider } from './sdk/react'
 
 function App() {
     return (
-        <Provider development={true}>
+        <Provider development={true} useWebSockets={true}>
             <Nations />
         </Provider>
     )
