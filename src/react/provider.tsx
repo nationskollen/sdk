@@ -1,11 +1,10 @@
-import React, { useRef } from 'react'
+import React from 'react'
 
 import { Context } from './context'
-import { Connection } from '../connection'
-import { Service } from '../services/index'
+import { ClientWrapper } from '../client'
 
 export interface ProviderProps {
-    connection: Connection
+    client: ClientWrapper
     children: JSX.Element[]
 }
 
@@ -15,7 +14,6 @@ export interface ProviderState {
 
 export const Consumer = Context.Consumer
 
-export const Provider = ({ children, connection }: ProviderProps) => {
-    const service = useRef(Service(connection))
-    return <Context.Provider value={service.current}>{children}</Context.Provider>
+export const Provider = ({ children, client }: ProviderProps) => {
+    return <Context.Provider value={client}>{children}</Context.Provider>
 }

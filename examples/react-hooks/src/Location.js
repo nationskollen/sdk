@@ -1,17 +1,7 @@
-import { useApi } from './sdk/react'
-import { useState, useEffect } from 'react'
+import { useActivityLevel } from './sdk/react'
 
 const Location = ({ data }) => {
-    const api = useApi()
-    const [activity, setActivity] = useState(data.activity_level)
-
-    useEffect(() => {
-        api.activity.subscribe((message) => {
-            if (message.oid === data.nation_id && message.location_id === data.id) {
-                setActivity(message.activity_level)
-            }
-        })
-    }, [api.activity, data.id, data.nation_id])
+    const activityLevel = useActivityLevel(data.id, data.activity_level)
 
     return (
         <div>
@@ -21,7 +11,7 @@ const Location = ({ data }) => {
             <p>Description: {data.description}</p>
             <p>Address:{data.address}</p>
             <p>Max Capacity: {data.max_capacity}</p>
-            <p>Activity level: {activity}</p>
+            <p>Activity level: {activityLevel}</p>
             <img src={data.cover_img_src} />
         </div>
     )
