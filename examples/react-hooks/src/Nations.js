@@ -6,7 +6,12 @@ const Nations = () => {
     const api = useApi()
     const [nations, setNations] = useState([])
 
-    useEffect(() => api.nations.all().then((data) => setNations(data)), [api.nations])
+    useEffect(() => {
+        api.nations
+            .all()
+            .then((data) => setNations(data))
+            .catch((error) => console.error(error))
+    }, [api.nations])
 
     return (
         <div>

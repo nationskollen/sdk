@@ -16,43 +16,44 @@ export enum HttpMethod {
 
 export interface Data {
     [key: string]: any
-
 }
 
 export class Connection {
     private $axios: AxiosInstance
-    private $token: string | null
-    private $ws: WebSocketConnection | null = null
-
+    private $token?: string
+    private $ws?: WebSocketConnection
 
     constructor({ development, useWebSockets }: ConnnectionConfigContract) {
-        const baseURL = development ? BASE_URL_DEV : BASE_URL
-
-        this.$axios = axios.create({ baseURL })
+        this.$axios = axios.create({ baseURL: development ? BASE_URL_DEV : BASE_URL })
 
         if (useWebSockets) {
             this.$ws = new WebSocketConnection(development)
         }
-
-        this.$token = null
     }
 
     private addRequestToken(headers: any, token: string) {
         headers['Authentication'] = `Bearer ${token}`
     }
 
-    public async request<T>(method: HttpMethod, endpoint: string, data?: Data, isAuthenticated?: boolean): Promise<T> {
+    public async request<T>(
+        method: HttpMethod,
+        endpoint: string,
+        data?: Data,
+        isAuthenticated?: boolean
+    ): Promise<T> {
         const headers = {}
 
         // Make sure the user is authenticated,
         // and that the token is not null
         if (isAuthenticated) {
-            if (this.$token) {
-                this.addRequestToken(headers, this.$token)
-            } else {
+            if (!this.$token) {
                 // TODO Maybe import exceptions (or create our own later on)
-                throw new Error("user token is null")
+                throw new Error(
+                    'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
+                )
             }
+
+            this.addRequestToken(headers, this.$token)
         }
 
         const response = await this.$axios({ url: endpoint, method, headers, data })
