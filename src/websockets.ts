@@ -6,6 +6,14 @@ import {
     WS_BACKOFF_MODIFIER,
 } from './constants'
 
+import { removeCallback } from './utils'
+
+export interface ActivityData {
+    oid: number
+    location_id: number
+    activity_level: number
+}
+
 export enum Subscriptions {
     Connected,
     Activity,
@@ -13,14 +21,14 @@ export enum Subscriptions {
 
 export type SubscriptionCallback<T> = (data: T) => void
 
-export interface ActivityCallback {
-    oid: number
-    location_id: number
-    activity_level: number
+interface SubscriptionsCallbackMap {
+    [Subscriptions.Connected]: SubscriptionCallback<void>
+    [Subscriptions.Activity]: SubscriptionCallback<ActivityData>
 }
 
 interface Callbacks {
-    [Subscriptions.Activity]: Array<SubscriptionCallback<ActivityCallback>>
+    [Subscriptions.Connected]: Array<SubscriptionsCallbackMap[Subscriptions.Connected]>
+    [Subscriptions.Activity]: Array<SubscriptionsCallbackMap[Subscriptions.Activity]>
 }
 
 export class WebSocketConnection {
@@ -30,6 +38,7 @@ export class WebSocketConnection {
     private $backoffMultiplier = 1
     private $reconnectTimeout?: number
     private $callbacks: Callbacks = {
+        [Subscriptions.Connected]: [],
         [Subscriptions.Activity]: [],
     }
 
@@ -98,16 +107,14 @@ export class WebSocketConnection {
             return
         }
 
-        switch (parsed.type) {
-            case Subscriptions.Connected:
-                break
-            case Subscriptions.Activity:
-                this.$callbacks[Subscriptions.Activity].forEach((cb) => cb(parsed.data))
-                break
-            default:
-                this.log('Got unhandled subscription type')
-                break
+        if (!Object.values(Subscriptions).includes(parsed.type)) {
+            this.log('Got unhandled subscription type', parsed.type)
+            return
         }
+
+        const event = parsed.type as Subscriptions
+
+        this.$callbacks[event].forEach((cb: any) => cb(parsed.data))
     }
 
     private onDisconnect() {
@@ -119,7 +126,12 @@ export class WebSocketConnection {
         this.reconnect()
     }
 
-    public registerActivityCallback(cb: SubscriptionCallback<ActivityCallback>) {
-        this.$callbacks[Subscriptions.Activity].push(cb)
+    // TODO: Fix the weird typings on these functions so that we can remove the type casting
+    public subscribe<T extends Subscriptions>(event: T, cb: SubscriptionsCallbackMap[T]) {
+        ;(this.$callbacks[event] as Array<SubscriptionsCallbackMap[T]>).push(cb)
+    }
+
+    public unsubscribe<T extends Subscriptions>(event: T, cb: SubscriptionsCallbackMap[T]) {
+        removeCallback(this.$callbacks[event] as Array<SubscriptionsCallbackMap[T]>, cb)
     }
 }

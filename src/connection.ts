@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 import { BASE_URL, BASE_URL_DEV } from './constants'
-import { WebSocketConnection, SubscriptionCallback, ActivityCallback } from './websockets'
+import { WebSocketConnection } from './websockets'
 
 export interface ConnnectionConfigContract {
     development: boolean
@@ -60,11 +60,7 @@ export class Connection {
         return response.data
     }
 
-    public subscribeToActivityCallback(cb: SubscriptionCallback<ActivityCallback>) {
-        if (!this.$ws) {
-            return
-        }
-
-        this.$ws.registerActivityCallback(cb)
+    public getWebSocket() {
+        return this.$ws
     }
 }

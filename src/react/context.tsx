@@ -1,5 +1,4 @@
-import { ServiceWrapper } from '../services/index'
-import { createContext, useContext } from 'react'
+import { createContext } from 'react'
+import { ClientWrapper } from '../client'
 
-export const useApi = () => useContext(Context)
-export const Context = createContext({} as ServiceWrapper)
+export const Context = createContext({} as ClientWrapper)

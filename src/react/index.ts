@@ -1,4 +1,3 @@
-import { Context, useApi } from './context'
-import { Provider, Consumer } from './provider'
-
-export { Provider, Consumer, Context, useApi }
+export * from './hooks'
+export * from './context'
+export * from './provider'
