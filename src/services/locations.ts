@@ -1,50 +1,70 @@
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
-import { LocationCollection, Location } from '../typings'
+import { LocationCollection, Location, ResourceOptions } from '../typings'
 
 export class Locations extends BaseService {
     constructor(connection: Connection) {
         super(connection)
     }
 
-    public async all(oid: number): Promise<LocationCollection> {
+    public all = async (oid: number, options?: ResourceOptions): Promise<LocationCollection> => {
         const locations = await this.$connection.request<LocationCollection>(
             HttpMethod.GET,
-            `/nations/${oid}/locations`
+            `/nations/${oid}/locations`,
+            undefined,
+            false,
+            options,
+            'locationsAll'
         )
         return locations
     }
 
-    public async single(oid: number, id: number): Promise<Location> {
+    public single = async (
+        oid: number,
+        id: number,
+        options?: ResourceOptions
+    ): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.GET,
-            `/nations/${oid}/locations/${id}`
+            `/nations/${oid}/locations/${id}`,
+            undefined,
+            false,
+            options,
+            `locationSingle${id}`
         )
         return location
     }
 
-    public async create(oid: number, data: Location): Promise<Location> {
+    public create = async (oid: number, data: Location): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.POST,
             `/nations/${oid}/locations`,
-            data
+            data,
+            true
         )
         return location
     }
 
-    public async update(oid: number, lid: number, change: Partial<Location>): Promise<Location> {
+    public update = async (
+        oid: number,
+        lid: number,
+        change: Partial<Location>
+    ): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
-            change
+            change,
+            true
         )
         return location
     }
 
-    public async delete(oid: number, lid: number): Promise<void> {
+    public delete = async (oid: number, lid: number): Promise<void> => {
         await this.$connection.request<Location>(
             HttpMethod.DELETE,
-            `/nations/${oid}/locations/${lid}`
+            `/nations/${oid}/locations/${lid}`,
+            undefined,
+            true
         )
     }
 }

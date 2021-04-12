@@ -1,7 +1,12 @@
 import Nations from './Nations'
 
 function App() {
-    return <Nations />
+    return (
+        <div>
+            <Nations />
+            <Nations />
+        </div>
+    )
 }
 
 export default App

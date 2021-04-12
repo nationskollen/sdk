@@ -40,7 +40,7 @@ export default [
         },
     },
     {
-        external: ['react'],
+        external: ['react', 'react-async-hook'],
         input: './src/react/index.ts',
         output: [
             {

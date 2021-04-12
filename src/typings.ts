@@ -50,6 +50,10 @@ export interface MenuItem {
     hidden: boolean
 }
 
+export interface ResourceOptions {
+    invalidate: boolean
+}
+
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type MenuCollection = Array<Menu>

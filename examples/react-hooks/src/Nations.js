@@ -1,23 +1,18 @@
-import { useApi } from './sdk/react'
-import { useState, useEffect } from 'react'
 import Nation from './Nation'
+import { useApi } from './sdk/react'
+import { useAsync } from 'react-async-hook'
 
 const Nations = () => {
     const api = useApi()
-    const [nations, setNations] = useState([])
-
-    useEffect(() => {
-        api.nations
-            .all()
-            .then((data) => setNations(data))
-            .catch((error) => console.error(error))
-    }, [api.nations])
+    const { loading, result, error, execute } = useAsync(api.nations.all, [])
 
     return (
         <div>
-            {nations.map((it) => (
-                <Nation key={it.oid} data={it} />
-            ))}
+            <button onClick={() => execute({ invalidate: true })}> true</button>
+            <button onClick={() => execute({ invalidate: false })}> false</button>
+            {loading && <p>Loading...</p>}
+            {error && <p>Could not fetch nations: {error.message}</p>}
+            {result && result.map((it) => <Nation key={it.oid} data={it} />)}
         </div>
     )
 }
