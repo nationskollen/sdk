@@ -13,8 +13,10 @@ export class Nations extends BaseService {
             '/nations',
             undefined,
             false,
-            options
+            options,
+            'nationAll'
         )
+
         return nations
     }
 
@@ -24,8 +26,10 @@ export class Nations extends BaseService {
             `/nations/${oid}`,
             undefined,
             false,
-            options
+            options,
+            `nationSingle${oid}`
         )
+
         return nation
     }
 

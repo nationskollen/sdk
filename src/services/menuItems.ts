@@ -13,7 +13,8 @@ export class MenuItems extends BaseService {
             `/menus/${menuId}/items`,
             undefined,
             false,
-            options
+            options,
+            'menuItemsAll'
         )
 
         return menuItems
@@ -29,7 +30,8 @@ export class MenuItems extends BaseService {
             `/menus/${menuId}/items/${itemId}`,
             undefined,
             false,
-            options
+            options,
+            `menuItemsSingle${itemId}`
         )
 
         return item

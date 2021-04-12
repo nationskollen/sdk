@@ -13,7 +13,8 @@ export class Locations extends BaseService {
             `/nations/${oid}/locations`,
             undefined,
             false,
-            options
+            options,
+            'locationsAll'
         )
         return locations
     }
@@ -28,7 +29,8 @@ export class Locations extends BaseService {
             `/nations/${oid}/locations/${id}`,
             undefined,
             false,
-            options
+            options,
+            `locationSingle${id}`
         )
         return location
     }
