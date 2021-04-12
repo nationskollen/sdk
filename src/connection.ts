@@ -86,4 +86,8 @@ export class Connection {
     public getWebSocket() {
         return this.$ws
     }
+
+    public setToken(token: string) {
+        this.$token = token;
+    }
 }
