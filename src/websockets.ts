@@ -34,7 +34,7 @@ interface Callbacks {
 export class WebSocketConnection {
     private $ws?: WebSocket
     private $alive: boolean
-    private $development: boolean
+    private $wsBaseURL: string
     private $backoffMultiplier = 1
     private $reconnectTimeout?: number
     private $callbacks: Callbacks = {
@@ -42,14 +42,19 @@ export class WebSocketConnection {
         [Subscriptions.Activity]: [],
     }
 
-    constructor(development: boolean) {
+    constructor(development: boolean, customBaseURL?: string) {
+        if (customBaseURL) {
+            this.$wsBaseURL = customBaseURL
+        } else {
+            this.$wsBaseURL = development ? WS_URL_DEV : WS_URL
+        }
+
         this.$alive = false
-        this.$development = development
         this.createConnection()
     }
 
     private createConnection() {
-        this.$ws = new WebSocket(this.$development ? WS_URL_DEV : WS_URL)
+        this.$ws = new WebSocket(this.$wsBaseURL)
         this.$ws.onopen = () => this.onConnect()
         this.$ws.onmessage = (data: any) => this.onMessage(data)
         this.$ws.onclose = () => this.onDisconnect()

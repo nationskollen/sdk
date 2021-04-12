@@ -6,6 +6,8 @@ import { BASE_URL, BASE_URL_DEV } from './constants'
 export interface ConnnectionConfigContract {
     development: boolean
     useWebSockets: boolean
+    customBaseURL?: string
+    customWsBaseURL?: string
 }
 
 export enum HttpMethod {
@@ -25,12 +27,17 @@ export class Connection {
     private $ws?: WebSocketConnection
     private $cache: Cache
 
-    constructor({ development, useWebSockets }: ConnnectionConfigContract) {
-        this.$baseURL = development ? BASE_URL_DEV : BASE_URL
+    constructor({ development, useWebSockets, customBaseURL, customWsBaseURL }: ConnnectionConfigContract) {
+        if (customBaseURL) {
+            this.$baseURL = customBaseURL
+        } else {
+            this.$baseURL = development ? BASE_URL_DEV : BASE_URL
+        }
+
         this.$cache = new Cache()
 
         if (useWebSockets) {
-            this.$ws = new WebSocketConnection(development)
+            this.$ws = new WebSocketConnection(development, customWsBaseURL)
         }
     }
 
