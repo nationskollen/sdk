@@ -7,7 +7,7 @@ export class Locations extends BaseService {
         super(connection)
     }
 
-    public async all(oid: number): Promise<LocationCollection> {
+    public all = async (oid: number): Promise<LocationCollection> => {
         const locations = await this.$connection.request<LocationCollection>(
             HttpMethod.GET,
             `/nations/${oid}/locations`
@@ -15,7 +15,7 @@ export class Locations extends BaseService {
         return locations
     }
 
-    public async single(oid: number, id: number): Promise<Location> {
+    public single = async (oid: number, id: number): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.GET,
             `/nations/${oid}/locations/${id}`
@@ -23,7 +23,7 @@ export class Locations extends BaseService {
         return location
     }
 
-    public async create(oid: number, data: Location): Promise<Location> {
+    public create = async (oid: number, data: Location): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.POST,
             `/nations/${oid}/locations`,
@@ -32,7 +32,11 @@ export class Locations extends BaseService {
         return location
     }
 
-    public async update(oid: number, lid: number, change: Partial<Location>): Promise<Location> {
+    public update = async (
+        oid: number, 
+        lid: number, 
+        change: Partial<Location>
+    ): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
@@ -41,7 +45,7 @@ export class Locations extends BaseService {
         return location
     }
 
-    public async delete(oid: number, lid: number): Promise<void> {
+    public delete = async (oid: number, lid: number): Promise<void> => {
         await this.$connection.request<Location>(
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`

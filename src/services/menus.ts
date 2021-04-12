@@ -7,7 +7,7 @@ export class Menus extends BaseService {
         super(connection)
     }
 
-    public async all(locationId: number): Promise<MenuCollection> {
+    public all = async (locationId: number): Promise<MenuCollection> => {
         const menus = await this.$connection.request<MenuCollection>(
             HttpMethod.GET,
             `/locations/${locationId}/menus`
@@ -16,7 +16,7 @@ export class Menus extends BaseService {
         return menus
     }
 
-    public async single(locationId: number, id: number): Promise<Menu> {
+    public single = async (locationId: number, id: number): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.GET,
             `/locations/${locationId}/menus/${id}`
@@ -25,7 +25,7 @@ export class Menus extends BaseService {
         return menu
     }
 
-    public async create(locationId: number, menuData: Menu): Promise<Menu> {
+    public create = async (locationId: number, menuData: Menu): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
@@ -35,11 +35,11 @@ export class Menus extends BaseService {
         return menu
     }
 
-    public async update(
+    public update = async (
         locationId: number,
         menuID: number,
         menuData: Partial<Menu>
-    ): Promise<Menu> {
+    ): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuID}`,
@@ -49,7 +49,7 @@ export class Menus extends BaseService {
         return menu
     }
 
-    public async delete(locationId: number, menuID: number): Promise<void> {
+    public delete = async (locationId: number, menuID: number): Promise<void> => {
         await this.$connection.request<Menu>(
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuID}`
