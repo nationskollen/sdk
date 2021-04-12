@@ -6,7 +6,7 @@ const Locations = ({ data }) => {
     }
 
     return (
-        <div className='locations'>
+        <div className="locations">
             {data.map((it) => (
                 <Location key={it.id} data={it} />
             ))}

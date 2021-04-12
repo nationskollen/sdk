@@ -7,10 +7,14 @@ const Nations = () => {
     const { loading, result, error, execute } = useAsync(api.nations.all, [])
 
     return (
-        <div className='nations'>
-            <div className='actions'>
-                <button onClick={() => execute({ invalidate: true })}>Invalidate</button>
-                <button onClick={() => execute({ invalidate: false })}>Cache</button>
+        <div className="nations">
+            <div className="actions">
+                <button onClick={() => execute({ invalidate: true })}>
+                    Refetch with invalidate
+                </button>
+                <button onClick={() => execute({ invalidate: false })}>
+                    Refetch without invalidate
+                </button>
             </div>
             {loading && <p>Loading...</p>}
             {error && <p>Could not fetch nations: {error.message}</p>}
