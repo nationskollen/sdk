@@ -5,5 +5,6 @@ README.md
 coverage/
 .github/
 examples/react-hooks/src/sdk/
+examples/react-hooks/build/
 examples/node/src/sdk/
 examples/node/dist

@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from 'react'
 
 export const useApi = () => useContext(Context)
 
-export const useActivityLevel = (locationId: number, initialActivityLevel?: number) => {
+export function useActivityLevel(locationId: number, initialActivityLevel?: number) {
     const { activity } = useApi()
     const [activityLevel, setActivityLevel] = useState(initialActivityLevel ?? 0)
 

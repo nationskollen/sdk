@@ -7,17 +7,17 @@ export class Nations extends BaseService {
         super(connection)
     }
 
-    public async all(): Promise<NationCollection> {
+    public all = async (): Promise<NationCollection> => {
         const nations = await this.$connection.request<NationCollection>(HttpMethod.GET, '/nations')
         return nations
     }
 
-    public async single(oid: number): Promise<Nation> {
+    public single = async (oid: number): Promise<Nation> => {
         const nation = await this.$connection.request<Nation>(HttpMethod.GET, `/nations/${oid}`)
         return nation
     }
 
-    public async update(oid: number, data: Partial<Nation>): Promise<Nation> {
+    public update = async (oid: number, data: Partial<Nation>): Promise<Nation> => {
         const nation = await this.$connection.request<Nation>(
             HttpMethod.PUT,
             `/nations/${oid}`,
