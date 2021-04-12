@@ -1,8 +1,7 @@
-import axios, { AxiosInstance } from 'axios'
-import { BASE_URL, BASE_URL_DEV } from './constants'
+import { Cache } from './cache'
 import { ResourceOptions } from './typings'
 import { WebSocketConnection } from './websockets'
-import { Cache } from './cache'
+import { BASE_URL, BASE_URL_DEV } from './constants'
 
 export interface ConnnectionConfigContract {
     development: boolean
@@ -21,13 +20,13 @@ export interface Data {
 }
 
 export class Connection {
-    private $axios: AxiosInstance
+    private $baseURL: string
     private $token?: string
     private $ws?: WebSocketConnection
     private $cache: Cache
 
     constructor({ development, useWebSockets }: ConnnectionConfigContract) {
-        this.$axios = axios.create({ baseURL: development ? BASE_URL_DEV : BASE_URL })
+        this.$baseURL = development ? BASE_URL_DEV : BASE_URL
         this.$cache = new Cache()
 
         if (useWebSockets) {
@@ -37,6 +36,14 @@ export class Connection {
 
     private addRequestToken(headers: any, token: string) {
         headers['Authentication'] = `Bearer ${token}`
+    }
+
+    private createUrl(endpoint: string) {
+        if (endpoint.substr(0, 1) === '/')  {
+            return `${this.$baseURL}${endpoint}`
+        }
+
+        return `${this.$baseURL}/${endpoint}`
     }
 
     public async request<T>(
@@ -49,20 +56,18 @@ export class Connection {
     ): Promise<T> {
         // Here we check if we have a stored cache of the data before
         // requesting new data
-        if (!options?.invalidate && cacheKey) {
-            const cacheData = this.$cache.get(cacheKey)
-            if (cacheData) {
-                return cacheData as T
-            }
+        if (!options?.invalidate && cacheKey && this.$cache.exists(cacheKey)) {
+            return this.$cache.get(cacheKey) as T
         }
 
-        const headers = {}
+        const headers = {
+            'Content-Type': 'application/json',
+        }
 
         // Make sure the user is authenticated,
         // and that the token is not null
         if (isAuthenticated) {
             if (!this.$token) {
-                // TODO Maybe import exceptions (or create our own later on)
                 throw new Error(
                     'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
                 )
@@ -71,11 +76,17 @@ export class Connection {
             this.addRequestToken(headers, this.$token)
         }
 
-        const response = await this.$axios({ url: endpoint, method, headers, data })
+        const response = await fetch(this.createUrl(endpoint), {
+            method,
+            headers,
+            body: data ? JSON.stringify(data) : null,
+        })
+
+        const parsedResponse = await response.json()
 
         // Save the cache when getting a new response
         if (cacheKey) {
-            this.$cache.save(cacheKey, response.data)
+            this.$cache.save(cacheKey, parsedResponse)
         } else {
             // Prevent logging of error if cache is disabled for the request
             if (options) {
@@ -83,7 +94,7 @@ export class Connection {
             }
         }
 
-        return response.data
+        return parsedResponse
     }
 
     public getWebSocket() {
