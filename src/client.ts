@@ -11,5 +11,6 @@ export const Client = (config: ConnnectionConfigContract) => {
         nations: new Services.Nations(connection),
         locations: new Services.Locations(connection),
         menus: new Services.Menus(connection),
+        auth: new Services.Auth(connection),
     }
 }

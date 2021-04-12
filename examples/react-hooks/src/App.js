@@ -1,9 +1,14 @@
 import './App.css'
+import React from 'react'
+import User from './User'
 import Nations from './Nations'
 
 function App() {
     return (
-        <Nations />
+        <React.Fragment>
+            <User />
+            <Nations />
+        </React.Fragment>
     )
 }
 

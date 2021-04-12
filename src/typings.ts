@@ -54,6 +54,19 @@ export interface ResourceOptions {
     invalidate: boolean
 }
 
+export enum Scopes {
+    Admin,
+    Staff,
+    None,
+}
+
+export interface User {
+    type: string
+    token: string
+    scope: Scopes
+    oid: number
+}
+
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type MenuCollection = Array<Menu>

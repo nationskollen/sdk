@@ -77,7 +77,10 @@ export class Connection {
         if (cacheKey) {
             this.$cache.save(cacheKey, response.data)
         } else {
-            console.error('key for the cache is undefined')
+            // Prevent logging of error if cache is disabled for the request
+            if (options) {
+                console.error('key for the cache is undefined')
+            }
         }
 
         return response.data
@@ -85,5 +88,9 @@ export class Connection {
 
     public getWebSocket() {
         return this.$ws
+    }
+
+    public setToken(token: string) {
+        this.$token = token
     }
 }
