@@ -1,25 +1,35 @@
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
-import { MenuItemCollection, MenuItem } from '../typings'
+import { MenuItemCollection, MenuItem, ResourceOptions } from '../typings'
 
 export class MenuItems extends BaseService {
     constructor(connection: Connection) {
         super(connection)
     }
 
-    public all = async (menuId: number): Promise<MenuItemCollection> => {
+    public all = async (menuId: number, options?: ResourceOptions): Promise<MenuItemCollection> => {
         const menuItems = await this.$connection.request<MenuItemCollection>(
             HttpMethod.GET,
-            `/menus/${menuId}/items`
+            `/menus/${menuId}/items`,
+            undefined,
+            false,
+            options
         )
 
         return menuItems
     }
 
-    public single = async (menuId: number, itemId: number): Promise<MenuItemCollection> => {
+    public single = async (
+        menuId: number,
+        itemId: number,
+        options?: ResourceOptions
+    ): Promise<MenuItemCollection> => {
         const item = await this.$connection.request<MenuItemCollection>(
             HttpMethod.GET,
-            `/menus/${menuId}/items/${itemId}`
+            `/menus/${menuId}/items/${itemId}`,
+            undefined,
+            false,
+            options
         )
 
         return item
@@ -29,7 +39,8 @@ export class MenuItems extends BaseService {
         const item = await this.$connection.request<MenuItemCollection>(
             HttpMethod.POST,
             `/menus/${menuId}/items`,
-            data
+            data,
+            true
         )
 
         return item
@@ -43,7 +54,8 @@ export class MenuItems extends BaseService {
         const item = await this.$connection.request<MenuItemCollection>(
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
-            data
+            data,
+            true
         )
 
         return item
@@ -52,7 +64,9 @@ export class MenuItems extends BaseService {
     public delete = async (menuId: number, itemId: number): Promise<void> => {
         await this.$connection.request<MenuItemCollection>(
             HttpMethod.DELETE,
-            `/menus/${menuId}/items/${itemId}`
+            `/menus/${menuId}/items/${itemId}`,
+            undefined,
+            true
         )
     }
 }

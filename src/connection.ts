@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 import { BASE_URL, BASE_URL_DEV } from './constants'
+import { ResourceOptions } from './typings'
 import { WebSocketConnection } from './websockets'
 
 export interface ConnnectionConfigContract {
@@ -39,7 +40,8 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        isAuthenticated?: boolean
+        isAuthenticated?: boolean,
+        options?: ResourceOptions
     ): Promise<T> {
         const headers = {}
 

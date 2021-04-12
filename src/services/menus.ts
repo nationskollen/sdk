@@ -1,25 +1,35 @@
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
-import { MenuCollection, Menu } from '../typings'
+import { MenuCollection, Menu, ResourceOptions } from '../typings'
 
 export class Menus extends BaseService {
     constructor(connection: Connection) {
         super(connection)
     }
 
-    public all = async (locationId: number): Promise<MenuCollection> => {
+    public all = async (locationId: number, options?: ResourceOptions): Promise<MenuCollection> => {
         const menus = await this.$connection.request<MenuCollection>(
             HttpMethod.GET,
-            `/locations/${locationId}/menus`
+            `/locations/${locationId}/menus`,
+            undefined,
+            false,
+            options
         )
 
         return menus
     }
 
-    public single = async (locationId: number, id: number): Promise<Menu> => {
+    public single = async (
+        locationId: number,
+        id: number,
+        options?: ResourceOptions
+    ): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.GET,
-            `/locations/${locationId}/menus/${id}`
+            `/locations/${locationId}/menus/${id}`,
+            undefined,
+            false,
+            options
         )
 
         return menu
@@ -29,7 +39,8 @@ export class Menus extends BaseService {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
-            menuData
+            menuData,
+            true
         )
 
         return menu
@@ -43,7 +54,8 @@ export class Menus extends BaseService {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuID}`,
-            menuData
+            menuData,
+            true
         )
 
         return menu
@@ -52,7 +64,9 @@ export class Menus extends BaseService {
     public delete = async (locationId: number, menuID: number): Promise<void> => {
         await this.$connection.request<Menu>(
             HttpMethod.POST,
-            `/locations/${locationId}/menus/${menuID}`
+            `/locations/${locationId}/menus/${menuID}`,
+            undefined,
+            true
         )
     }
 }
