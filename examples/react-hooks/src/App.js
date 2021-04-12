@@ -1,11 +1,9 @@
+import './App.css'
 import Nations from './Nations'
 
 function App() {
     return (
-        <div>
-            <Nations />
-            <Nations />
-        </div>
+        <Nations />
     )
 }
 

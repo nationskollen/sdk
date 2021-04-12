@@ -6,15 +6,15 @@ const Nation = ({ data }) => {
     }
 
     return (
-        <div style={{ backgroundColor: data.accent_color, paddingLeft: '1rem' }}>
-            <h1>{data.name}</h1>
-            <p>{data.description}</p>
-            <p>{data.accent_color}</p>
-            <img src={data.cover_img_src} />
-            <div style={{ backgroundColor: '#d2dae2', margin: '2rem' }}>
-                <h2>Locations</h2>
-                <Locations data={data.locations} />
+        <div style={{ backgroundColor: data.accent_color }} className='nation'>
+            <div className='nation-cover'>
+                {data.cover_img_src && <img src={data.cover_img_src} className='nation-cover-image' />}
+                <div className='nation-cover-content'>
+                    <h1>{data.name}</h1>
+                    <p>{data.description}</p>
+                </div>
             </div>
+            <Locations data={data.locations} />
         </div>
     )
 }

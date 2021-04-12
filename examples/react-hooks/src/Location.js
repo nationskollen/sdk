@@ -4,7 +4,7 @@ const Location = ({ data }) => {
     const activityLevel = useActivityLevel(data.id, data.activity_level)
 
     return (
-        <div>
+        <div className='location'>
             <p>ID: {data.id}</p>
             <p>Location ID: {data.nation_id}</p>
             <p>Location Name: {data.name}</p>

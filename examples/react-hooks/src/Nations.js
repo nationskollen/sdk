@@ -7,9 +7,11 @@ const Nations = () => {
     const { loading, result, error, execute } = useAsync(api.nations.all, [])
 
     return (
-        <div>
-            <button onClick={() => execute({ invalidate: true })}> true</button>
-            <button onClick={() => execute({ invalidate: false })}> false</button>
+        <div className='nations'>
+            <div className='actions'>
+                <button onClick={() => execute({ invalidate: true })}>Invalidate</button>
+                <button onClick={() => execute({ invalidate: false })}>Cache</button>
+            </div>
             {loading && <p>Loading...</p>}
             {error && <p>Could not fetch nations: {error.message}</p>}
             {result && result.map((it) => <Nation key={it.oid} data={it} />)}
