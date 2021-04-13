@@ -2,6 +2,7 @@ node_modules/
 lib/
 .DS_Store
 yarn-error.log
+package-lock.json
 examples/react-hooks/src/sdk/
 examples/node/src/sdk/
 examples/node/dist/

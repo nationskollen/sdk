@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+import { User } from '../typings'
 import { Context } from './context'
 import { ClientWrapper } from '../client'
 
@@ -15,5 +16,6 @@ export interface ProviderState {
 export const Consumer = Context.Consumer
 
 export const Provider = ({ children, client }: ProviderProps) => {
-    return <Context.Provider value={client}>{children}</Context.Provider>
+    const [user, setUser] = useState<User | null>(null)
+    return <Context.Provider value={{ api: client, user, setUser }}>{children}</Context.Provider>
 }
