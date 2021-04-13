@@ -3,6 +3,7 @@ import copy from 'rollup-plugin-copy-watch'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
+import autoExternal from 'rollup-plugin-auto-external'
 
 const reactExamplePath = './examples/react-hooks/src/sdk'
 const reactExampleComponentsPath = './examples/react-hooks/src/sdk/react'
@@ -20,6 +21,7 @@ export default [
             },
         ],
         plugins: [
+            autoExternal(),
             resolve(),
             json(),
             commonjs(),
@@ -40,7 +42,6 @@ export default [
         },
     },
     {
-        external: ['react', 'react-async-hook'],
         input: './src/react/index.ts',
         output: [
             {
@@ -50,6 +51,7 @@ export default [
             },
         ],
         plugins: [
+            autoExternal(),
             resolve(),
             json(),
             commonjs(),
