@@ -1,6 +1,7 @@
+import { User } from '../typings'
+import { ApiError } from '../errors'
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
-import { User } from '../typings'
 
 export class Auth extends BaseService {
     public user?: User
@@ -15,12 +16,12 @@ export class Auth extends BaseService {
             password,
         })
 
-        if (user.hasOwnProperty('token')) {
-            this.user = user
-            this.setToken(user.token)
-        } else {
-            console.error('Could not read token from response')
+        if (!user.hasOwnProperty('token')) {
+            throw new ApiError('Could not read token from login response')
         }
+
+        this.user = user
+        this.setToken(user.token)
 
         return user
     }

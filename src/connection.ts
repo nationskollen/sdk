@@ -47,8 +47,18 @@ export class Connection {
         }
     }
 
-    private addRequestToken(headers: any, token: string) {
-        headers['Authentication'] = `Bearer ${token}`
+    private setBearerTokenIfRequired(isAuthenticated: boolean, headers: any) {
+        // Make sure the user is authenticated,
+        // and that the token is not null
+        if (isAuthenticated) {
+            if (!this.$token) {
+                throw new ApiError(
+                    'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
+                )
+            }
+
+            headers['Authorization'] = `Bearer ${this.$token}`
+        }
     }
 
     private createUrl(endpoint: string) {
@@ -59,7 +69,11 @@ export class Connection {
         return `${this.$baseURL}/${endpoint}`
     }
 
-    private extractError(status: HttpErrorCodes, parsedResponse: Record<string, unknown>) {
+    private checkForErrors(status: HttpErrorCodes, parsedResponse: Record<string, unknown>) {
+        if (status === HttpErrorCodes.Ok) {
+            return
+        }
+
         let message: string
 
         switch (status) {
@@ -108,17 +122,7 @@ export class Connection {
             'Content-Type': 'application/json',
         }
 
-        // Make sure the user is authenticated,
-        // and that the token is not null
-        if (isAuthenticated) {
-            if (!this.$token) {
-                throw new ApiError(
-                    'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
-                )
-            }
-
-            this.addRequestToken(headers, this.$token)
-        }
+        this.setBearerTokenIfRequired(isAuthenticated ?? false, headers)
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -127,10 +131,7 @@ export class Connection {
         })
 
         const parsedResponse = await response.json()
-
-        if (response.status !== HttpErrorCodes.Ok) {
-            this.extractError(response.status, parsedResponse)
-        }
+        this.checkForErrors(response.status, parsedResponse)
 
         // Save the cache when getting a new response
         if (cacheKey) {
@@ -141,6 +142,23 @@ export class Connection {
                 console.error('key for the cache is undefined')
             }
         }
+
+        return parsedResponse
+    }
+
+    public async upload<T>(endpoint: string, body: FormData): Promise<T> {
+        const headers = {}
+
+        this.setBearerTokenIfRequired(true, headers)
+
+        const response = await fetch(this.createUrl(endpoint), {
+            method: HttpMethod.POST,
+            headers,
+            body,
+        })
+
+        const parsedResponse = await response.json()
+        this.checkForErrors(response.status, parsedResponse)
 
         return parsedResponse
     }

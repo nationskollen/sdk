@@ -1,6 +1,12 @@
 import { BaseService } from './base'
+import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
 import { NationCollection, Nation, ResourceOptions } from '../typings'
+
+export enum NationUploads {
+    Icon = 'icon',
+    Cover = 'cover',
+}
 
 export class Nations extends BaseService {
     constructor(connection: Connection) {
@@ -40,6 +46,13 @@ export class Nations extends BaseService {
             change,
             true
         )
+
+        return nation
+    }
+
+    public upload = async (oid: number, field: NationUploads, file: Blob): Promise<Nation> => {
+        const body = createUploadBody({ [field]: file })
+        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body)
 
         return nation
     }
