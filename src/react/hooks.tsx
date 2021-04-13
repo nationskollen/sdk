@@ -1,6 +1,5 @@
-import { User } from '../typings'
 import { Context } from './context'
-import { useAsync } from 'react-async-hook'
+import { useAsyncCallback } from 'react-async-hook'
 import { useContext, useState, useEffect } from 'react'
 
 export const useApi = () => useContext(Context)
@@ -18,25 +17,20 @@ export function useActivityLevel(locationId: number, initialActivityLevel?: numb
     return activityLevel
 }
 
-export function useAuthentication(email: string, password: string) {
+export function useLogin() {
     const api = useApi()
-    const [user, setUser] = useState({} as User)
-    const [authenticated, setAuthenticated] = useState(false)
-    const response = useAsync(api.auth.login, [email, password])
-
-    useEffect(() => {
-        if (response.result) {
-            setUser(response.result as User)
-            setAuthenticated(true)
-        } else {
-            setUser({} as User)
-            setAuthenticated(false)
-        }
-    }, [response.result])
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const response = useAsyncCallback(async () => {
+        const result = await api.auth.login(email, password)
+        return result
+    })
 
     return {
         ...response,
-        authenticated,
-        user,
+        email,
+        password,
+        setEmail,
+        setPassword,
     }
 }

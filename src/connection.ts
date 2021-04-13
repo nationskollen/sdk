@@ -1,6 +1,7 @@
 import { Cache } from './cache'
 import { ResourceOptions } from './typings'
 import { WebSocketConnection } from './websockets'
+import { HttpErrorCodes, ApiError } from './errors'
 import { BASE_URL, BASE_URL_DEV } from './constants'
 
 export interface ConnnectionConfigContract {
@@ -95,6 +96,37 @@ export class Connection {
         })
 
         const parsedResponse = await response.json()
+
+        if (response.status !== HttpErrorCodes.Ok) {
+            let message: string
+
+            switch (response.status) {
+                case HttpErrorCodes.NotFound:
+                    message = 'Not found'
+                    break
+                case HttpErrorCodes.BadRequest:
+                    message = 'Bad request'
+                    break
+                case HttpErrorCodes.Unauthorized:
+                    message = 'Unauthorized'
+                    break
+                case HttpErrorCodes.ValidationError:
+                    message = 'Validation error'
+                    break
+                case HttpErrorCodes.InternalError:
+                    message = 'Internal error'
+                    break
+                default:
+                    message = 'Unknown response code'
+                    break
+            }
+
+            if (parsedResponse.hasOwnProperty('errors')) {
+                throw new ApiError(message, parsedResponse.errors)
+            } else {
+                throw new ApiError(message, parsedResponse)
+            }
+        }
 
         // Save the cache when getting a new response
         if (cacheKey) {

@@ -3,6 +3,8 @@ import { Connection, HttpMethod } from '../connection'
 import { User } from '../typings'
 
 export class Auth extends BaseService {
+    public user?: User
+
     constructor(connection: Connection) {
         super(connection)
     }
@@ -14,15 +16,17 @@ export class Auth extends BaseService {
         })
 
         if (user.hasOwnProperty('token')) {
+            this.user = user
             this.setToken(user.token)
         } else {
-            console.error('Could not read token from login response')
+            console.error('Could not read token from response')
         }
 
         return user
     }
 
     public setToken(token: string) {
+        // TODO: Fetch information about user via token so that we can set user?
         this.$connection.setToken(token)
     }
 }
