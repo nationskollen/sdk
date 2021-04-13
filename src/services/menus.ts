@@ -13,7 +13,8 @@ export class Menus extends BaseService {
             `/locations/${locationId}/menus`,
             undefined,
             false,
-            options
+            options,
+            `menusAll${locationId}`
         )
 
         return menus
@@ -21,15 +22,16 @@ export class Menus extends BaseService {
 
     public single = async (
         locationId: number,
-        id: number,
+        menuId: number,
         options?: ResourceOptions
     ): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.GET,
-            `/locations/${locationId}/menus/${id}`,
+            `/locations/${locationId}/menus/${menuId}`,
             undefined,
             false,
-            options
+            options,
+            `menuSingle${menuId}`
         )
 
         return menu
@@ -48,12 +50,12 @@ export class Menus extends BaseService {
 
     public update = async (
         locationId: number,
-        menuID: number,
+        menuId: number,
         menuData: Partial<Menu>
     ): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,
-            `/locations/${locationId}/menus/${menuID}`,
+            `/locations/${locationId}/menus/${menuId}`,
             menuData,
             true
         )
@@ -61,10 +63,10 @@ export class Menus extends BaseService {
         return menu
     }
 
-    public delete = async (locationId: number, menuID: number): Promise<void> => {
+    public delete = async (locationId: number, menuId: number): Promise<void> => {
         await this.$connection.request<void>(
             HttpMethod.POST,
-            `/locations/${locationId}/menus/${menuID}`,
+            `/locations/${locationId}/menus/${menuId}`,
             undefined,
             true
         )

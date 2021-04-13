@@ -14,7 +14,7 @@ export class Locations extends BaseService {
             undefined,
             false,
             options,
-            'locationsAll'
+            `locationsAll${oid}`
         )
         return locations
     }

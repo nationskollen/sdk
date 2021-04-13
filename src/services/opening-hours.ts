@@ -17,7 +17,7 @@ export class OpeningHours extends BaseService {
             undefined,
             false,
             options,
-            'openingHoursAll'
+            `openingHoursAll${locationId}`
         )
 
         return hours
