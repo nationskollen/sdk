@@ -16,7 +16,7 @@ const Nation = ({ data }) => {
                     <p>{data.description}</p>
                 </div>
             </div>
-            <Locations data={data.locations} />
+            <Locations oid={data.oid} />
         </div>
     )
 }
