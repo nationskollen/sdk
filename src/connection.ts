@@ -59,6 +59,37 @@ export class Connection {
         return `${this.$baseURL}/${endpoint}`
     }
 
+    private extractError(status: HttpErrorCodes, parsedResponse: Record<string, unknown>) {
+        let message: string
+
+        switch (status) {
+            case HttpErrorCodes.NotFound:
+                message = 'Not found'
+                break
+            case HttpErrorCodes.BadRequest:
+                message = 'Bad request'
+                break
+            case HttpErrorCodes.Unauthorized:
+                message = 'Unauthorized'
+                break
+            case HttpErrorCodes.ValidationError:
+                message = 'Validation error'
+                break
+            case HttpErrorCodes.InternalError:
+                message = 'Internal error'
+                break
+            default:
+                message = 'Unknown response code'
+                break
+        }
+
+        if (parsedResponse.hasOwnProperty('errors')) {
+            throw new ApiError(message, parsedResponse.errors)
+        } else {
+            throw new ApiError(message, parsedResponse)
+        }
+    }
+
     public async request<T>(
         method: HttpMethod,
         endpoint: string,
@@ -81,7 +112,7 @@ export class Connection {
         // and that the token is not null
         if (isAuthenticated) {
             if (!this.$token) {
-                throw new Error(
+                throw new ApiError(
                     'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
                 )
             }
@@ -98,34 +129,7 @@ export class Connection {
         const parsedResponse = await response.json()
 
         if (response.status !== HttpErrorCodes.Ok) {
-            let message: string
-
-            switch (response.status) {
-                case HttpErrorCodes.NotFound:
-                    message = 'Not found'
-                    break
-                case HttpErrorCodes.BadRequest:
-                    message = 'Bad request'
-                    break
-                case HttpErrorCodes.Unauthorized:
-                    message = 'Unauthorized'
-                    break
-                case HttpErrorCodes.ValidationError:
-                    message = 'Validation error'
-                    break
-                case HttpErrorCodes.InternalError:
-                    message = 'Internal error'
-                    break
-                default:
-                    message = 'Unknown response code'
-                    break
-            }
-
-            if (parsedResponse.hasOwnProperty('errors')) {
-                throw new ApiError(message, parsedResponse.errors)
-            } else {
-                throw new ApiError(message, parsedResponse)
-            }
+            this.extractError(response.status, parsedResponse)
         }
 
         // Save the cache when getting a new response

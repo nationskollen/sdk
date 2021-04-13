@@ -6,7 +6,6 @@ const User = () => {
 
     return (
         <div className="user">
-            {login.loading && <p>Logging in...</p>}
             {login.result ? (
                 <p>
                     Logged in with scope
