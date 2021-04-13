@@ -14,7 +14,7 @@ export class MenuItems extends BaseService {
             undefined,
             false,
             options,
-            'menuItemsAll'
+            `menuItemsAll${menuId}`
         )
 
         return menuItems

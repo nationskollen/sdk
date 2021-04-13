@@ -15,7 +15,7 @@ export default [
         output: [
             {
                 file: './lib/index.js',
-                format: 'esm',
+                format: 'cjs',
                 strict: false,
             },
         ],
@@ -45,7 +45,7 @@ export default [
         output: [
             {
                 file: './lib/react/index.js',
-                format: 'esm',
+                format: 'cjs',
                 strict: false,
             },
         ],

@@ -6,9 +6,6 @@ const Locations = ({ oid }) => {
     const api = useApi()
     const { loading, result, error } = useAsync(api.locations.all, [oid])
 
-    if (error) {
-    }
-
     return (
         <div className="locations">
             {error && <p>No locations: {error.message}</p>}

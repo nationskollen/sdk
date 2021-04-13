@@ -35,7 +35,7 @@ const OpeningHours = ({ data, title }) => {
         <div className="opening-hours">
             <h3>{title}</h3>
             {data.map((hour) => (
-                <div className="opening-hour">
+                <div className="opening-hour" key={hour.id}>
                     {hour.is_open ? (
                         <React.Fragment>
                             <p>
