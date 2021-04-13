@@ -1,3 +1,9 @@
+export enum Scopes {
+    Admin,
+    Staff,
+    None,
+}
+
 export enum ActivityLevels {
     Closed,
     Low,
@@ -5,6 +11,21 @@ export enum ActivityLevels {
     High,
     VeryHigh,
     Full,
+}
+
+export enum OpeningHourType {
+    Default,
+    Exception,
+}
+
+export enum Days {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday,
 }
 
 export interface Nation {
@@ -29,6 +50,20 @@ export interface Location {
     activity_level: number
     is_open: boolean
     cover_img_src: string | null
+    opening_hours: OpeningHourCollection
+    opening_hours_exceptions: OpeningHourCollection
+}
+
+export interface OpeningHour {
+    id: number
+    location_id: number
+    type: number
+    day?: Days
+    day_special?: string
+    day_special_date?: string
+    open?: string
+    close?: string
+    is_open: boolean
 }
 
 export interface Menu {
@@ -50,16 +85,6 @@ export interface MenuItem {
     hidden: boolean
 }
 
-export interface ResourceOptions {
-    invalidate: boolean
-}
-
-export enum Scopes {
-    Admin,
-    Staff,
-    None,
-}
-
 export interface User {
     type: string
     token: string
@@ -71,3 +96,8 @@ export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type MenuCollection = Array<Menu>
 export type MenuItemCollection = Array<MenuItem>
+export type OpeningHourCollection = Array<OpeningHour>
+
+export interface ResourceOptions {
+    invalidate: boolean
+}

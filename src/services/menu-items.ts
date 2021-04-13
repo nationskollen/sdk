@@ -37,8 +37,8 @@ export class MenuItems extends BaseService {
         return item
     }
 
-    public create = async (menuId: number, data: MenuItem): Promise<MenuItemCollection> => {
-        const item = await this.$connection.request<MenuItemCollection>(
+    public create = async (menuId: number, data: MenuItem): Promise<MenuItem> => {
+        const item = await this.$connection.request<MenuItem>(
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
@@ -52,8 +52,8 @@ export class MenuItems extends BaseService {
         menuId: number,
         itemId: number,
         data: Partial<MenuItem>
-    ): Promise<MenuItemCollection> => {
-        const item = await this.$connection.request<MenuItemCollection>(
+    ): Promise<MenuItem> => {
+        const item = await this.$connection.request<MenuItem>(
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
@@ -64,7 +64,7 @@ export class MenuItems extends BaseService {
     }
 
     public delete = async (menuId: number, itemId: number): Promise<void> => {
-        await this.$connection.request<MenuItemCollection>(
+        await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,

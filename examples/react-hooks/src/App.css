@@ -29,6 +29,11 @@ p {
     border-right: 1px solid #bbb;
     padding: 1rem;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.actions > button:hover {
+    background-color: #ddd;
 }
 
 .actions > button:last-of-type {
@@ -80,6 +85,9 @@ p {
     border-radius: 10px;
     padding: 1rem;
     box-shadow: 1px 1px 10px #d5d0d0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .user {

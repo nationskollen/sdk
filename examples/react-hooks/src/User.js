@@ -5,7 +5,7 @@ const User = () => {
 
     return (
         <div className="user">
-            {error && <p>Could not login: {error}</p>}
+            {error && <p>Could not login: {error.message}</p>}
             {/* If authenticated is true, user will be set */}
             {authenticated && (
                 <p>
