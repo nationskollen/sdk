@@ -62,7 +62,7 @@ export class Menus extends BaseService {
     }
 
     public delete = async (locationId: number, menuID: number): Promise<void> => {
-        await this.$connection.request<Menu>(
+        await this.$connection.request<void>(
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuID}`,
             undefined,

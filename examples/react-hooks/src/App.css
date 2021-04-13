@@ -29,6 +29,11 @@ p {
     border-right: 1px solid #bbb;
     padding: 1rem;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.actions > button:hover {
+    background-color: #ddd;
 }
 
 .actions > button:last-of-type {

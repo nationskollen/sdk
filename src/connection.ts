@@ -27,7 +27,12 @@ export class Connection {
     private $ws?: WebSocketConnection
     private $cache: Cache
 
-    constructor({ development, useWebSockets, customBaseURL, customWsBaseURL }: ConnnectionConfigContract) {
+    constructor({
+        development,
+        useWebSockets,
+        customBaseURL,
+        customWsBaseURL,
+    }: ConnnectionConfigContract) {
         if (customBaseURL) {
             this.$baseURL = customBaseURL
         } else {
@@ -46,7 +51,7 @@ export class Connection {
     }
 
     private createUrl(endpoint: string) {
-        if (endpoint.substr(0, 1) === '/')  {
+        if (endpoint.substr(0, 1) === '/') {
             return `${this.$baseURL}${endpoint}`
         }
 
