@@ -44,7 +44,7 @@ const User = () => {
                         ))}
                 </div>
             )}
-            <div className="user-fill"></div>
+            {!login.result && <div className="user-fill"></div>}
         </div>
     )
 }
