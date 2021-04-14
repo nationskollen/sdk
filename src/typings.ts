@@ -47,7 +47,7 @@ export interface Nation {
 export interface Event {
     id: number
     nation_id: number
-    location_id?: number
+    location_id: number | null
     name: string
     description: string
     icon_img_src: string | null
