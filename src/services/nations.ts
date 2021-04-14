@@ -1,11 +1,16 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
-import { NationCollection, Nation, ResourceOptions } from '../typings'
+import { NationCollection, Nation, ResourceOptions, Scopes } from '../typings'
 
-export enum NationUploads {
+enum NationUploads {
     Icon = 'icon',
     Cover = 'cover',
+}
+
+enum CacheKeyPrefixes {
+    All = 'nationAll',
+    Single = 'nationSingle',
 }
 
 export class Nations extends BaseService {
@@ -18,9 +23,8 @@ export class Nations extends BaseService {
             HttpMethod.GET,
             '/nations',
             undefined,
-            false,
             options,
-            'nationAll'
+            CacheKeyPrefixes.All
         )
 
         return nations
@@ -31,9 +35,8 @@ export class Nations extends BaseService {
             HttpMethod.GET,
             `/nations/${oid}`,
             undefined,
-            false,
             options,
-            `nationSingle${oid}`
+            this.createCacheKey(CacheKeyPrefixes.Single, oid)
         )
 
         return nation
@@ -44,7 +47,7 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return nation
@@ -52,7 +55,12 @@ export class Nations extends BaseService {
 
     public upload = async (oid: number, field: NationUploads, file: Blob): Promise<Nation> => {
         const body = createUploadBody({ [field]: file })
-        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body)
+        const nation = await this.$connection.upload<Nation>(
+            `/nations/${oid}/upload`,
+            body,
+            this.setScopes([Scopes.Admin]),
+            this.createCacheKey(CacheKeyPrefixes.Single, oid)
+        )
 
         return nation
     }

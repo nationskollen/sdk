@@ -1,10 +1,15 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
-import { MenuItemCollection, MenuItem, ResourceOptions } from '../typings'
+import { MenuItemCollection, MenuItem, ResourceOptions, Scopes } from '../typings'
 
-export enum MenuItemUploads {
+enum MenuItemUploads {
     Cover = 'cover',
+}
+
+enum CacheKeyPrefixes {
+    All = 'menuItemsAll',
+    Single = 'menuItemsSingle',
 }
 
 export class MenuItems extends BaseService {
@@ -17,9 +22,8 @@ export class MenuItems extends BaseService {
             HttpMethod.GET,
             `/menus/${menuId}/items`,
             undefined,
-            false,
             options,
-            `menuItemsAll${menuId}`
+            this.createCacheKey(CacheKeyPrefixes.All, menuId)
         )
 
         return menuItems
@@ -34,9 +38,8 @@ export class MenuItems extends BaseService {
             HttpMethod.GET,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            false,
             options,
-            `menuItemsSingle${itemId}`
+            this.createCacheKey(CacheKeyPrefixes.Single, itemId)
         )
 
         return item
@@ -47,7 +50,7 @@ export class MenuItems extends BaseService {
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return item
@@ -62,7 +65,7 @@ export class MenuItems extends BaseService {
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return item
@@ -73,7 +76,7 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            true
+            this.setScopes([Scopes.Admin])
         )
     }
 
@@ -86,7 +89,9 @@ export class MenuItems extends BaseService {
         const body = createUploadBody({ [field]: file })
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
-            body
+            body,
+            this.setScopes([Scopes.Admin]),
+            this.createCacheKey(CacheKeyPrefixes.Single, itemId)
         )
 
         return menuItem

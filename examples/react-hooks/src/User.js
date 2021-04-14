@@ -34,8 +34,8 @@ const User = () => {
                 <div className="login-errors">
                     <p>Could not login: {login.error.message}</p>
                     {login.error.data &&
-                        login.error.data.map((error) => (
-                            <div>
+                        login.error.data.map((error, index) => (
+                            <div key={index}>
                                 <p>
                                     {error.field} - {error.rule}
                                 </p>

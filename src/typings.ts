@@ -1,7 +1,7 @@
 export enum Scopes {
-    Admin,
-    Staff,
-    None,
+    Admin = 'admin',
+    Staff = 'staff',
+    None = 'none',
 }
 
 export enum ActivityLevels {
@@ -26,6 +26,11 @@ export enum Days {
     Friday,
     Saturday,
     Sunday,
+}
+
+export interface ResourceOptions {
+    invalidate?: boolean
+    allowedScopes?: Array<Scopes>
 }
 
 export interface Nation {
@@ -97,7 +102,3 @@ export type LocationCollection = Array<Location>
 export type MenuCollection = Array<Menu>
 export type MenuItemCollection = Array<MenuItem>
 export type OpeningHourCollection = Array<OpeningHour>
-
-export interface ResourceOptions {
-    invalidate: boolean
-}
