@@ -1,6 +1,11 @@
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
-import { OpeningHourCollection, OpeningHour, ResourceOptions } from '../typings'
+import { OpeningHourCollection, OpeningHour, ResourceOptions, Scopes } from '../typings'
+
+enum CacheKeyPrefixes {
+    All = 'openingHoursAll',
+    Single = 'openingHourSingle',
+}
 
 export class OpeningHours extends BaseService {
     constructor(connection: Connection) {
@@ -15,9 +20,8 @@ export class OpeningHours extends BaseService {
             HttpMethod.GET,
             `/locations/${locationId}/hours`,
             undefined,
-            false,
             options,
-            `openingHoursAll${locationId}`
+            this.createCacheKey(CacheKeyPrefixes.All, locationId)
         )
 
         return hours
@@ -32,9 +36,8 @@ export class OpeningHours extends BaseService {
             HttpMethod.GET,
             `/locations/${locationId}/hours/${hourId}`,
             undefined,
-            false,
             options,
-            `openingHourSingle${hourId}`
+            this.createCacheKey(CacheKeyPrefixes.Single, hourId)
         )
 
         return hour
@@ -45,7 +48,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
             data,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return hour
@@ -60,7 +63,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.PUT,
             `/locations/${locationId}/hours/${hourId}`,
             data,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return hour
@@ -71,7 +74,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
             undefined,
-            true
+            this.setScopes([Scopes.Admin])
         )
     }
 }

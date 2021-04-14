@@ -8,6 +8,10 @@ export class BaseService {
         this.$connection = connection
     }
 
+    protected createCacheKey(prefix: string, uniqueKey: string | number) {
+        return `${prefix}${uniqueKey}`
+    }
+
     protected setScopes(scopes: Array<Scopes>, options?: ResourceOptions): ResourceOptions {
         if (!options) {
             return {

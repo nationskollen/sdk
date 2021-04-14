@@ -3,9 +3,14 @@ import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
 import { NationCollection, Nation, ResourceOptions, Scopes } from '../typings'
 
-export enum NationUploads {
+enum NationUploads {
     Icon = 'icon',
     Cover = 'cover',
+}
+
+enum CacheKeyPrefixes {
+    All = 'nationAll',
+    Single = 'nationSingle',
 }
 
 export class Nations extends BaseService {
@@ -18,9 +23,8 @@ export class Nations extends BaseService {
             HttpMethod.GET,
             '/nations',
             undefined,
-            false,
-            this.setScopes([], options),
-            'nationAll'
+            options,
+            CacheKeyPrefixes.All
         )
 
         return nations
@@ -31,9 +35,8 @@ export class Nations extends BaseService {
             HttpMethod.GET,
             `/nations/${oid}`,
             undefined,
-            false,
-            this.setScopes([], options),
-            `nationSingle${oid}`
+            options,
+            this.createCacheKey(CacheKeyPrefixes.Single, oid)
         )
 
         return nation
@@ -44,7 +47,6 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            true,
             this.setScopes([Scopes.Admin])
         )
 
@@ -56,7 +58,8 @@ export class Nations extends BaseService {
         const nation = await this.$connection.upload<Nation>(
             `/nations/${oid}/upload`,
             body,
-            this.setScopes([Scopes.Admin])
+            this.setScopes([Scopes.Admin]),
+            this.createCacheKey(CacheKeyPrefixes.Single, oid)
         )
 
         return nation

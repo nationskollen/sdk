@@ -1,6 +1,11 @@
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
-import { MenuCollection, Menu, ResourceOptions } from '../typings'
+import { MenuCollection, Menu, ResourceOptions, Scopes } from '../typings'
+
+enum CacheKeyPrefixes {
+    All = 'menusAll',
+    Single = 'menuSingle',
+}
 
 export class Menus extends BaseService {
     constructor(connection: Connection) {
@@ -12,9 +17,8 @@ export class Menus extends BaseService {
             HttpMethod.GET,
             `/locations/${locationId}/menus`,
             undefined,
-            false,
             options,
-            `menusAll${locationId}`
+            this.createCacheKey(CacheKeyPrefixes.All, locationId)
         )
 
         return menus
@@ -29,9 +33,8 @@ export class Menus extends BaseService {
             HttpMethod.GET,
             `/locations/${locationId}/menus/${menuId}`,
             undefined,
-            false,
             options,
-            `menuSingle${menuId}`
+            this.createCacheKey(CacheKeyPrefixes.Single, menuId)
         )
 
         return menu
@@ -42,7 +45,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
             menuData,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return menu
@@ -57,7 +60,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             menuData,
-            true
+            this.setScopes([Scopes.Admin])
         )
 
         return menu
@@ -68,7 +71,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             undefined,
-            true
+            this.setScopes([Scopes.Admin])
         )
     }
 }

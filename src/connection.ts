@@ -47,12 +47,8 @@ export class Connection {
         }
     }
 
-    private setBearerTokenIfRequired(
-        isAuthenticated: boolean,
-        headers: any,
-        scopes?: Array<Scopes>
-    ) {
-        if (!isAuthenticated) {
+    private setBearerTokenIfRequired(headers: any, scopes?: Array<Scopes>) {
+        if (!scopes || scopes.length === 0) {
             return
         }
 
@@ -119,7 +115,6 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        isAuthenticated?: boolean,
         options?: ResourceOptions,
         cacheKey?: string
     ): Promise<T> {
@@ -133,7 +128,7 @@ export class Connection {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(isAuthenticated ?? false, headers, options?.allowedScopes)
+        this.setBearerTokenIfRequired(headers, options?.allowedScopes)
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -144,14 +139,8 @@ export class Connection {
         const parsedResponse = await response.json()
         this.checkForErrors(response.status, parsedResponse)
 
-        // Save the cache when getting a new response
-        if (cacheKey) {
+        if (cacheKey && parsedResponse) {
             this.$cache.save(cacheKey, parsedResponse)
-        } else {
-            // Prevent logging of error if cache is disabled for the request
-            if (options) {
-                console.error('key for the cache is undefined')
-            }
         }
 
         return parsedResponse
@@ -160,11 +149,12 @@ export class Connection {
     public async upload<T>(
         endpoint: string,
         body: FormData,
-        options?: ResourceOptions
+        options?: ResourceOptions,
+        cacheKey?: string
     ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(true, headers, options?.allowedScopes)
+        this.setBearerTokenIfRequired(headers, options?.allowedScopes)
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,
@@ -174,6 +164,10 @@ export class Connection {
 
         const parsedResponse = await response.json()
         this.checkForErrors(response.status, parsedResponse)
+
+        if (cacheKey && parsedResponse) {
+            this.$cache.save(cacheKey, parsedResponse)
+        }
 
         return parsedResponse
     }

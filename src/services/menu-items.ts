@@ -3,8 +3,13 @@ import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
 import { MenuItemCollection, MenuItem, ResourceOptions, Scopes } from '../typings'
 
-export enum MenuItemUploads {
+enum MenuItemUploads {
     Cover = 'cover',
+}
+
+enum CacheKeyPrefixes {
+    All = 'menuItemsAll',
+    Single = 'menuItemsSingle',
 }
 
 export class MenuItems extends BaseService {
@@ -17,9 +22,8 @@ export class MenuItems extends BaseService {
             HttpMethod.GET,
             `/menus/${menuId}/items`,
             undefined,
-            false,
-            this.setScopes([], options),
-            `menuItemsAll${menuId}`
+            options,
+            this.createCacheKey(CacheKeyPrefixes.All, menuId)
         )
 
         return menuItems
@@ -34,9 +38,8 @@ export class MenuItems extends BaseService {
             HttpMethod.GET,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            false,
-            this.setScopes([], options),
-            `menuItemsSingle${itemId}`
+            options,
+            this.createCacheKey(CacheKeyPrefixes.Single, itemId)
         )
 
         return item
@@ -47,7 +50,6 @@ export class MenuItems extends BaseService {
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
-            true,
             this.setScopes([Scopes.Admin])
         )
 
@@ -63,7 +65,6 @@ export class MenuItems extends BaseService {
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
-            true,
             this.setScopes([Scopes.Admin])
         )
 
@@ -75,7 +76,6 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            true,
             this.setScopes([Scopes.Admin])
         )
     }
@@ -90,7 +90,8 @@ export class MenuItems extends BaseService {
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
             body,
-            this.setScopes([Scopes.Admin])
+            this.setScopes([Scopes.Admin]),
+            this.createCacheKey(CacheKeyPrefixes.Single, itemId)
         )
 
         return menuItem
