@@ -6,6 +6,7 @@ const User = () => {
 
     return (
         <div className="user">
+            <h1 className="logo user-fill">Nationskollen</h1>
             {login.result ? (
                 <p>
                     Logged in with scope
@@ -43,6 +44,7 @@ const User = () => {
                         ))}
                 </div>
             )}
+            {!login.result && <div className="user-fill"></div>}
         </div>
     )
 }

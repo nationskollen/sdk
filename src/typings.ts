@@ -44,6 +44,18 @@ export interface Nation {
     locations: LocationCollection
 }
 
+export interface Event {
+    id: number
+    nation_id: number
+    location_id: number | null
+    name: string
+    description: string
+    icon_img_src: string | null
+    cover_img_src: string | null
+    occurs_at: string
+    ends_at: string
+}
+
 export interface Location {
     id: number
     nation_id: number
@@ -99,6 +111,7 @@ export interface User {
 
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
+export type EventCollection = Array<Event>
 export type MenuCollection = Array<Menu>
 export type MenuItemCollection = Array<MenuItem>
 export type OpeningHourCollection = Array<OpeningHour>

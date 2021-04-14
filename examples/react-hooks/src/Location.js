@@ -7,11 +7,9 @@ const Location = ({ data }) => {
     return (
         <div className="location">
             <div className="location-content">
-                <p>ID: {data.id}</p>
-                <p>Location ID: {data.nation_id}</p>
-                <p>Location Name: {data.name}</p>
-                <p>Description: {data.description}</p>
-                <p>Address:{data.address}</p>
+                <h2>{data.name}</h2>
+                <p>{data.description}</p>
+                <p>Address: {data.address}</p>
                 <p>Max Capacity: {data.max_capacity}</p>
                 <p>Activity level: {activityLevel}</p>
                 <img src={data.cover_img_src} />
