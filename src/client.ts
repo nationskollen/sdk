@@ -10,6 +10,7 @@ export const Client = (config: ConnnectionConfigContract) => {
         auth: new Services.Auth(connection),
         nations: new Services.Nations(connection),
         locations: new Services.Locations(connection),
+        events: new Services.Events(connection),
         menus: new Services.Menus(connection),
         activity: new Services.Activity(connection),
         openingHours: new Services.OpeningHours(connection),

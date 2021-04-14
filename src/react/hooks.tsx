@@ -1,6 +1,6 @@
 import { Context } from './context'
-import { useAsyncCallback } from 'react-async-hook'
 import { useContext, useState, useEffect } from 'react'
+import { useAsync, useAsyncCallback } from 'react-async-hook'
 
 export const useSDK = () => useContext(Context)
 export const useApi = () => useSDK().api
@@ -73,5 +73,15 @@ export function useUpload(fn: (...args: any[]) => Promise<unknown>, params: any[
     return {
         ...request,
         onFileChanged,
+    }
+}
+
+// TODO: Add parameters for fetching events of specific day
+export function useEvents() {
+    const api = useApi()
+    const request = useAsync(api.events.all, [])
+
+    return {
+        ...request,
     }
 }

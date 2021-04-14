@@ -6,6 +6,7 @@ body {
 
 h1,
 h2,
+h3,
 p {
     margin: 0;
     margin-bottom: 0.5rem;
@@ -23,6 +24,8 @@ p {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #ccc;
 }
 
 .actions > button {
@@ -99,6 +102,7 @@ p {
     padding: 1rem;
 }
 
+.event,
 .location {
     background-color: white;
     color: #333;
@@ -112,17 +116,28 @@ p {
 
 .user {
     background-color: #111;
+    border-bottom: 1px solid #444;
     color: white;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    padding: 0.6rem;
+    padding: 0.6rem 1rem;
     font-weight: bold;
     font-size: 0.8rem;
 }
 
 .user > p {
+    margin: 0;
+}
+
+.user-fill {
+    flex: 1;
+}
+
+.logo {
+    color: #ff4692;
+    font-weight: bold;
     margin: 0;
 }
 
@@ -157,4 +172,24 @@ p {
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
+}
+
+.events {
+    padding: 1rem;
+    background-color: #111;
+    color: white;
+}
+
+.events-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+}
+
+.event {
+    box-shadow: none;
+    border: 1px solid #444;
+    background-color: #222;
+    color: white;
 }
