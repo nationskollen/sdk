@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
-import { NationCollection, Nation, ResourceOptions } from '../typings'
+import { NationCollection, Nation, ResourceOptions, Scopes } from '../typings'
 
 export enum NationUploads {
     Icon = 'icon',
@@ -19,7 +19,7 @@ export class Nations extends BaseService {
             '/nations',
             undefined,
             false,
-            options,
+            this.setScopes([], options),
             'nationAll'
         )
 
@@ -32,7 +32,7 @@ export class Nations extends BaseService {
             `/nations/${oid}`,
             undefined,
             false,
-            options,
+            this.setScopes([], options),
             `nationSingle${oid}`
         )
 
@@ -44,7 +44,8 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
 
         return nation
@@ -52,7 +53,11 @@ export class Nations extends BaseService {
 
     public upload = async (oid: number, field: NationUploads, file: Blob): Promise<Nation> => {
         const body = createUploadBody({ [field]: file })
-        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body)
+        const nation = await this.$connection.upload<Nation>(
+            `/nations/${oid}/upload`,
+            body,
+            this.setScopes([Scopes.Admin])
+        )
 
         return nation
     }

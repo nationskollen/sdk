@@ -20,14 +20,17 @@ export class Auth extends BaseService {
             throw new ApiError('Could not read token from login response')
         }
 
+        if (!user.hasOwnProperty('scope')) {
+            throw new ApiError('Could not read token scope from login response')
+        }
+
         this.user = user
-        this.setToken(user.token)
+        this.setUser(user)
 
         return user
     }
 
-    public setToken(token: string) {
-        // TODO: Fetch information about user via token so that we can set user?
-        this.$connection.setToken(token)
+    public setUser(user: User) {
+        this.$connection.setUser(user)
     }
 }

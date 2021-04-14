@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
-import { MenuItemCollection, MenuItem, ResourceOptions } from '../typings'
+import { MenuItemCollection, MenuItem, ResourceOptions, Scopes } from '../typings'
 
 export enum MenuItemUploads {
     Cover = 'cover',
@@ -18,7 +18,7 @@ export class MenuItems extends BaseService {
             `/menus/${menuId}/items`,
             undefined,
             false,
-            options,
+            this.setScopes([], options),
             `menuItemsAll${menuId}`
         )
 
@@ -35,7 +35,7 @@ export class MenuItems extends BaseService {
             `/menus/${menuId}/items/${itemId}`,
             undefined,
             false,
-            options,
+            this.setScopes([], options),
             `menuItemsSingle${itemId}`
         )
 
@@ -47,7 +47,8 @@ export class MenuItems extends BaseService {
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
 
         return item
@@ -62,7 +63,8 @@ export class MenuItems extends BaseService {
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
 
         return item
@@ -73,7 +75,8 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
     }
 
@@ -86,7 +89,8 @@ export class MenuItems extends BaseService {
         const body = createUploadBody({ [field]: file })
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
-            body
+            body,
+            this.setScopes([Scopes.Admin])
         )
 
         return menuItem

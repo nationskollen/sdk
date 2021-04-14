@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
-import { LocationCollection, Location, ResourceOptions } from '../typings'
+import { LocationCollection, Location, ResourceOptions, Scopes } from '../typings'
 
 export enum LocationUploads {
     Cover = 'cover',
@@ -18,7 +18,7 @@ export class Locations extends BaseService {
             `/nations/${oid}/locations`,
             undefined,
             false,
-            options,
+            this.setScopes([], options),
             `locationsAll${oid}`
         )
         return locations
@@ -34,7 +34,7 @@ export class Locations extends BaseService {
             `/nations/${oid}/locations/${id}`,
             undefined,
             false,
-            options,
+            this.setScopes([], options),
             `locationSingle${id}`
         )
         return location
@@ -45,7 +45,8 @@ export class Locations extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/locations`,
             data,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
         return location
     }
@@ -59,7 +60,8 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
         return location
     }
@@ -69,7 +71,8 @@ export class Locations extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
-            true
+            true,
+            this.setScopes([Scopes.Admin])
         )
     }
 
@@ -81,7 +84,8 @@ export class Locations extends BaseService {
         const body = createUploadBody({ [field]: file })
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
-            body
+            body,
+            this.setScopes([Scopes.Admin])
         )
 
         return location

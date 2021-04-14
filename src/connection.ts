@@ -1,5 +1,5 @@
 import { Cache } from './cache'
-import { ResourceOptions } from './typings'
+import { User, ResourceOptions, Scopes } from './typings'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 import { BASE_URL, BASE_URL_DEV } from './constants'
@@ -24,7 +24,7 @@ export interface Data {
 
 export class Connection {
     private $baseURL: string
-    private $token?: string
+    private $user?: User
     private $ws?: WebSocketConnection
     private $cache: Cache
 
@@ -47,18 +47,29 @@ export class Connection {
         }
     }
 
-    private setBearerTokenIfRequired(isAuthenticated: boolean, headers: any) {
-        // Make sure the user is authenticated,
-        // and that the token is not null
-        if (isAuthenticated) {
-            if (!this.$token) {
-                throw new ApiError(
-                    'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
-                )
-            }
-
-            headers['Authorization'] = `Bearer ${this.$token}`
+    private setBearerTokenIfRequired(
+        isAuthenticated: boolean,
+        headers: any,
+        scopes?: Array<Scopes>
+    ) {
+        if (!isAuthenticated) {
+            return
         }
+
+        if (!this.$user || !this.$user.token) {
+            throw new ApiError(
+                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+            )
+        }
+
+        // Only allow the request if we have the correct scope
+        if (scopes && !scopes.includes(this.$user.scope)) {
+            throw new ApiError(
+                'Invalid bearer token scope. You do not have permissions for this request'
+            )
+        }
+
+        headers['Authorization'] = `Bearer ${this.$user.token}`
     }
 
     private createUrl(endpoint: string) {
@@ -122,7 +133,7 @@ export class Connection {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(isAuthenticated ?? false, headers)
+        this.setBearerTokenIfRequired(isAuthenticated ?? false, headers, options?.allowedScopes)
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -146,10 +157,14 @@ export class Connection {
         return parsedResponse
     }
 
-    public async upload<T>(endpoint: string, body: FormData): Promise<T> {
+    public async upload<T>(
+        endpoint: string,
+        body: FormData,
+        options?: ResourceOptions
+    ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(true, headers)
+        this.setBearerTokenIfRequired(true, headers, options?.allowedScopes)
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,
@@ -167,7 +182,7 @@ export class Connection {
         return this.$ws
     }
 
-    public setToken(token: string) {
-        this.$token = token
+    public setUser(user: User) {
+        this.$user = user
     }
 }
