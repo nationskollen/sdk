@@ -1,11 +1,20 @@
-import React, { useState } from 'react'
+import { SWRConfig } from 'swr'
+import React, { useState, useRef } from 'react'
 
 import { User } from '../typings'
 import { Context } from './context'
-import { ClientWrapper } from '../client'
+import { Client, ClientWrapper } from '../client'
+import { HOSTNAME, HOSTNAME_DEV } from '../constants'
+
+export interface ProviderConfig {
+    development?: boolean
+    useWebSockets?: boolean
+    customHostName?: string
+    useHTTPS?: boolean
+}
 
 export interface ProviderProps {
-    client: ClientWrapper
+    config: ProviderConfig
     children: JSX.Element[]
 }
 
@@ -15,7 +24,19 @@ export interface ProviderState {
 
 export const Consumer = Context.Consumer
 
-export const Provider = ({ children, client }: ProviderProps) => {
+export const Provider = ({ children, config }: ProviderProps) => {
     const [user, setUser] = useState<User | null>(null)
-    return <Context.Provider value={{ api: client, user, setUser }}>{children}</Context.Provider>
+    const https = config.useHTTPS ?? !config.development
+    const hostname = config.customHostName ?? (config.development ? HOSTNAME_DEV : HOSTNAME)
+    const wsURL = `ws://${hostname}`
+    const baseURL = `${https ? 'https' : 'http'}://${hostname}/api/v1`
+    const client = useRef<ClientWrapper>(Client(baseURL, wsURL, config.useWebSockets))
+
+    return (
+        <SWRConfig value={{ fetcher: (url: string) => fetch(`${baseURL}${url}`).then(r => r.json()) }}>
+            <Context.Provider value={{ api: client.current, user, setUser }}>
+                {children}
+            </Context.Provider>
+        </SWRConfig>
+    )
 }

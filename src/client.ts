@@ -1,10 +1,10 @@
 import * as Services from './services'
-import { Connection, ConnnectionConfigContract } from './connection'
+import { Connection } from './connection'
 
 export type ClientWrapper = ReturnType<typeof Client>
 
-export const Client = (config: ConnnectionConfigContract) => {
-    const connection = new Connection(config)
+export const Client = (baseURL: string, wsURL: string, useWebSockets?: boolean) => {
+    const connection = new Connection(baseURL, wsURL, useWebSockets)
 
     return {
         auth: new Services.Auth(connection),

@@ -1,16 +1,13 @@
 import Location from './Location'
-import { useApi } from './sdk/react'
-import { useAsync } from 'react-async-hook'
+import { useLocations } from './sdk/react'
 
 const Locations = ({ oid }) => {
-    const api = useApi()
-    const { loading, result, error } = useAsync(api.locations.all, [oid])
+    const { data, error } = useLocations(oid)
 
     return (
         <div className="locations">
             {error && <p>No locations: {error.message}</p>}
-            {loading && <p>Loading...</p>}
-            {result && result.map((it) => <Location key={it.id} data={it} />)}
+            {data ? data.map((it) => <Location key={it.id} data={it} />) : <p>Loading...</p>}
         </div>
     )
 }

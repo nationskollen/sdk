@@ -107,5 +107,3 @@ export function useEvents() {
 export function useEvent(oid: number, eventId: number) {
     return useSWR(() => `/nations/${oid}/events/${eventId}`)
 }
-
-

@@ -1,6 +1,4 @@
 import {
-    WS_URL,
-    WS_URL_DEV,
     WS_RECONNECT_INTERVAL_MS,
     WS_BACKOFF_MAX,
     WS_BACKOFF_MODIFIER,
@@ -42,13 +40,8 @@ export class WebSocketConnection {
         [Subscriptions.Activity]: [],
     }
 
-    constructor(development: boolean, customBaseURL?: string) {
-        if (customBaseURL) {
-            this.$wsBaseURL = customBaseURL
-        } else {
-            this.$wsBaseURL = development ? WS_URL_DEV : WS_URL
-        }
-
+    constructor(wsURL: string) {
+        this.$wsBaseURL = wsURL
         this.$alive = false
         this.createConnection()
     }

@@ -3,5 +3,5 @@
 // since it can not find the module.
 //
 // https://github.com/ezolenko/rollup-plugin-typescript2/issues/198
-declare module 'react-async-hook'
 declare module 'swr'
+declare module 'react-async-hook'

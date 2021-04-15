@@ -1,24 +1,13 @@
 import Nation from './Nation'
-import { useApi } from './sdk/react'
-import { useAsync } from 'react-async-hook'
+import { useNations } from './sdk/react'
 
 const Nations = () => {
-    const api = useApi()
-    const { loading, result, error, execute } = useAsync(api.nations.all, [])
+    const { data, error } = useNations()
 
     return (
         <div className="nations">
-            <div className="actions">
-                <button onClick={() => execute({ invalidate: true })}>
-                    Refetch with invalidate
-                </button>
-                <button onClick={() => execute({ invalidate: false })}>
-                    Refetch without invalidate
-                </button>
-            </div>
-            {loading && <p>Loading...</p>}
             {error && <p>Could not fetch nations: {error.message}</p>}
-            {result && result.map((it) => <Nation key={it.oid} data={it} />)}
+            {data ? data.map((it) => <Nation key={it.oid} data={it} />) : <p>Loading...</p>}
         </div>
     )
 }

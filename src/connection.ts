@@ -1,14 +1,6 @@
 import { User, Scopes } from './typings'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
-import { BASE_URL, BASE_URL_DEV } from './constants'
-
-export interface ConnnectionConfigContract {
-    development: boolean
-    useWebSockets: boolean
-    customBaseURL?: string
-    customWsBaseURL?: string
-}
 
 export enum HttpMethod {
     GET = 'GET',
@@ -26,20 +18,11 @@ export class Connection {
     private $user?: User
     private $ws?: WebSocketConnection
 
-    constructor({
-        development,
-        useWebSockets,
-        customBaseURL,
-        customWsBaseURL,
-    }: ConnnectionConfigContract) {
-        if (customBaseURL) {
-            this.$baseURL = customBaseURL
-        } else {
-            this.$baseURL = development ? BASE_URL_DEV : BASE_URL
-        }
+    constructor(baseURL: string, wsURL: string, useWebSockets?: boolean) {
+        this.$baseURL = baseURL
 
         if (useWebSockets) {
-            this.$ws = new WebSocketConnection(development, customWsBaseURL)
+            this.$ws = new WebSocketConnection(wsURL)
         }
     }
 
