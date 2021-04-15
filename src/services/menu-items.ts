@@ -1,48 +1,15 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../uploads'
 import { Connection, HttpMethod } from '../connection'
-import { MenuItemCollection, MenuItem, ResourceOptions, Scopes } from '../typings'
+import { MenuItem, Scopes } from '../typings'
 
 enum MenuItemUploads {
     Cover = 'cover',
 }
 
-enum CacheKeyPrefixes {
-    All = 'menuItemsAll',
-    Single = 'menuItemsSingle',
-}
-
 export class MenuItems extends BaseService {
     constructor(connection: Connection) {
         super(connection)
-    }
-
-    public all = async (menuId: number, options?: ResourceOptions): Promise<MenuItemCollection> => {
-        const menuItems = await this.$connection.request<MenuItemCollection>(
-            HttpMethod.GET,
-            `/menus/${menuId}/items`,
-            undefined,
-            options,
-            this.createCacheKey(CacheKeyPrefixes.All, menuId)
-        )
-
-        return menuItems
-    }
-
-    public single = async (
-        menuId: number,
-        itemId: number,
-        options?: ResourceOptions
-    ): Promise<MenuItemCollection> => {
-        const item = await this.$connection.request<MenuItemCollection>(
-            HttpMethod.GET,
-            `/menus/${menuId}/items/${itemId}`,
-            undefined,
-            options,
-            this.createCacheKey(CacheKeyPrefixes.Single, itemId)
-        )
-
-        return item
     }
 
     public create = async (menuId: number, data: MenuItem): Promise<MenuItem> => {
@@ -91,7 +58,6 @@ export class MenuItems extends BaseService {
             `/menus/${menuId}/items/${itemId}/upload`,
             body,
             this.setScopes([Scopes.Admin]),
-            this.createCacheKey(CacheKeyPrefixes.Single, itemId)
         )
 
         return menuItem

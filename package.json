@@ -43,6 +43,7 @@
     },
     "peerDependencies": {
         "react": "^16.13.1",
-        "react-async-hook": "^3.6.2"
+        "react-async-hook": "^3.6.2",
+        "swr": "^0.5.5"
     }
 }
