@@ -4,6 +4,11 @@ body {
     background-color: #e8e7e7;
 }
 
+img {
+    height: 15rem;
+    object-fit: cover;
+}
+
 h1,
 h2,
 h3,
