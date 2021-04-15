@@ -18,7 +18,7 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
 
         return nation
@@ -29,7 +29,7 @@ export class Nations extends BaseService {
         const nation = await this.$connection.upload<Nation>(
             `/nations/${oid}/upload`,
             body,
-            this.setScopes([Scopes.Admin]),
+            [Scopes.Admin],
         )
 
         return nation

@@ -12,7 +12,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
             menuData,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
 
         return menu
@@ -27,7 +27,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             menuData,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
 
         return menu
@@ -38,7 +38,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
     }
 }

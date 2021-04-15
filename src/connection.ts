@@ -1,5 +1,4 @@
-import { Cache } from './cache'
-import { User, ResourceOptions, Scopes } from './typings'
+import { User, Scopes } from './typings'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 import { BASE_URL, BASE_URL_DEV } from './constants'
@@ -26,7 +25,6 @@ export class Connection {
     private $baseURL: string
     private $user?: User
     private $ws?: WebSocketConnection
-    private $cache: Cache
 
     constructor({
         development,
@@ -39,8 +37,6 @@ export class Connection {
         } else {
             this.$baseURL = development ? BASE_URL_DEV : BASE_URL
         }
-
-        this.$cache = new Cache()
 
         if (useWebSockets) {
             this.$ws = new WebSocketConnection(development, customWsBaseURL)
@@ -115,20 +111,14 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        options?: ResourceOptions,
-        cacheKey?: string
+        allowedScopes?: Array<Scopes>
     ): Promise<T> {
-        // Here we check if we have a stored cache of the data before
-        // requesting new data
-        if (!options?.invalidate && cacheKey && this.$cache.exists(cacheKey)) {
-            return this.$cache.get(cacheKey) as T
-        }
 
         const headers = {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(headers, options?.allowedScopes)
+        this.setBearerTokenIfRequired(headers, allowedScopes)
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -139,9 +129,6 @@ export class Connection {
         const parsedResponse = await response.json()
         this.checkForErrors(response.status, parsedResponse)
 
-        if (cacheKey && parsedResponse) {
-            this.$cache.save(cacheKey, parsedResponse)
-        }
 
         return parsedResponse
     }
@@ -149,12 +136,11 @@ export class Connection {
     public async upload<T>(
         endpoint: string,
         body: FormData,
-        options?: ResourceOptions,
-        cacheKey?: string
+        allowedScopes: Array<Scopes>
     ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(headers, options?.allowedScopes)
+        this.setBearerTokenIfRequired(headers, allowedScopes)
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,
@@ -164,10 +150,6 @@ export class Connection {
 
         const parsedResponse = await response.json()
         this.checkForErrors(response.status, parsedResponse)
-
-        if (cacheKey && parsedResponse) {
-            this.$cache.save(cacheKey, parsedResponse)
-        }
 
         return parsedResponse
     }

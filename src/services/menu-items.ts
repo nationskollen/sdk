@@ -17,7 +17,7 @@ export class MenuItems extends BaseService {
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
 
         return item
@@ -32,7 +32,7 @@ export class MenuItems extends BaseService {
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
 
         return item
@@ -43,7 +43,7 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
     }
 
@@ -57,7 +57,7 @@ export class MenuItems extends BaseService {
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
             body,
-            this.setScopes([Scopes.Admin]),
+            [Scopes.Admin],
         )
 
         return menuItem

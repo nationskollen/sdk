@@ -12,7 +12,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
 
         return hour
@@ -27,7 +27,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.PUT,
             `/locations/${locationId}/hours/${hourId}`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
 
         return hour
@@ -38,7 +38,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
     }
 }

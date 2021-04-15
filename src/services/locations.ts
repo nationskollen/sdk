@@ -17,7 +17,7 @@ export class Locations extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/locations`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
         return location
     }
@@ -31,7 +31,7 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
         return location
     }
@@ -41,7 +41,7 @@ export class Locations extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin],
         )
     }
 
@@ -54,7 +54,7 @@ export class Locations extends BaseService {
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
             body,
-            this.setScopes([Scopes.Admin]),
+            [Scopes.Admin],
         )
 
         return location

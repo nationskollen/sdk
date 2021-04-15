@@ -17,7 +17,7 @@ export class Events extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/events`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
         return event
     }
@@ -31,7 +31,7 @@ export class Events extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/events/${eventId}`,
             change,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
         return event
     }
@@ -41,7 +41,7 @@ export class Events extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/events/${eventId}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
     }
 
@@ -50,7 +50,7 @@ export class Events extends BaseService {
         const event = await this.$connection.upload<Event>(
             `/events/${eventId}/upload`,
             body,
-            this.setScopes([Scopes.Admin]),
+            [Scopes.Admin]
         )
 
         return event

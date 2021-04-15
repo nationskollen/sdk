@@ -1,6 +1,13 @@
+/// <reference path="./typings.d.ts" />
+import useSWR from 'swr'
 import { Context } from './context'
 import { useContext, useState, useEffect } from 'react'
-import { useAsync, useAsyncCallback } from 'react-async-hook'
+import { useAsyncCallback } from 'react-async-hook'
+
+const NoAutoMutation = {
+    refreshInterval: 0,
+    revalidateOnFocus: false,
+}
 
 export const useSDK = () => useContext(Context)
 export const useApi = () => useSDK().api
@@ -76,12 +83,29 @@ export function useUpload(fn: (...args: any[]) => Promise<unknown>, params: any[
     }
 }
 
+export function useNations() {
+    return useSWR(() => `/nations`, NoAutoMutation)
+}
+
+export function useNation(oid: number) {
+    return useSWR(() => `/nations/${oid}`, NoAutoMutation)
+}
+
+export function useLocations(oid: number) {
+    return useSWR(() => `/nations/${oid}/locations`, NoAutoMutation)
+}
+
+export function useLocation(oid: number, locationId: number) {
+    return useSWR(() => `/nations/${oid}/locations/${locationId}`, NoAutoMutation)
+}
+
 // TODO: Add parameters for fetching events of specific day
 export function useEvents() {
-    const api = useApi()
-    const request = useAsync(api.events.all, [])
-
-    return {
-        ...request,
-    }
+    return useSWR('/events')
 }
+
+export function useEvent(oid: number, eventId: number) {
+    return useSWR(() => `/nations/${oid}/events/${eventId}`)
+}
+
+
