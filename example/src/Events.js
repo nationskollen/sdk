@@ -1,5 +1,5 @@
 import Event from './Event'
-import { useEvents } from './sdk/react'
+import { useEvents } from './sdk'
 
 function Events() {
     const { data, error } = useEvents()

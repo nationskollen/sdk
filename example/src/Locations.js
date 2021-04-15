@@ -1,5 +1,5 @@
 import Location from './Location'
-import { useLocations } from './sdk/react'
+import { useLocations } from './sdk'
 
 const Locations = ({ oid }) => {
     const { data, error } = useLocations(oid)

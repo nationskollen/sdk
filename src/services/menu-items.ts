@@ -1,3 +1,4 @@
+import { mutate } from 'swr'
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { MenuItem, Scopes } from '../responses'
@@ -59,6 +60,8 @@ export class MenuItems extends BaseService {
             body,
             [Scopes.Admin]
         )
+
+        mutate(`/menus/${menuId}/items`)
 
         return menuItem
     }

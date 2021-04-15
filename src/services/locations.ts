@@ -1,3 +1,4 @@
+import { mutate } from 'swr'
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { Location, Scopes } from '../responses'
@@ -56,6 +57,8 @@ export class Locations extends BaseService {
             body,
             [Scopes.Admin]
         )
+
+        mutate('/locations')
 
         return location
     }

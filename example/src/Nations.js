@@ -1,5 +1,5 @@
 import Nation from './Nation'
-import { useNations } from './sdk/react'
+import { useNations } from './sdk'
 
 const Nations = () => {
     const { data, error } = useNations()

@@ -1,4 +1,4 @@
-import { useNation } from './sdk/react'
+import { useNation } from './sdk'
 
 function Event({ data }) {
     const { data: nation } = useNation(data.nation_id)

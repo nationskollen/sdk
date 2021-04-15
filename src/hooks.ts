@@ -84,7 +84,7 @@ export function useUpload(fn: (...args: any[]) => Promise<unknown>, params: any[
 }
 
 export function useNations() {
-    return useSWR(() => `/nations`, NoAutoMutation)
+    return useSWR('/nations')
 }
 
 export function useNation(oid: number) {
