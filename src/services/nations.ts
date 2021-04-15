@@ -1,7 +1,7 @@
 import { BaseService } from './base'
-import { createUploadBody } from '../uploads'
+import { createUploadBody } from '../utils'
+import { Nation, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { Nation, Scopes } from '../typings'
 
 enum NationUploads {
     Icon = 'icon',
@@ -18,7 +18,7 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
 
         return nation
@@ -26,11 +26,9 @@ export class Nations extends BaseService {
 
     public upload = async (oid: number, field: NationUploads, file: Blob): Promise<Nation> => {
         const body = createUploadBody({ [field]: file })
-        const nation = await this.$connection.upload<Nation>(
-            `/nations/${oid}/upload`,
-            body,
-            [Scopes.Admin],
-        )
+        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body, [
+            Scopes.Admin,
+        ])
 
         return nation
     }

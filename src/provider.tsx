@@ -1,10 +1,9 @@
 import { SWRConfig } from 'swr'
-import React, { useState, useRef } from 'react'
-
-import { User } from '../typings'
+import { User } from './responses'
 import { Context } from './context'
-import { Client, ClientWrapper } from '../client'
-import { HOSTNAME, HOSTNAME_DEV } from '../constants'
+import React, { useState, useRef } from 'react'
+import { Client, ClientWrapper } from './client'
+import { HOSTNAME, HOSTNAME_DEV } from './constants'
 
 export interface ProviderConfig {
     development?: boolean
@@ -33,7 +32,9 @@ export const Provider = ({ children, config }: ProviderProps) => {
     const client = useRef<ClientWrapper>(Client(baseURL, wsURL, config.useWebSockets))
 
     return (
-        <SWRConfig value={{ fetcher: (url: string) => fetch(`${baseURL}${url}`).then(r => r.json()) }}>
+        <SWRConfig
+            value={{ fetcher: (url: string) => fetch(`${baseURL}${url}`).then((r) => r.json()) }}
+        >
             <Context.Provider value={{ api: client.current, user, setUser }}>
                 {children}
             </Context.Provider>

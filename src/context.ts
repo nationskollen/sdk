@@ -1,6 +1,6 @@
-import { User } from '../typings'
+import { User } from './responses'
 import { createContext } from 'react'
-import { ClientWrapper } from '../client'
+import { ClientWrapper } from './client'
 
 export interface ContextContract {
     api: ClientWrapper

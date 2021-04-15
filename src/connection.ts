@@ -1,4 +1,4 @@
-import { User, Scopes } from './typings'
+import { User, Scopes } from './responses'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 
@@ -96,7 +96,6 @@ export class Connection {
         data?: Data,
         allowedScopes?: Array<Scopes>
     ): Promise<T> {
-
         const headers = {
             'Content-Type': 'application/json',
         }
@@ -111,7 +110,6 @@ export class Connection {
 
         const parsedResponse = await response.json()
         this.checkForErrors(response.status, parsedResponse)
-
 
         return parsedResponse
     }

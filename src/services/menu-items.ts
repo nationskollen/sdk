@@ -1,7 +1,7 @@
 import { BaseService } from './base'
-import { createUploadBody } from '../uploads'
+import { createUploadBody } from '../utils'
+import { MenuItem, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { MenuItem, Scopes } from '../typings'
 
 enum MenuItemUploads {
     Cover = 'cover',
@@ -17,7 +17,7 @@ export class MenuItems extends BaseService {
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
 
         return item
@@ -32,7 +32,7 @@ export class MenuItems extends BaseService {
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
 
         return item
@@ -43,7 +43,7 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
     }
 
@@ -57,7 +57,7 @@ export class MenuItems extends BaseService {
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
             body,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
 
         return menuItem

@@ -1,8 +1,4 @@
-import {
-    WS_RECONNECT_INTERVAL_MS,
-    WS_BACKOFF_MAX,
-    WS_BACKOFF_MODIFIER,
-} from './constants'
+import { WS_RECONNECT_INTERVAL_MS, WS_BACKOFF_MAX, WS_BACKOFF_MODIFIER } from './constants'
 
 import { removeCallback } from './utils'
 

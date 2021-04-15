@@ -14,8 +14,7 @@
         "dev": "npx concurrently \"npm:watch\" \"npm:example-react\"",
         "watch": "rollup -cw",
         "build": "rollup -c",
-        "example-node": "cd examples/node && npm run start",
-        "example-react": "cd examples/react-hooks && npm run start",
+        "example-react": "cd example && npm run start",
         "lint": "eslint . --ext=.ts",
         "format": "prettier --write ."
     },

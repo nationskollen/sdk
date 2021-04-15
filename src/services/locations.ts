@@ -1,7 +1,7 @@
 import { BaseService } from './base'
-import { createUploadBody } from '../uploads'
+import { createUploadBody } from '../utils'
+import { Location, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { Location, Scopes } from '../typings'
 
 enum LocationUploads {
     Cover = 'cover',
@@ -17,7 +17,7 @@ export class Locations extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/locations`,
             data,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
         return location
     }
@@ -31,7 +31,7 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
         return location
     }
@@ -41,7 +41,7 @@ export class Locations extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
     }
 
@@ -54,7 +54,7 @@ export class Locations extends BaseService {
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
             body,
-            [Scopes.Admin],
+            [Scopes.Admin]
         )
 
         return location

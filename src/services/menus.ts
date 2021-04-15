@@ -1,6 +1,6 @@
 import { BaseService } from './base'
+import { Menu, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { Menu, Scopes } from '../typings'
 
 export class Menus extends BaseService {
     constructor(connection: Connection) {

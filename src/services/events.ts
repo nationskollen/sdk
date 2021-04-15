@@ -1,7 +1,7 @@
 import { BaseService } from './base'
-import { createUploadBody } from '../uploads'
+import { createUploadBody } from '../utils'
+import { Event, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { Event, Scopes } from '../typings'
 
 enum EventUploads {
     Cover = 'cover',
@@ -47,11 +47,9 @@ export class Events extends BaseService {
 
     public upload = async (eventId: number, field: EventUploads, file: Blob): Promise<Event> => {
         const body = createUploadBody({ [field]: file })
-        const event = await this.$connection.upload<Event>(
-            `/events/${eventId}/upload`,
-            body,
-            [Scopes.Admin]
-        )
+        const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, [
+            Scopes.Admin,
+        ])
 
         return event
     }

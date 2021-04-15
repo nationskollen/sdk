@@ -4,4 +4,4 @@ README.md
 .nyc_output/
 coverage/
 .github/
-examples/
+example/
