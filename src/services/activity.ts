@@ -1,8 +1,7 @@
 import { BaseService } from './base'
 import { removeCallback } from '../utils'
 import { Connection } from '../connection'
-import { WebSocketConnection } from '../websockets'
-import { Subscriptions, ActivityData } from '../websockets'
+import { WebSocketConnection, Subscriptions, ActivityData } from '../websockets'
 
 interface Callbacks {
     [key: number]: Array<ActivityChangeCallback>

@@ -1,15 +1,10 @@
 import { BaseService } from './base'
-import { createUploadBody } from '../uploads'
+import { createUploadBody } from '../utils'
+import { Location, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { LocationCollection, Location, ResourceOptions, Scopes } from '../typings'
 
 enum LocationUploads {
     Cover = 'cover',
-}
-
-enum CacheKeyPrefixes {
-    All = 'locationsAll',
-    Single = 'locationSingle',
 }
 
 export class Locations extends BaseService {
@@ -17,38 +12,12 @@ export class Locations extends BaseService {
         super(connection)
     }
 
-    public all = async (oid: number, options?: ResourceOptions): Promise<LocationCollection> => {
-        const locations = await this.$connection.request<LocationCollection>(
-            HttpMethod.GET,
-            `/nations/${oid}/locations`,
-            undefined,
-            options,
-            this.createCacheKey(CacheKeyPrefixes.All, oid)
-        )
-        return locations
-    }
-
-    public single = async (
-        oid: number,
-        locationId: number,
-        options?: ResourceOptions
-    ): Promise<Location> => {
-        const location = await this.$connection.request<Location>(
-            HttpMethod.GET,
-            `/nations/${oid}/locations/${locationId}`,
-            undefined,
-            options,
-            this.createCacheKey(CacheKeyPrefixes.Single, locationId)
-        )
-        return location
-    }
-
     public create = async (oid: number, data: Location): Promise<Location> => {
         const location = await this.$connection.request<Location>(
             HttpMethod.POST,
             `/nations/${oid}/locations`,
             data,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
         return location
     }
@@ -62,7 +31,7 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
         return location
     }
@@ -72,7 +41,7 @@ export class Locations extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
     }
 
@@ -85,8 +54,7 @@ export class Locations extends BaseService {
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
             body,
-            this.setScopes([Scopes.Admin]),
-            this.createCacheKey(CacheKeyPrefixes.Single, locationId)
+            [Scopes.Admin]
         )
 
         return location

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLogin } from './sdk/react'
+import { useLogin } from './sdk'
 
 const User = () => {
     const login = useLogin()

@@ -1,43 +1,10 @@
 import { BaseService } from './base'
+import { Menu, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
-import { MenuCollection, Menu, ResourceOptions, Scopes } from '../typings'
-
-enum CacheKeyPrefixes {
-    All = 'menusAll',
-    Single = 'menuSingle',
-}
 
 export class Menus extends BaseService {
     constructor(connection: Connection) {
         super(connection)
-    }
-
-    public all = async (locationId: number, options?: ResourceOptions): Promise<MenuCollection> => {
-        const menus = await this.$connection.request<MenuCollection>(
-            HttpMethod.GET,
-            `/locations/${locationId}/menus`,
-            undefined,
-            options,
-            this.createCacheKey(CacheKeyPrefixes.All, locationId)
-        )
-
-        return menus
-    }
-
-    public single = async (
-        locationId: number,
-        menuId: number,
-        options?: ResourceOptions
-    ): Promise<Menu> => {
-        const menu = await this.$connection.request<Menu>(
-            HttpMethod.GET,
-            `/locations/${locationId}/menus/${menuId}`,
-            undefined,
-            options,
-            this.createCacheKey(CacheKeyPrefixes.Single, menuId)
-        )
-
-        return menu
     }
 
     public create = async (locationId: number, menuData: Menu): Promise<Menu> => {
@@ -45,7 +12,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
             menuData,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
 
         return menu
@@ -60,7 +27,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             menuData,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
 
         return menu
@@ -71,7 +38,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             undefined,
-            this.setScopes([Scopes.Admin])
+            [Scopes.Admin]
         )
     }
 }

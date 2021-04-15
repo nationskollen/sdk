@@ -1,4 +1,4 @@
-import { User } from '../typings'
+import { User } from '../responses'
 import { ApiError } from '../errors'
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'

@@ -1,5 +1,5 @@
 import Locations from './Locations'
-import { useSDK, useUpload } from './sdk/react'
+import { useSDK, useUpload } from './sdk'
 
 const Nation = ({ data }) => {
     const { api, user } = useSDK()

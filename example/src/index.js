@@ -5,16 +5,11 @@ import ReactDOM from 'react-dom'
 // ./sdk is equivalent with @dsp-krabby/sdk
 // We need to copy it into this example on compile,
 // since react can not read files from outside src/.
-import { Client } from './sdk'
-import { Provider } from './sdk/react'
-
-// Create a new API client and optionally setup a websocket connection.
-// This MUST be provided to the provider via the 'client' prop.
-const client = Client({ development: true, useWebSockets: true })
+import { Provider } from './sdk'
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider client={client}>
+        <Provider config={{ development: true, useWebSockets: true }}>
             <App />
         </Provider>
     </React.StrictMode>,

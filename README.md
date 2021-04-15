@@ -34,13 +34,14 @@ npm install --save @dsp-krabby/sdk
 
 ## Usage
 Import the API client using:
+
 ```
-import { Client } from '@dsp-krabby/sdk'
+import { Provider } from '@dsp-krabby/sdk'
 ```
 
 ## Development
 ### Setup
-Install dependencies (`npm install`) in both root and `example/react-hooks`.
+Install dependencies (`npm install`) in both root and `example/`.
 
 * `npm run dev` - Watches for changes to source files and starts react example
 * `npm run build` - Build source files

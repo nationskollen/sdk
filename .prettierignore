@@ -4,7 +4,6 @@ README.md
 .nyc_output/
 coverage/
 .github/
-examples/react-hooks/src/sdk/
-examples/react-hooks/build/
-examples/node/src/sdk/
-examples/node/dist
+example/src/sdk/
+example/build/
+example/package-lock.json

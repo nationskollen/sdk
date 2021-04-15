@@ -1,5 +1,5 @@
 import OpeningHours from './OpeningHours'
-import { useActivityLevel } from './sdk/react'
+import { useActivityLevel } from './sdk'
 
 const Location = ({ data }) => {
     const activityLevel = useActivityLevel(data.id, data.activity_level)
