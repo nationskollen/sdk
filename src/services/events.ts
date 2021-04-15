@@ -1,4 +1,3 @@
-import { mutate } from 'swr'
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { Event, Scopes } from '../responses'
@@ -51,8 +50,6 @@ export class Events extends BaseService {
         const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, [
             Scopes.Admin,
         ])
-
-        mutate('/events')
 
         return event
     }

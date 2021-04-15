@@ -1,4 +1,3 @@
-import { mutate } from 'swr'
 import { BaseService } from './base'
 import { OpeningHour, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
@@ -41,7 +40,5 @@ export class OpeningHours extends BaseService {
             undefined,
             [Scopes.Admin]
         )
-
-        mutate(`/locations/${locationId}/hours`)
     }
 }
