@@ -1,8 +1,8 @@
 /// <reference path="./typings.d.ts" />
 import useSWR from 'swr'
 import { Context } from './context'
-import { useContext, useState, useEffect } from 'react'
 import { useAsyncCallback } from 'react-async-hook'
+import { useContext, useState, useEffect } from 'react'
 
 const NoAutoMutation = {
     refreshInterval: 0,

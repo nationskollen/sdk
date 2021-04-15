@@ -1,4 +1,3 @@
-import { mutate } from 'swr'
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { Nation, Scopes } from '../responses'
@@ -30,8 +29,6 @@ export class Nations extends BaseService {
         const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body, [
             Scopes.Admin,
         ])
-
-        mutate('/nations')
 
         return nation
     }
