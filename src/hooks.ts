@@ -59,7 +59,7 @@ export function useLogout() {
         return null
     })
 
-    return {...request}
+    return { ...request }
 }
 
 export function useUpload(fn: (...args: any[]) => Promise<unknown>, params: any[]) {

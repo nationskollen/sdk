@@ -108,7 +108,7 @@ export class Connection {
             headers,
             body: data ? JSON.stringify(data) : null,
         })
-        
+
         let parsedResponse: Record<string, unknown> | undefined = undefined
         if (!skipParsing) {
             parsedResponse = await response.json()
@@ -132,7 +132,6 @@ export class Connection {
             headers,
             body,
         })
-
 
         const parsedResponse = await response.json()
         this.checkForErrors(response.status, parsedResponse)

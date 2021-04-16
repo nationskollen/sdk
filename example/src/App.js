@@ -5,7 +5,6 @@ import Events from './Events'
 import Nations from './Nations'
 
 function App() {
-
     return (
         <React.Fragment>
             <User />
