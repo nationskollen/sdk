@@ -35,12 +35,17 @@ export class Auth extends BaseService {
     }
     
     public logout = async(): Promise<void> => {
-        await this.$connection.request<User>(HttpMethod.POST, '/users/logout', 
+        console.log("helloooo ", this.user)
+        await this.$connection.request<void>(
+            HttpMethod.POST, 
+            '/users/logout', 
             undefined,
-            [Scopes.Admin, Scopes.Staff]
+            [Scopes.Admin, Scopes.Staff],
         )
 
-        this.setUser(undefined)
+        console.log("before ", this.user)
         this.user = undefined
+        this.setUser(undefined)
+        console.log("after ", this.user)
     }
 }

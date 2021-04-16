@@ -6,8 +6,6 @@ const User = () => {
     const login = useLogin()
     const logout = useLogout()
 
-    console.log(user)
-
     return (
         <div className="user">
             <h1 className="logo user-fill">Nationskollen</h1>

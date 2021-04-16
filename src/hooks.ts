@@ -56,6 +56,7 @@ export function useLogout() {
     const request = useAsyncCallback(async () => {
         await api.auth.logout()
         setUser(null)
+        return null
     })
 
     return {...request}
