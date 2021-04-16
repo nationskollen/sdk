@@ -10,15 +10,13 @@ const User = () => {
         <div className="user">
             <h1 className="logo user-fill">Nationskollen</h1>
             {user ? (
-                <div>
-                    <p>
-                        Logged in with scope
-                        <span className="scope">{user.scope}</span>
-                        and token
-                        <span className="token">{user.token}</span>
-                    </p>
+                <p>
+                    Logged in with scope
+                    <span className="scope">{user.scope}</span>
+                    and token
+                    <span className="token">{user.token}</span>
                     <button onClick={logout.execute}>Logout</button>
-                </div>
+                </p>
             ) : (
                 <div className="login-inputs">
                     <input
