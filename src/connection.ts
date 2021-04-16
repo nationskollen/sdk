@@ -55,7 +55,7 @@ export class Connection {
         return `${this.$baseURL}/${endpoint}`
     }
 
-    private checkForErrors(status: HttpErrorCodes, parsedResponse: Record<string, unknown>) {
+    private checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {
         if (status === HttpErrorCodes.Ok) {
             return
         }
@@ -83,7 +83,7 @@ export class Connection {
                 break
         }
 
-        if (parsedResponse.hasOwnProperty('errors')) {
+        if (parsedResponse?.hasOwnProperty('errors')) {
             throw new ApiError(message, parsedResponse.errors)
         } else {
             throw new ApiError(message, parsedResponse)
@@ -94,7 +94,8 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        allowedScopes?: Array<Scopes>
+        allowedScopes?: Array<Scopes>,
+        skipParsing?: boolean
     ): Promise<T> {
         const headers = {
             'Content-Type': 'application/json',
@@ -108,10 +109,13 @@ export class Connection {
             body: data ? JSON.stringify(data) : null,
         })
 
-        const parsedResponse = await response.json()
+        let parsedResponse: Record<string, unknown> | undefined = undefined
+        if (!skipParsing) {
+            parsedResponse = await response.json()
+        }
         this.checkForErrors(response.status, parsedResponse)
 
-        return parsedResponse
+        return parsedResponse as T
     }
 
     public async upload<T>(
@@ -139,7 +143,7 @@ export class Connection {
         return this.$ws
     }
 
-    public setUser(user: User) {
+    public setUser(user?: User) {
         this.$user = user
     }
 }

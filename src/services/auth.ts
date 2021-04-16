@@ -1,4 +1,4 @@
-import { User } from '../responses'
+import { User, Scopes } from '../responses'
 import { ApiError } from '../errors'
 import { BaseService } from './base'
 import { Connection, HttpMethod } from '../connection'
@@ -30,7 +30,20 @@ export class Auth extends BaseService {
         return user
     }
 
-    public setUser(user: User) {
+    public setUser(user?: User) {
         this.$connection.setUser(user)
+    }
+
+    public logout = async (): Promise<void> => {
+        await this.$connection.request(
+            HttpMethod.POST,
+            '/users/logout',
+            undefined,
+            [Scopes.Admin, Scopes.Staff],
+            true
+        )
+
+        this.user = undefined
+        this.setUser(undefined)
     }
 }
