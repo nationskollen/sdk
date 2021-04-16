@@ -51,6 +51,16 @@ export function useLogin() {
     }
 }
 
+export function useLogout() {
+    const { api, setUser } = useSDK()
+    const request = useAsyncCallback(async () => {
+        await api.auth.logout()
+        setUser(null)
+    })
+
+    return {...request}
+}
+
 export function useUpload(fn: (...args: any[]) => Promise<unknown>, params: any[]) {
     const [image, setImage] = useState<Blob | null>(null)
     const request = useAsyncCallback(async () => {

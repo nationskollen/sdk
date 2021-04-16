@@ -139,7 +139,7 @@ export class Connection {
         return this.$ws
     }
 
-    public setUser(user: User) {
+    public setUser(user?: User) {
         this.$user = user
     }
 }

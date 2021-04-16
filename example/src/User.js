@@ -1,19 +1,26 @@
 import React from 'react'
-import { useLogin } from './sdk'
+import { useLogin, useLogout, useUser} from './sdk'
 
 const User = () => {
+    const user = useUser()
     const login = useLogin()
+    const logout = useLogout()
+
+    console.log(user)
 
     return (
         <div className="user">
             <h1 className="logo user-fill">Nationskollen</h1>
-            {login.result ? (
-                <p>
-                    Logged in with scope
-                    <span className="scope">{login.result.scope}</span>
-                    and token
-                    <span className="token">{login.result.token}</span>
-                </p>
+            {user ? (
+                <div>
+                    <p>
+                        Logged in with scope
+                        <span className="scope">{user.scope}</span>
+                        and token
+                        <span className="token">{user.token}</span>
+                    </p>
+                    <button onClick={logout.execute}>Logout</button>
+                </div>
             ) : (
                 <div className="login-inputs">
                     <input
