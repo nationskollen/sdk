@@ -43,6 +43,7 @@ import { Provider } from '@dsp-krabby/sdk'
 ### Setup
 Install dependencies (`npm install`) in both root and `example/`.
 
+* `npm run setup` - Installs all dependencies
 * `npm run dev` - Watches for changes to source files and starts react example
 * `npm run build` - Build source files
 * `npm run watch` - Watch source files and rebuild on changes
