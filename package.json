@@ -12,12 +12,14 @@
     "typings": "./lib/index.d.ts",
     "scripts": {
         "setup": "npm install && cd example && npm install",
-        "dev": "rm -rf example/src/sdk && npx concurrently \"npm:watch\" \"npm:example-react\"",
+        "dev": "rm -rf example/src/sdk && npx concurrently \"npm:watch\" \"npm:example:react\"",
         "watch": "rollup -cw",
         "build": "rollup -c",
-        "example-react": "cd example && npm run start",
+        "example:react": "cd example && npm run start",
         "lint": "eslint . --ext=.ts",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "docs": "npx typedoc src/** --theme ./static/theme --highlightTheme github-dark",
+        "docs:watch": "npx typedoc src/** --watch --theme ./static/theme --highlightTheme github-dark"
     },
     "files": [
         "lib"
@@ -39,7 +41,8 @@
         "rollup-plugin-copy-watch": "^0.0.1",
         "rollup-plugin-json": "^4.0.0",
         "rollup-plugin-typescript2": "^0.30.0",
-        "typescript": "^4.2.4"
+        "typescript": "^4.2.4",
+        "typedoc": "^0.20.35"
     },
     "peerDependencies": {
         "react": "^16.13.1",

@@ -1,0 +1,147 @@
+body {
+    --color-background: #f1f1f1;
+    --color-text: #111;
+    --color-text-aside: #515151;
+    --color-link: #ae2c61;
+    --color-menu-divider: #17161c;
+    --color-menu-divider-focus: #212028;
+    --color-menu-label: #707070;
+    --color-panel: white;
+    --color-panel-divider: #eee;
+    --color-comment-tag: #302c46;
+    --color-comment-tag-text: #302c46;
+    --color-code-background: rgba(0, 0, 0, 0.04);
+    --color-code-block-background: #1e1c24;
+    --color-ts: #893ac1;
+    --color-ts-interface: #1d844a;
+    --color-ts-enum: ##ffd864;
+    --color-ts-class: #004d99;
+    --color-ts-private: #707070;
+    --color-toolbar: #71002e;
+    --color-toolbar-focus: #af0a4c;
+    --color-toolbar-text: white;
+
+    --color-menu-unfocused: #484848;
+    --color-menu-focused: #000;
+    --color-blockquote-background: #eceaea;
+    --color-blockquote-text: ##2f2f2f;
+    --color-inline-code-text: #19719b;
+
+    --border-radius: 5px;
+    --border-radius-lg: 10px;
+    --box-shadow: 1px 2px 20px rgba(0, 0, 0, 0.15);
+}
+
+body.dark {
+    --color-background: #0a090c;
+    --color-text: white;
+    --color-text-aside: #8e87b0;
+    --color-link: #ff5b9e;
+    --color-menu-divider: #17161c;
+    --color-menu-divider-focus: #212028;
+    --color-menu-label: #707070;
+    --color-panel: #141319;
+    --color-panel-divider: #262430;
+    --color-comment-tag: #ada7cc;
+    --color-comment-tag-text: #ada7cc;
+    --color-code-background: rgba(255, 255, 255, 0.04);
+    --color-code-block-background: rgba(255, 255, 255, 0.02);
+    --color-ts: #d295fd;
+    --color-ts-interface: #4eff49;
+    --color-ts-enum: ##ffd864;
+    --color-ts-class: #39f;
+    --color-ts-private: #707070;
+    --color-toolbar: #71002e;
+    --color-toolbar-focus: #af0a4c;
+    --color-toolbar-text: white;
+
+    --color-menu-unfocused: #ab9cc8;
+    --color-menu-focused: white;
+    --color-blockquote-background: #1d1c24;
+    --color-blockquote-text: #afa5c1;
+    --color-inline-code-text: #30bbff;
+    --box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+    margin-top: 0.5rem;
+}
+
+a {
+    font-weight: bold;
+}
+
+blockquote {
+    border-left: 4px solid var(--color-toolbar);
+    background-color: var(--color-blockquote-background);
+    padding: 0.05rem 1rem;
+    color: var(--color-blockquote-text);
+}
+
+.tsd-panel {
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+}
+
+.tsd-breadcrumb,
+.tsd-breadcrumb a {
+    color: white;
+}
+
+pre {
+    margin-top: 1rem;
+    background-color: var(--color-code-block-background);
+    border-radius: var(--border-radius);
+}
+
+code {
+    color: var(--color-inline-code-text);
+    border-radius: var(--border-radius);
+}
+
+.tsd-page-title h1 {
+    color: white;
+}
+
+.tsd-navigation a {
+    color: var(--color-menu-unfocused);
+    font-weight: normal;
+}
+
+.tsd-navigation.primary li.current > a {
+    color: var(--color-menu-focused);
+    font-weight: bold;
+}
+
+.tsd-page-toolbar {
+    border-bottom-color: var(--color-toolbar-focus);
+}
+
+.tsd-page-title {
+    background-color: var(--color-toolbar);
+}
+
+.tsd-select .tsd-select-list li::before,
+.tsd-select .tsd-select-label::before,
+.tsd-widget::before {
+    filter: invert(100%);
+}
+
+dl.tsd-comment-tags dt {
+    color: var(--color-comment-tag-text);
+    font-weight: bold;
+}
+
+.tsd-flag {
+    font-weight: bold;
+    background-color: transparent;
+    border: 1px solid var(--color-comment-tag-text);
+}
+
+.tsd-kind-icon::before {
+    filter: invert(30%);
+}

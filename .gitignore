@@ -6,3 +6,4 @@ package-lock.json
 example/src/sdk/
 example/node_modules/
 example/build
+docs/

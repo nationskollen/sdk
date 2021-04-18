@@ -3,7 +3,7 @@ import { createUploadBody } from '../utils'
 import { Event, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
-enum EventUploads {
+export enum EventUploads {
     Cover = 'cover',
 }
 

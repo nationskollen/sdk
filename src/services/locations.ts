@@ -3,7 +3,7 @@ import { createUploadBody } from '../utils'
 import { Location, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
-enum LocationUploads {
+export enum LocationUploads {
     Cover = 'cover',
 }
 

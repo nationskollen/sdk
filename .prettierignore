@@ -7,3 +7,5 @@ coverage/
 example/src/sdk/
 example/build/
 example/package-lock.json
+docs/
+static/
