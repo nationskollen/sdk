@@ -3,7 +3,7 @@ import { createUploadBody } from '../utils'
 import { Nation, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
-enum NationUploads {
+export enum NationUploads {
     Icon = 'icon',
     Cover = 'cover',
 }

@@ -43,6 +43,7 @@ import { Provider } from '@dsp-krabby/sdk'
 ### Setup
 Install dependencies (`npm install`) in both root and `example/`.
 
+### Commands
 * `npm run setup` - Installs all dependencies
 * `npm run dev` - Watches for changes to source files and starts react example
 * `npm run build` - Build source files
@@ -52,4 +53,9 @@ Install dependencies (`npm install`) in both root and `example/`.
 * `npm publish` - Published the package to Github Packages
 
 ## Documentation
-TODO
+Documentation is available using `typedoc` and can be generated using one of the
+commands below. Open `docs/index.html` in your browser to see the documentation.
+
+* `npm run docs` - Generate documentation
+* `npm run docs:watch` - Generate documentation and regenerate automatically on changes
+

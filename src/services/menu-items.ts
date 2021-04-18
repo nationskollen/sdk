@@ -3,7 +3,7 @@ import { createUploadBody } from '../utils'
 import { MenuItem, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
-enum MenuItemUploads {
+export enum MenuItemUploads {
     Cover = 'cover',
 }
 

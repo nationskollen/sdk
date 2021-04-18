@@ -28,11 +28,6 @@ export enum Days {
     Sunday,
 }
 
-export interface ResourceOptions {
-    invalidate?: boolean
-    allowedScopes?: Array<Scopes>
-}
-
 export interface Nation {
     oid: number
     name: string
@@ -40,7 +35,7 @@ export interface Nation {
     description: string
     icon_img_src: string | null
     cover_img_src: string | null
-    accent_color: string
+    accent_color: string | null
     locations: LocationCollection
 }
 
@@ -66,6 +61,9 @@ export interface Location {
     estimated_people_count: number
     activity_level: number
     is_open: boolean
+    show_on_map: boolean
+    latitude: number | null
+    longitute: number | null
     cover_img_src: string | null
     opening_hours: OpeningHourCollection
     opening_hours_exceptions: OpeningHourCollection
@@ -75,11 +73,11 @@ export interface OpeningHour {
     id: number
     location_id: number
     type: number
-    day?: Days
-    day_special?: string
-    day_special_date?: string
-    open?: string
-    close?: string
+    day: Days | null
+    day_special: string | null
+    day_special_date: string | null
+    open: string | null
+    close: string | null
     is_open: boolean
 }
 
@@ -98,7 +96,7 @@ export interface MenuItem {
     name: string
     description: string
     price: number
-    cover_img_src: string
+    cover_img_src: string | null
     hidden: boolean
 }
 
