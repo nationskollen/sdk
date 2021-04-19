@@ -25,7 +25,6 @@
         "lib"
     ],
     "devDependencies": {
-        "@dsp-krabby/typedoc-theme-overrides": "^1.0.0",
         "@rollup/plugin-commonjs": "^18.0.0",
         "@rollup/plugin-node-resolve": "^11.2.1",
         "@types/axios": "^0.14.0",
@@ -42,12 +41,15 @@
         "rollup-plugin-copy-watch": "^0.0.1",
         "rollup-plugin-json": "^4.0.0",
         "rollup-plugin-typescript2": "^0.30.0",
-        "typedoc": "^0.20.35",
         "typescript": "^4.2.4"
     },
     "peerDependencies": {
         "react": "^16.13.1",
         "react-async-hook": "^3.6.2",
         "swr": "^0.5.5"
+    },
+    "optionalDependencies": {
+        "@dsp-krabby/typedoc-theme-overrides": "^1.0.2",
+        "typedoc": "^0.20.35"
     }
 }
