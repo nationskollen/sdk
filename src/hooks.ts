@@ -29,6 +29,7 @@ import { Context } from './context'
 import { ApiError } from './errors'
 import { ActivityLevels } from './responses'
 import { useAsyncCallback } from 'react-async-hook'
+import { createQuery, transformEventQueryParams, EventQueryParams } from './query'
 import { useContext, useState, useEffect } from 'react'
 import {
     Nation,
@@ -37,6 +38,10 @@ import {
     LocationCollection,
     Event,
     EventCollection,
+    Menu,
+    MenuCollection,
+    MenuItem,
+    MenuItemCollection,
     User,
 } from './responses'
 
@@ -93,6 +98,19 @@ export interface CachedAsyncHookContract<T> {
 const NoAutoMutation = {
     refreshInterval: 0,
     revalidateOnFocus: false,
+}
+
+/* @internal */
+function eventFetcher(endpoint: string, params?: EventQueryParams) {
+    let url = endpoint
+
+    if (params) {
+        const queries = transformEventQueryParams(params)
+        const query = createQuery(queries)
+        url += query
+    }
+
+    return useSWR(() => url)
 }
 
 /**
@@ -330,7 +348,7 @@ export function useNation(oid: number): CachedAsyncHookContract<Nation> {
 }
 
 /**
- * Fetches and caches all Locations.
+ * Fetches and caches all Locations for a Nation.
  *
  * @param oid The oid of the {@link Nation} to fetch locations of
  *
@@ -348,28 +366,93 @@ export function useLocations(oid: number): CachedAsyncHookContract<LocationColle
  *
  * @category Fetcher
  */
-export function useLocation(oid: number, locationId: number): CachedAsyncHookContract<Location> {
-    return useSWR(() => `/nations/${oid}/locations/${locationId}`, NoAutoMutation)
+export function useLocation(locationId: number): CachedAsyncHookContract<Location> {
+    return useSWR(() => `/locations/${locationId}`, NoAutoMutation)
 }
 
 /**
  * Fetches and caches all Events.
  *
+ * @param params Event filtering params
+ *
  * @category Fetcher
  * @todo Add parameters for fetching events of specific date
  */
-export function useEvents(): CachedAsyncHookContract<EventCollection> {
-    return useSWR('/events')
+export function useEvents(params: EventQueryParams): CachedAsyncHookContract<EventCollection> {
+    return eventFetcher(`/events`, params)
+}
+
+/**
+ * Fetches and caches all Events for a Nation.
+ *
+ * @param oid The oid of the {@link Nation} to fetch events for
+ * @param params Event filtering params
+ *
+ * @category Fetcher
+ * @todo Add parameters for fetching events of specific date
+ */
+export function useNationEvents(
+    oid: number,
+    params?: EventQueryParams
+): CachedAsyncHookContract<EventCollection> {
+    return eventFetcher(`/nation/${oid}/events`, params)
 }
 
 /**
  * Fetches and caches a single Event.
  *
- * @param oid The oid of the {@link Nation} that has the {@link Event}
  * @param eventId The id of the {@link Event} to fetch
+ * @param params Event filtering params
  *
  * @category Fetcher
  */
-export function useEvent(oid: number, eventId: number): CachedAsyncHookContract<Event> {
-    return useSWR(() => `/nations/${oid}/events/${eventId}`)
+export function useEvent(
+    eventId: number,
+    params?: EventQueryParams
+): CachedAsyncHookContract<Event> {
+    return eventFetcher(`/events/${eventId}`, params)
+}
+
+/**
+ * Fetches and caches all Menus for a Location.
+ *
+ * @param locationId The id of the {@link Location} to fetch the menus of
+ *
+ * @category Fetcher
+ */
+export function useMenus(locationId: number): CachedAsyncHookContract<MenuCollection> {
+    return useSWR(() => `/locations/${locationId}/menus`)
+}
+
+/**
+ * Fetches and caches a single Menu.
+ *
+ * @param menuId The id of the {@link Menu} to fetch the menus of
+ *
+ * @category Fetcher
+ */
+export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
+    return useSWR(() => `/menus/${menuId}`)
+}
+
+/**
+ * Fetches and caches all MenuItems for a Menu.
+ *
+ * @param menuId The id of the {@link Menu} to fetch the items of
+ *
+ * @category Fetcher
+ */
+export function useMenuItems(menuId: number): CachedAsyncHookContract<MenuItemCollection> {
+    return useSWR(() => `/menus/${menuId}/items`)
+}
+
+/**
+ * Fetches and caches a single MenuItem.
+ *
+ * @param menuItemId The id of the {@link MenuItem} to fetch
+ *
+ * @category Fetcher
+ */
+export function useMenuItem(menuItemId: number): CachedAsyncHookContract<MenuItem> {
+    return useSWR(() => `/items/${menuItemId}`)
 }
