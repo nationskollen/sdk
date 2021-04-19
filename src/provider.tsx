@@ -27,7 +27,7 @@ export const Provider = ({ children, config }: ProviderProps) => {
     const [user, setUser] = useState<User | null>(null)
     const https = config.useHTTPS ?? !config.development
     const hostname = config.customHostName ?? (config.development ? HOSTNAME_DEV : HOSTNAME)
-    const wsURL = `ws://${hostname}`
+    const wsURL = `${https ? 'wss' : 'ws'}://${hostname}`
     const baseURL = `${https ? 'https' : 'http'}://${hostname}/api/v1`
     const client = useRef<ClientWrapper>(Client(baseURL, wsURL, config.useWebSockets))
 
