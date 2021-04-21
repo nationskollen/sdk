@@ -14,7 +14,7 @@ export interface ProviderConfig {
 
 export interface ProviderProps {
     config: ProviderConfig
-    children: JSX.Element[]
+    children: JSX.Element
 }
 
 export interface ProviderState {
