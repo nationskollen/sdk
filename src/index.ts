@@ -1,5 +1,4 @@
 export * from './hooks'
 export * from './context'
 export * from './provider'
-export { Client } from './client'
-export { Connection } from './connection'
+export * from './responses'
