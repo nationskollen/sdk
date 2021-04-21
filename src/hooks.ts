@@ -395,7 +395,7 @@ export function useNationEvents(
     oid: number,
     params?: EventQueryParams
 ): CachedAsyncHookContract<EventCollection> {
-    return eventFetcher(`/nation/${oid}/events`, params)
+    return eventFetcher(`/nations/${oid}/events`, params)
 }
 
 /**
