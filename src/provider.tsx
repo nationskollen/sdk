@@ -3,7 +3,7 @@ import { User } from './responses'
 import { Context } from './context'
 import React, { useState, useRef } from 'react'
 import { Client, ClientWrapper } from './client'
-import { HOSTNAME, HOSTNAME_DEV } from './constants'
+import { HOSTNAME, HOSTNAME_DEV, CACHE_INVALIDATE_INTERVAL } from './constants'
 
 export interface ProviderConfig {
     development?: boolean
@@ -33,6 +33,7 @@ export const Provider = ({ children, config }: ProviderProps) => {
 
     return (
         <SWRConfig
+            refreshInterval={CACHE_INVALIDATE_INTERVAL}
             value={{ fetcher: (url: string) => fetch(`${baseURL}${url}`).then((r) => r.json()) }}
         >
             <Context.Provider value={{ api: client.current, user, setUser }}>

@@ -30,6 +30,7 @@ import { ApiError } from './errors'
 import { ActivityLevels } from './responses'
 import { useAsyncCallback } from 'react-async-hook'
 import { createQuery, transformEventQueryParams, EventQueryParams } from './query'
+import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 import { useContext, useState, useEffect } from 'react'
 import {
     Nation,
@@ -378,8 +379,8 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  * @category Fetcher
  * @todo Add parameters for fetching events of specific date
  */
-export function useEvents(params: EventQueryParams): CachedAsyncHookContract<EventCollection> {
-    return eventFetcher(`/events`, params)
+export function useEvents(params: EventQueryParams): PaginatedCachedAsyncHookContract<EventCollection> {
+    return createPaginatedResponse(eventFetcher(`/events`, params))
 }
 
 /**
@@ -394,8 +395,8 @@ export function useEvents(params: EventQueryParams): CachedAsyncHookContract<Eve
 export function useNationEvents(
     oid: number,
     params?: EventQueryParams
-): CachedAsyncHookContract<EventCollection> {
-    return eventFetcher(`/nations/${oid}/events`, params)
+): PaginatedCachedAsyncHookContract<EventCollection> {
+    return createPaginatedResponse(eventFetcher(`/nations/${oid}/events`, params))
 }
 
 /**

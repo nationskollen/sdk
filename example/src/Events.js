@@ -2,7 +2,7 @@ import Event from './Event'
 import { useEvents } from './sdk'
 
 function Events() {
-    const { data, error } = useEvents()
+    const { data, error } = useEvents({ page: 1, amount: 10 })
 
     return (
         <div className="events">

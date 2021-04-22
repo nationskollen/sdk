@@ -9,9 +9,7 @@ export enum HttpMethod {
     DELETE = 'DELETE',
 }
 
-export interface Data {
-    [key: string]: any
-}
+type Data = Record<string, any>
 
 export class Connection {
     private $baseURL: string
@@ -109,10 +107,12 @@ export class Connection {
             body: data ? JSON.stringify(data) : null,
         })
 
-        let parsedResponse: Record<string, unknown> | undefined = undefined
+        let parsedResponse: Data | undefined = undefined
+
         if (!skipParsing) {
             parsedResponse = await response.json()
         }
+
         this.checkForErrors(response.status, parsedResponse)
 
         return parsedResponse as T

@@ -29,7 +29,13 @@ export interface EventQueryParams {
     date?: Date
     before?: Date
     after?: Date
+    page?: number
+    amount?: number
 }
+
+const MIN_PAGINATION_PAGE = 1
+const MIN_PAGINATION_AMOUNT = 1
+const MAX_PAGINATION_PAGE = 5000
 
 /* @internal */
 export type TransformedQueryParams = Record<string, unknown>
@@ -39,29 +45,6 @@ export type TransformedQueryParams = Record<string, unknown>
  */
 function serializeToDateString(date: Date) {
     return date.toISOString().split('T')[0]
-}
-
-/* @internal */
-export function transformEventQueryParams(params: EventQueryParams): TransformedQueryParams {
-    if (params.date) {
-        // If filtering by exact date, you can not specify
-        // the 'before' or 'after' query params.
-        return {
-            date: serializeToDateString(params.date),
-        }
-    }
-
-    const queries: TransformedQueryParams = {}
-
-    if (params.before) {
-        queries['before'] = serializeToDateString(params.before)
-    }
-
-    if (params.after) {
-        queries['after'] = serializeToDateString(params.after)
-    }
-
-    return queries
 }
 
 /* @internal */
@@ -84,4 +67,38 @@ export function createQuery(params: TransformedQueryParams) {
     })
 
     return queryString
+}
+
+/**
+ * Transforms an object of parameters into valid event query params.
+ *
+ * @internal
+ */
+export function transformEventQueryParams(params: EventQueryParams): TransformedQueryParams {
+    const queries: TransformedQueryParams = {}
+
+    // If filtering by exact date, you can not specify
+    // the 'before' or 'after' query params.
+    if (params.date) {
+        queries['date'] = serializeToDateString(params.date)
+    } else {
+        if (params.before) {
+            queries['before'] = serializeToDateString(params.before)
+        }
+
+        if (params.after) {
+            queries['after'] = serializeToDateString(params.after)
+        }
+    }
+
+    // TODO: Can be extracted into a separate transform function
+    if (params.page) {
+        queries['page'] = Math.max(Math.min(params.page, MAX_PAGINATION_PAGE), MIN_PAGINATION_PAGE)
+    }
+
+    if (params.amount) {
+        queries['amount'] = Math.max(params.amount, MIN_PAGINATION_AMOUNT)
+    }
+
+    return queries
 }
