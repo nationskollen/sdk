@@ -379,7 +379,9 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  * @category Fetcher
  * @todo Add parameters for fetching events of specific date
  */
-export function useEvents(params: EventQueryParams): PaginatedCachedAsyncHookContract<EventCollection> {
+export function useEvents(
+    params: EventQueryParams
+): PaginatedCachedAsyncHookContract<EventCollection> {
     return createPaginatedResponse(eventFetcher(`/events`, params))
 }
 

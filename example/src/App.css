@@ -185,6 +185,15 @@ p {
     color: white;
 }
 
+.events-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+}
+
 .events-content {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

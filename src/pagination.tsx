@@ -15,7 +15,7 @@ import { CachedAsyncHookContract } from './hooks'
  * @typeParam T - Return type in the `data` attribute, e.g. a {@link EventCollection}
  */
 export interface PaginatedCachedAsyncHookContract<T> extends CachedAsyncHookContract<T> {
-    pagination?: PaginationMeta,
+    pagination?: PaginationMeta
 }
 
 /**
@@ -35,7 +35,9 @@ export interface PaginationMeta {
 }
 
 /* @internal */
-export function createPaginatedResponse<T, V extends Array<T>>(hookData: CachedAsyncHookContract<V>): PaginatedCachedAsyncHookContract<V> {
+export function createPaginatedResponse<T, V extends Array<T>>(
+    hookData: CachedAsyncHookContract<V>
+): PaginatedCachedAsyncHookContract<V> {
     // If we have not received data we can not transform the response type
     if (!hookData.data) {
         return hookData
@@ -44,8 +46,15 @@ export function createPaginatedResponse<T, V extends Array<T>>(hookData: CachedA
     const responseData = hookData.data as Record<string, unknown>
 
     // Validate the structure of the response and make sure that it can be paginated
-    if (!Array.isArray(responseData.data) || !responseData.hasOwnProperty('meta') || !responseData.hasOwnProperty('data')) {
-        throw new ApiError('Could not paginate response. Response data is not paginated', responseData)
+    if (
+        !Array.isArray(responseData.data) ||
+        !responseData.hasOwnProperty('meta') ||
+        !responseData.hasOwnProperty('data')
+    ) {
+        throw new ApiError(
+            'Could not paginate response. Response data is not paginated',
+            responseData
+        )
     }
 
     return {
