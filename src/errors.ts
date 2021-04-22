@@ -18,7 +18,7 @@ export class ApiError extends Error {
         // is to print 'error' or 'error.message' in your components.
         // This is confusing and therefore we make sure to always print
         // the error to console as well.
-        console.exception(`ApiError: ${message} =>`, data)
+        console.error(`ApiError: ${message} =>`, data)
 
         this.data = data
     }
