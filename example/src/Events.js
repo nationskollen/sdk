@@ -2,6 +2,11 @@ import Event from './Event'
 import { useEvents } from './sdk'
 
 function Events() {
+    // If you want regular pagination, use this instead and pass in the
+    // 'page' variable to the event query params. I.e.
+    // const [page, setPage] = useState(1)
+    // const { ... } = useEvents(null, { page, amount: 9 })
+
     // amount can also be a state variable if you so wish
     // Replace null with an oid to only fetch events for that nation
     const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
@@ -13,13 +18,13 @@ function Events() {
                 {pagination && (
                     <div className="pagination">
                         <button onClick={() => setSize(size - 1)} disabled={size === 1}>
-                            Previous size
+                            Previous page
                         </button>
                         <button
                             onClick={() => setSize(size + 1)}
                             disabled={size === pagination.last_page}
                         >
-                            Next size
+                            Next page
                         </button>
                     </div>
                 )}

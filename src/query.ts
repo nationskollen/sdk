@@ -52,7 +52,7 @@ function serializeToDateString(date: Date) {
 export function createQueryUrl(
     endpoint: string,
     params: TransformedQueryParams,
-    pageIndex?: number
+    pageIndex: number
 ) {
     const keys = Object.keys(params)
 
@@ -62,15 +62,13 @@ export function createQueryUrl(
 
     let queryString = '?'
 
+    // If no page is specified, use the page index from useSWRInfinite
+    if (!params.page && pageIndex) {
+        queryString += `page=${pageIndex}&`
+    }
+
     keys.forEach((param, index) => {
-        let value = params[param]
-
-        // If we have specified a custom page
-        if (param === 'page' && pageIndex) {
-            value = pageIndex
-        }
-
-        queryString += `${param}=${value}`
+        queryString += `${param}=${params[param]}`
 
         // Make sure that we do not get a trailing '&'
         if (index !== keys.length - 1) {

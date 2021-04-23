@@ -399,6 +399,25 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  * const { data } = useEvent(oid, { date: new Date() })
  * ```
  *
+ * Note that you do not need to specify any query data. By default, it will fetch
+ * a total of {@link DEFAULT_PAGINATION_AMOUNT} per page.
+ *
+ * This hook supports **infinite loading**. To fetch more data, e.g. while scrolling,
+ * do the following:
+ * ```typescript
+ * const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
+ * ```
+ *
+ * To use regular pagination, i.e. to render **only** the data for the page and not
+ * the previous pages, you can do the following:
+ * ```typescript
+ * const [page, setPage] = useState(1)
+ * const { data, error, pagination } = useEvents(null, { page, amount: 9 })
+ * ```
+ *
+ * As you can see, the only difference between the two is which state variable you
+ * use to decide which page to load.
+ *
  * @category Fetcher
  */
 export function useEvents(

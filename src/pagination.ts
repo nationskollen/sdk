@@ -10,7 +10,7 @@ import { CachedAsyncHookContract } from './hooks'
  * called `pagination` that contains the pagination metadata: {@link PaginationMeta}.
  *
  * Note that if no pagination params is specified in the fetcher hook, e.g. {@link useEvents},
- * the resulting data will use the default page amount {@link DEFAULT_PAGE_AMOUNT}.
+ * the resulting data will use the default page amount {@link DEFAULT_PAGINATION_AMOUNT}.
  *
  * @typeParam T - Return type in the `data` attribute, e.g. a {@link EventCollection}
  */
