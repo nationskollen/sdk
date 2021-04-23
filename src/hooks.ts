@@ -24,14 +24,6 @@
  */
 
 /// <reference path="./typings.d.ts" />
-import useSWR from 'swr'
-import { Context } from './context'
-import { ApiError } from './errors'
-import { ActivityLevels } from './responses'
-import { useAsyncCallback } from 'react-async-hook'
-import { createQuery, transformEventQueryParams, EventQueryParams } from './query'
-import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
-import { useContext, useState, useEffect } from 'react'
 import {
     Nation,
     NationCollection,
@@ -45,6 +37,16 @@ import {
     MenuItemCollection,
     User,
 } from './responses'
+
+import useSWR, { useSWRInfinite } from 'swr'
+import { useAsyncCallback } from 'react-async-hook'
+import { useContext, useState, useEffect } from 'react'
+
+import { Context } from './context'
+import { ApiError } from './errors'
+import { ActivityLevels } from './responses'
+import { createQueryUrl, transformEventQueryParams, EventQueryParams } from './query'
+import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
 /**
  * ## Async hook
@@ -103,15 +105,11 @@ const NoAutoMutation = {
 
 /* @internal */
 function eventFetcher(endpoint: string, params?: EventQueryParams) {
-    let url = endpoint
-
-    if (params) {
-        const queries = transformEventQueryParams(params)
-        const query = createQuery(queries)
-        url += query
-    }
-
-    return useSWR(() => url)
+    return useSWRInfinite((index: number) => createQueryUrl(
+        endpoint,
+        transformEventQueryParams(params),
+        index,
+    ))
 }
 
 /**

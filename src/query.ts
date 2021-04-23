@@ -34,6 +34,7 @@ export interface EventQueryParams {
 }
 
 const MIN_PAGINATION_PAGE = 1
+const DEFAULT_PAGINATION_AMOUNT = 20
 const MIN_PAGINATION_AMOUNT = 1
 const MAX_PAGINATION_PAGE = 5000
 
@@ -48,7 +49,7 @@ function serializeToDateString(date: Date) {
 }
 
 /* @internal */
-export function createQuery(params: TransformedQueryParams) {
+export function createQueryUrl(endpoint: string, params: TransformedQueryParams, pageIndex?: number) {
     const keys = Object.keys(params)
 
     if (keys.length === 0) {
@@ -58,7 +59,14 @@ export function createQuery(params: TransformedQueryParams) {
     let queryString = '?'
 
     keys.forEach((param, index) => {
-        queryString += `${param}=${params[param]}`
+        let value = params[param]
+
+        // If we have specified a custom page
+        if (param === 'page' && pageIndex) {
+            value = pageIndex
+        }
+
+        queryString += `${param}=${value}`
 
         // Make sure that we do not get a trailing '&'
         if (index !== keys.length - 1) {
@@ -66,7 +74,7 @@ export function createQuery(params: TransformedQueryParams) {
         }
     })
 
-    return queryString
+    return `${endpoint}${queryString}`
 }
 
 /**
@@ -74,7 +82,13 @@ export function createQuery(params: TransformedQueryParams) {
  *
  * @internal
  */
-export function transformEventQueryParams(params: EventQueryParams): TransformedQueryParams {
+export function transformEventQueryParams(params?: EventQueryParams): TransformedQueryParams {
+    if (!params) {
+        return {
+            amount: DEFAULT_PAGINATION_AMOUNT
+        }
+    }
+
     const queries: TransformedQueryParams = {}
 
     // If filtering by exact date, you can not specify
