@@ -28,6 +28,11 @@ export enum Days {
     Sunday,
 }
 
+export interface Category {
+    id: number
+    name: string
+}
+
 export interface Nation {
     oid: number
     name: string
@@ -50,6 +55,7 @@ export interface Event {
     only_students: boolean
     occurs_at: string
     ends_at: string
+    category?: Category
 }
 
 export interface Location {
