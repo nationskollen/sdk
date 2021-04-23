@@ -106,7 +106,7 @@ const NoAutoMutation = {
 /* @internal */
 function eventFetcher(endpoint: string, params?: EventQueryParams) {
     return useSWRInfinite((index: number) =>
-        createQueryUrl(endpoint, transformEventQueryParams(params), index)
+        createQueryUrl(endpoint, transformEventQueryParams(params), index + 1)
     )
 }
 
