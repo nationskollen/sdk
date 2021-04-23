@@ -49,7 +49,11 @@ function serializeToDateString(date: Date) {
 }
 
 /* @internal */
-export function createQueryUrl(endpoint: string, params: TransformedQueryParams, pageIndex?: number) {
+export function createQueryUrl(
+    endpoint: string,
+    params: TransformedQueryParams,
+    pageIndex?: number
+) {
     const keys = Object.keys(params)
 
     if (keys.length === 0) {
@@ -85,7 +89,7 @@ export function createQueryUrl(endpoint: string, params: TransformedQueryParams,
 export function transformEventQueryParams(params?: EventQueryParams): TransformedQueryParams {
     if (!params) {
         return {
-            amount: DEFAULT_PAGINATION_AMOUNT
+            amount: DEFAULT_PAGINATION_AMOUNT,
         }
     }
 

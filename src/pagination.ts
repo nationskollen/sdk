@@ -18,7 +18,6 @@ export interface PaginatedCachedAsyncHookContract<T> extends InfiniteCachedAsync
     pagination?: PaginationMeta
 }
 
-
 /**
  * ## Infinite cached async hook
  * Extends the return type defined by {@link CachedAsyncHookContract} and {@link https://github.com/vercel/swr/blob/master/src/use-swr-infinite.ts|useSWRInfinite}
@@ -54,14 +53,17 @@ export interface PaginationMeta {
 }
 
 /* @internal */
-function createPaginationErrorResponse<T, V extends Array<T>>(hookData: InfiniteCachedAsyncHookContract<V>, responseData: unknown) {
+function createPaginationErrorResponse<T, V extends Array<T>>(
+    hookData: InfiniteCachedAsyncHookContract<V>,
+    responseData: unknown
+) {
     return {
         ...hookData,
         error: new ApiError('Failed to paginate response data', responseData),
         data: undefined,
         pagination: undefined,
         size: 0,
-        setSize: undefined
+        setSize: undefined,
     }
 }
 
@@ -77,10 +79,7 @@ export function createPaginatedResponse<T, V extends Array<T>>(
     // Recast unknown response so that we can verify its properties
     const responseData = hookData.data as Record<string, unknown>
 
-    if (
-        !Array.isArray(hookData.data) ||
-        hookData.data.length === 0
-    ) {
+    if (!Array.isArray(hookData.data) || hookData.data.length === 0) {
         // We should not throw an exception here, since it is not ran inside the
         // SWR hook. Any exception that gets thrown here will not be catched
         // and will crash the application. What we do instead is provide a
@@ -98,10 +97,7 @@ export function createPaginatedResponse<T, V extends Array<T>>(
         const paginatedData = response as Record<string, unknown>
 
         // Validate that the response is paginated
-        if (
-            !Array.isArray(paginatedData.data) ||
-            !paginatedData.hasOwnProperty('meta')
-        ) {
+        if (!Array.isArray(paginatedData.data) || !paginatedData.hasOwnProperty('meta')) {
             return createPaginationErrorResponse(hookData, responseData)
         }
 
