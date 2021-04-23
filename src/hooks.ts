@@ -24,14 +24,6 @@
  */
 
 /// <reference path="./typings.d.ts" />
-import useSWR from 'swr'
-import { Context } from './context'
-import { ApiError } from './errors'
-import { ActivityLevels } from './responses'
-import { useAsyncCallback } from 'react-async-hook'
-import { createQuery, transformEventQueryParams, EventQueryParams } from './query'
-import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
-import { useContext, useState, useEffect } from 'react'
 import {
     Nation,
     NationCollection,
@@ -45,6 +37,16 @@ import {
     MenuItemCollection,
     User,
 } from './responses'
+
+import useSWR, { useSWRInfinite } from 'swr'
+import { useAsyncCallback } from 'react-async-hook'
+import { useContext, useState, useEffect } from 'react'
+
+import { Context } from './context'
+import { ApiError } from './errors'
+import { ActivityLevels } from './responses'
+import { createQueryUrl, transformEventQueryParams, EventQueryParams } from './query'
+import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
 /**
  * ## Async hook
@@ -103,15 +105,9 @@ const NoAutoMutation = {
 
 /* @internal */
 function eventFetcher(endpoint: string, params?: EventQueryParams) {
-    let url = endpoint
-
-    if (params) {
-        const queries = transformEventQueryParams(params)
-        const query = createQuery(queries)
-        url += query
-    }
-
-    return useSWR(() => url)
+    return useSWRInfinite((index: number) =>
+        createQueryUrl(endpoint, transformEventQueryParams(params), index)
+    )
 }
 
 /**
@@ -360,6 +356,15 @@ export function useLocations(oid: number): CachedAsyncHookContract<LocationColle
 }
 
 /**
+ * Fetches and caches all Locations that are shown on the map.
+ *
+ * @category Fetcher
+ */
+export function useMapLocations(): CachedAsyncHookContract<LocationCollection> {
+    return useSWR(() => '/locations/map', NoAutoMutation)
+}
+
+/**
  * Fetches and caches a single Location.
  *
  * @param oid The oid of the {@link Nation} that owns the {@link Location}
@@ -372,33 +377,54 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
 }
 
 /**
- * Fetches and caches all Events.
+ * Fetches and caches Events.
+ * If `oid` is set, e.g. not `undefined` or `null`, only the events for that
+ * specific Nation will be fetched.
  *
+ * @param oid The oid of the {@link Nation} to fetch events for.
  * @param params Event filtering params
  *
+ * @example
+ * ```typescript
+ * // Fetches ALL available events for today
+ * const { data } = useEvents(undefined, { date: new Date() })
+ *
+ * // Fetches today's events for the selected nation (oid 400)
+ * const { data } = useEvents(400, { date: new Date() })
+ *
+ * // You can of course use a variable (e.g. state or prop) to set it dynamically
+ * const { data } = useEvent(props.oid, { date: new Date() })
+ * // or
+ * const [oid, setOid] = useState(null)
+ * const { data } = useEvent(oid, { date: new Date() })
+ * ```
+ *
+ * Note that you do not need to specify any query data. By default, it will fetch
+ * a total of {@link DEFAULT_PAGINATION_AMOUNT} per page.
+ *
+ * This hook supports **infinite loading**. To fetch more data, e.g. while scrolling,
+ * do the following:
+ * ```typescript
+ * const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
+ * ```
+ *
+ * To use regular pagination, i.e. to render **only** the data for the page and not
+ * the previous pages, you can do the following:
+ * ```typescript
+ * const [page, setPage] = useState(1)
+ * const { data, error, pagination } = useEvents(null, { page, amount: 9 })
+ * ```
+ *
+ * As you can see, the only difference between the two is which state variable you
+ * use to decide which page to load.
+ *
  * @category Fetcher
- * @todo Add parameters for fetching events of specific date
  */
 export function useEvents(
-    params: EventQueryParams
-): PaginatedCachedAsyncHookContract<EventCollection> {
-    return createPaginatedResponse(eventFetcher(`/events`, params))
-}
-
-/**
- * Fetches and caches all Events for a Nation.
- *
- * @param oid The oid of the {@link Nation} to fetch events for
- * @param params Event filtering params
- *
- * @category Fetcher
- * @todo Add parameters for fetching events of specific date
- */
-export function useNationEvents(
-    oid: number,
+    oid?: number,
     params?: EventQueryParams
 ): PaginatedCachedAsyncHookContract<EventCollection> {
-    return createPaginatedResponse(eventFetcher(`/nations/${oid}/events`, params))
+    return createPaginatedResponse(eventFetcher(oid ? `/nations/${oid}/events` : '/events', params))
 }
 
 /**

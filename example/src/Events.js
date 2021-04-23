@@ -1,12 +1,15 @@
-import { useState } from 'react'
 import Event from './Event'
 import { useEvents } from './sdk'
 
 function Events() {
-    const [page, setPage] = useState(1)
+    // If you want regular pagination, use this instead and pass in the
+    // 'page' variable to the event query params. I.e.
+    // const [page, setPage] = useState(1)
+    // const { ... } = useEvents(null, { page, amount: 9 })
 
     // amount can also be a state variable if you so wish
-    const { data, error, pagination } = useEvents({ page, amount: 10 })
+    // Replace null with an oid to only fetch events for that nation
+    const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
 
     return (
         <div className="events">
@@ -14,12 +17,12 @@ function Events() {
                 <h2>Today's events</h2>
                 {pagination && (
                     <div className="pagination">
-                        <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+                        <button onClick={() => setSize(size - 1)} disabled={size === 1}>
                             Previous page
                         </button>
                         <button
-                            onClick={() => setPage(page + 1)}
-                            disabled={page === pagination.last_page}
+                            onClick={() => setSize(size + 1)}
+                            disabled={size === pagination.last_page}
                         >
                             Next page
                         </button>
@@ -27,7 +30,7 @@ function Events() {
                 )}
             </div>
             <div className="events-content">
-                {error && <p>Could not load events</p>}
+                {error && <p>Could not load events: {error.message}</p>}
                 {data && data.map((it) => <Event key={it.id} data={it} />)}
             </div>
         </div>
