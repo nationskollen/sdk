@@ -36,7 +36,6 @@ export interface Nation {
     icon_img_src: string | null
     cover_img_src: string | null
     accent_color: string | null
-    locations: LocationCollection
 }
 
 export interface Event {
@@ -47,6 +46,8 @@ export interface Event {
     description: string
     icon_img_src: string | null
     cover_img_src: string | null
+    only_members: boolean
+    only_students: boolean
     occurs_at: string
     ends_at: string
 }

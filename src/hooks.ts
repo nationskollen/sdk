@@ -360,6 +360,15 @@ export function useLocations(oid: number): CachedAsyncHookContract<LocationColle
 }
 
 /**
+ * Fetches and caches all Locations that are shown on the map.
+ *
+ * @category Fetcher
+ */
+export function useMapLocations(): CachedAsyncHookContract<LocationCollection> {
+    return useSWR(() => '/locations/map', NoAutoMutation)
+}
+
+/**
  * Fetches and caches a single Location.
  *
  * @param oid The oid of the {@link Nation} that owns the {@link Location}
@@ -372,33 +381,35 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
 }
 
 /**
- * Fetches and caches all Events.
+ * Fetches and caches Events.
+ * If `oid` is set, e.g. not `undefined` or `null`, only the events for that
+ * specific Nation will be fetched.
  *
+ * @param oid The oid of the {@link Nation} to fetch events for.
  * @param params Event filtering params
  *
+ * @example
+ * ```typescript
+ * // Fetches ALL available events for today
+ * const { data } = useEvents(undefined, { date: new Date() })
+ *
+ * // Fetches today's events for the selected nation (oid 400)
+ * const { data } = useEvents(400, { date: new Date() })
+ *
+ * // You can of course use a variable (e.g. state or prop) to set it dynamically
+ * const { data } = useEvent(props.oid, { date: new Date() })
+ * // or
+ * const [oid, setOid] = useState(null)
+ * const { data } = useEvent(oid, { date: new Date() })
+ * ```
+ *
  * @category Fetcher
- * @todo Add parameters for fetching events of specific date
  */
 export function useEvents(
-    params: EventQueryParams
-): PaginatedCachedAsyncHookContract<EventCollection> {
-    return createPaginatedResponse(eventFetcher(`/events`, params))
-}
-
-/**
- * Fetches and caches all Events for a Nation.
- *
- * @param oid The oid of the {@link Nation} to fetch events for
- * @param params Event filtering params
- *
- * @category Fetcher
- * @todo Add parameters for fetching events of specific date
- */
-export function useNationEvents(
-    oid: number,
+    oid?: number,
     params?: EventQueryParams
 ): PaginatedCachedAsyncHookContract<EventCollection> {
-    return createPaginatedResponse(eventFetcher(`/nations/${oid}/events`, params))
+    return createPaginatedResponse(eventFetcher(oid ? `/nations/${oid}/events` : '/events', params))
 }
 
 /**

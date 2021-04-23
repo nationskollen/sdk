@@ -6,7 +6,8 @@ function Events() {
     const [page, setPage] = useState(1)
 
     // amount can also be a state variable if you so wish
-    const { data, error, pagination } = useEvents({ page, amount: 10 })
+    // Replace null with an oid to only fetch events for that nation
+    const { data, error, pagination } = useEvents(null, { page, amount: 10 })
 
     return (
         <div className="events">
