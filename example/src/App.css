@@ -206,4 +206,13 @@ p {
     border: 1px solid #444;
     background-color: #222;
     color: white;
+    cursor: pointer;
+}
+
+.event-description {
+    padding: 2rem 2rem;
+    background-color: white;
+    color: #333;
+    border-radius: 10px;
+    margin-top: 1rem;
 }

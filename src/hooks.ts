@@ -30,6 +30,7 @@ import {
     Location,
     LocationCollection,
     Event,
+    EventDescription,
     EventCollection,
     Menu,
     MenuCollection,
@@ -456,6 +457,22 @@ export function useEvent(
     params?: EventQueryParams
 ): CachedAsyncHookContract<Event> {
     return eventFetcher(`/events/${eventId}`, params)
+}
+
+/**
+ * Fetches and caches a single Event long description.
+ * This should be used when you want to show the full (long) description
+ * of an event. It is not needed in the timeline, only when the user
+ * wants to read more of an event.
+ *
+ * @param eventId The id of the {@link Event} to fetch
+ *
+ * @category Fetcher
+ */
+export function useEventDescription(
+    eventId: number,
+): CachedAsyncHookContract<EventDescription> {
+    return useSWR(() => `/events/${eventId}/description`)
 }
 
 /**
