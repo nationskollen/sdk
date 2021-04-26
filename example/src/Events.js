@@ -1,5 +1,7 @@
 import Event from './Event'
+import EventDescription from './EventDescription'
 import { useEvents } from './sdk'
+import { useState } from 'react'
 
 function Events() {
     // If you want regular pagination, use this instead and pass in the
@@ -10,6 +12,13 @@ function Events() {
     // amount can also be a state variable if you so wish
     // Replace null with an oid to only fetch events for that nation
     const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
+    const [showDescription, setShowDescription] = useState(false)
+    const [selectedEvent, setSelectedEvent] = useState(null)
+
+    const updateEventDescription = (eventData, nationName) => {
+        setSelectedEvent({ eventData, nationName })
+        setShowDescription(true)
+    }
 
     return (
         <div className="events">
@@ -31,8 +40,9 @@ function Events() {
             </div>
             <div className="events-content">
                 {error && <p>Could not load events: {error.message}</p>}
-                {data && data.map((it) => <Event key={it.id} data={it} />)}
+                {data && data.map((it) => <Event key={it.id} data={it} onClick={updateEventDescription} />)}
             </div>
+            {showDescription && <EventDescription {...selectedEvent} />}
         </div>
     )
 }

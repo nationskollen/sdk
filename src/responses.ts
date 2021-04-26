@@ -48,13 +48,19 @@ export interface Event {
     nation_id: number
     location_id: number | null
     name: string
-    description: string
+    short_description: string
     cover_img_src: string | null
     only_members: boolean
     only_students: boolean
     occurs_at: string
     ends_at: string
     category?: Category
+}
+
+export interface EventDescription {
+    long_description: string
+    created_at: string
+    updated_at: string
 }
 
 export interface Location {

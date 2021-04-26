@@ -1,10 +1,10 @@
 import { useNation } from './sdk'
 
-function Event({ data }) {
+function Event({ data, onClick }) {
     const { data: nation } = useNation(data.nation_id)
 
     return (
-        <div className="event">
+        <div className="event" onClick={() => onClick(data, nation.name)}>
             {data.cover_img_src && <img src={data.cover_img_src} alt="dunno" />}
             <h3>{data.name}</h3>
             <h3>{nation ? nation.name : 'Loading nation name'}</h3>
