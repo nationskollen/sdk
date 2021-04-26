@@ -49,7 +49,6 @@ export interface Event {
     location_id: number | null
     name: string
     description: string
-    icon_img_src: string | null
     cover_img_src: string | null
     only_members: boolean
     only_students: boolean
@@ -70,10 +69,10 @@ export interface Location {
     is_open: boolean
     show_on_map: boolean
     latitude: number | null
-    longitute: number | null
+    longitude: number | null
     cover_img_src: string | null
     opening_hours: OpeningHourCollection
-    opening_hours_exceptions: OpeningHourCollection
+    opening_hour_exceptions: OpeningHourCollection
 }
 
 export interface OpeningHour {
