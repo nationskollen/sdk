@@ -45,6 +45,7 @@ import { useContext, useState, useEffect } from 'react'
 import { Context } from './context'
 import { ApiError } from './errors'
 import { ActivityLevels } from './responses'
+import { extractSingleResource } from './utils'
 import { createQueryUrl, transformEventQueryParams, EventQueryParams } from './query'
 import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
@@ -95,6 +96,21 @@ export interface CachedAsyncHookContract<T> {
     error?: Error | ApiError
     mutate: (data?: T | Promise<T>, shouldRevalidate?: boolean) => Promise<T | undefined>
     isValidating: boolean
+}
+
+/**
+ * ## Extracted cached async hook
+ * Extends the return type defined by {@link CachedAsyncHookContract}.
+ *
+ * Used to extract single resources from cached resource colletions to
+ * prevent unnecessary requests.
+ *
+ * @typeParam T - Resource collection type, e.g. {@link NationCollection}
+ * @typeParam R - Extracted resource from the collection in T, e.g. {@link Nation}
+ */
+export interface ExtractedCachedAsyncHookContract<R, T extends Array<R>>
+    extends Omit<CachedAsyncHookContract<T>, 'data'> {
+    data?: R
 }
 
 /* @internal */
@@ -340,8 +356,8 @@ export function useNations(): CachedAsyncHookContract<NationCollection> {
  *
  * @category Fetcher
  */
-export function useNation(oid: number): CachedAsyncHookContract<Nation> {
-    return useSWR(() => `/nations/${oid}`, NoAutoMutation)
+export function useNation(oid: number): ExtractedCachedAsyncHookContract<Nation, NationCollection> {
+    return extractSingleResource(useSWR(`/nations`, NoAutoMutation), 'oid', oid)
 }
 
 /**
