@@ -41,6 +41,7 @@ export interface Nation {
     icon_img_src: string | null
     cover_img_src: string | null
     accent_color: string | null
+    default_location?: Location
 }
 
 export interface Event {
@@ -73,6 +74,7 @@ export interface Location {
     estimated_people_count: number
     activity_level: number
     is_open: boolean
+    is_default: boolean
     show_on_map: boolean
     latitude: number | null
     longitude: number | null

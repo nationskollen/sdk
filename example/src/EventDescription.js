@@ -10,7 +10,9 @@ function EventDescription({ eventData, nationName }) {
                 <div>
                     {data.cover_img_src && <img src={eventData.cover_img_src} alt="dunno" />}
                     <h3>{nationName}</h3>
-                    <p>{eventData.occurs_at} - {eventData.ends_at}</p>
+                    <p>
+                        {eventData.occurs_at} - {eventData.ends_at}
+                    </p>
                     <p>{data.long_description}</p>
                     <p>Skapad: {data.created_at}</p>
                     <p>Uppdaterad: {data.updated_at}</p>

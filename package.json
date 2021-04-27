@@ -1,6 +1,6 @@
 {
     "name": "@dsp-krabby/sdk",
-    "version": "2.1.3",
+    "version": "2.2.0",
     "description": "Nationskollen JavaScript API client SDK",
     "repository": "git://github.com/dsp-krabby/sdk.git",
     "author": "Team Krabby",

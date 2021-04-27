@@ -40,7 +40,10 @@ function Events() {
             </div>
             <div className="events-content">
                 {error && <p>Could not load events: {error.message}</p>}
-                {data && data.map((it) => <Event key={it.id} data={it} onClick={updateEventDescription} />)}
+                {data &&
+                    data.map((it) => (
+                        <Event key={it.id} data={it} onClick={updateEventDescription} />
+                    ))}
             </div>
             {showDescription && <EventDescription {...selectedEvent} />}
         </div>

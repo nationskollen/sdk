@@ -373,15 +373,6 @@ export function useLocations(oid: number): CachedAsyncHookContract<LocationColle
 }
 
 /**
- * Fetches and caches all Locations that are shown on the map.
- *
- * @category Fetcher
- */
-export function useMapLocations(): CachedAsyncHookContract<LocationCollection> {
-    return useSWR(() => '/locations/map', NoAutoMutation)
-}
-
-/**
  * Fetches and caches a single Location.
  *
  * @param oid The oid of the {@link Nation} that owns the {@link Location}
@@ -469,9 +460,7 @@ export function useEvent(
  *
  * @category Fetcher
  */
-export function useEventDescription(
-    eventId: number,
-): CachedAsyncHookContract<EventDescription> {
+export function useEventDescription(eventId: number): CachedAsyncHookContract<EventDescription> {
     return useSWR(() => `/events/${eventId}/description`)
 }
 
