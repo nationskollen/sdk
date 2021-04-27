@@ -23,7 +23,7 @@ export default [
             typescript(),
             copy({
                 targets: [{ src: './lib/**/*', dest: './example/src/sdk' }],
-                watch: 'src',
+                watch: process.env.NODE_ENV === 'testing' && 'src',
                 verbose: true,
                 hook: 'writeBundle',
             }),

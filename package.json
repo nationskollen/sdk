@@ -13,7 +13,7 @@
     "scripts": {
         "setup": "npm install && cd example && npm install",
         "dev": "rm -rf example/src/sdk && npx concurrently \"npm:watch\" \"npm:example:react\"",
-        "watch": "rollup -cw",
+        "watch": "NODE_ENV=testing rollup -cw",
         "build": "rollup -c",
         "example:react": "cd example && npm run start",
         "lint": "eslint . --ext=.ts",
