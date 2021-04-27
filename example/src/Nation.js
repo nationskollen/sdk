@@ -19,6 +19,9 @@ const Nation = ({ data }) => {
                     <div className="cover-right">
                         <h1>{data.name}</h1>
                         <p>{data.description}</p>
+                        <p>
+                            Default location: {data.default_location && data.default_location.name}
+                        </p>
                     </div>
                     {user && user.oid === data.oid && (
                         <div className="cover-upload">

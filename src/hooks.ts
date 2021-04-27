@@ -37,6 +37,8 @@ import {
     MenuItem,
     MenuItemCollection,
     User,
+    OpeningHour,
+    OpeningHourCollection,
 } from './responses'
 
 import useSWR, { useSWRInfinite } from 'swr'
@@ -373,15 +375,6 @@ export function useLocations(oid: number): CachedAsyncHookContract<LocationColle
 }
 
 /**
- * Fetches and caches all Locations that are shown on the map.
- *
- * @category Fetcher
- */
-export function useMapLocations(): CachedAsyncHookContract<LocationCollection> {
-    return useSWR(() => '/locations/map', NoAutoMutation)
-}
-
-/**
  * Fetches and caches a single Location.
  *
  * @param oid The oid of the {@link Nation} that owns the {@link Location}
@@ -469,9 +462,7 @@ export function useEvent(
  *
  * @category Fetcher
  */
-export function useEventDescription(
-    eventId: number,
-): CachedAsyncHookContract<EventDescription> {
+export function useEventDescription(eventId: number): CachedAsyncHookContract<EventDescription> {
     return useSWR(() => `/events/${eventId}/description`)
 }
 
@@ -517,4 +508,36 @@ export function useMenuItems(menuId: number): CachedAsyncHookContract<MenuItemCo
  */
 export function useMenuItem(menuItemId: number): CachedAsyncHookContract<MenuItem> {
     return useSWR(() => `/items/${menuItemId}`)
+}
+
+/**
+ * Fetches and caches all OpeningHours for a location.
+ *
+ * @param locationId The id of the {@link Location} to fetch opening hours of
+ *
+ * @category Fetcher
+ */
+export function useOpeningHours(
+    locationId: number
+): ExtractedCachedAsyncHookContract<OpeningHour, OpeningHourCollection> {
+    return useSWR(() => `/locations/${locationId}/hours`)
+}
+
+/**
+ * Fetches and caches a single OpeningHour.
+ *
+ * @param locationId The id of the {@link Location} to fetch opening hour of
+ * @param openingHourId The id of the {@link OpeningHour} to fetch
+ *
+ * @category Fetcher
+ */
+export function useOpeningHour(
+    locationId: number,
+    openingHourId: number
+): ExtractedCachedAsyncHookContract<OpeningHour, OpeningHourCollection> {
+    return extractSingleResource(
+        useSWR(() => `/locations/${locationId}/hours`),
+        'id',
+        openingHourId
+    )
 }

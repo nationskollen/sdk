@@ -9,7 +9,14 @@ import { Provider } from './sdk'
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider config={{ development: true, useWebSockets: true }}>
+        <Provider
+            config={{
+                development: true,
+                useWebSockets: true,
+                customHostName: 'nationskollen-staging.engstrand.nu',
+                useHTTPS: true,
+            }}
+        >
             <App />
         </Provider>
     </React.StrictMode>,
