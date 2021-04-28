@@ -519,7 +519,7 @@ export function useMenuItem(menuItemId: number): CachedAsyncHookContract<MenuIte
  */
 export function useOpeningHours(
     locationId: number
-): ExtractedCachedAsyncHookContract<OpeningHour, OpeningHourCollection> {
+): CachedAsyncHookContract<OpeningHourCollection> {
     return useSWR(() => `/locations/${locationId}/hours`)
 }
 
