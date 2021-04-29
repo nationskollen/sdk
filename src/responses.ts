@@ -39,6 +39,7 @@ export interface Nation {
     short_name: string
     description: string
     icon_img_src: string | null
+    pin_img_src: string | null
     cover_img_src: string | null
     accent_color: string | null
     default_location?: Location
