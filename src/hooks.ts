@@ -49,7 +49,15 @@ import { Context } from './context'
 import { ApiError } from './errors'
 import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
-import { createQueryUrl, transformEventQueryParams, EventQueryParams } from './query'
+import {
+    createQueryUrl,
+    transformEventQueryParams,
+    transformMenuQueryParams,
+    transformPaginationParams,
+    EventQueryParams,
+    MenuQueryParams,
+    PaginationQueryParams,
+} from './query'
 import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
 /**
@@ -473,8 +481,13 @@ export function useEventDescription(eventId: number): CachedAsyncHookContract<Ev
  *
  * @category Fetcher
  */
-export function useMenus(locationId: number): CachedAsyncHookContract<MenuCollection> {
-    return useSWR(() => `/locations/${locationId}/menus`)
+export function useMenus(
+    locationId: number,
+    params?: MenuQueryParams
+): CachedAsyncHookContract<MenuCollection> {
+    return useSWR(() =>
+        createQueryUrl(`/locations/${locationId}/menus`, transformMenuQueryParams(params))
+    )
 }
 
 /**
@@ -495,8 +508,15 @@ export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
  *
  * @category Fetcher
  */
-export function useMenuItems(menuId: number): CachedAsyncHookContract<MenuItemCollection> {
-    return useSWR(() => `/menus/${menuId}/items`)
+export function useMenuItems(
+    menuId: number,
+    params?: PaginationQueryParams
+): PaginatedCachedAsyncHookContract<MenuItemCollection> {
+    return createPaginatedResponse(
+        useSWRInfinite((index: number) =>
+            createQueryUrl(`/menus/${menuId}/items`, transformPaginationParams(params), index + 1)
+        )
+    )
 }
 
 /**

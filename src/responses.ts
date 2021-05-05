@@ -102,7 +102,7 @@ export interface Menu {
     location_id: number
     name: string
     hidden: boolean
-    items: MenuItemCollection
+    cover_img_src: string | null
 }
 
 export interface MenuItem {
