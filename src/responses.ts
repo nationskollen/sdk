@@ -38,6 +38,7 @@ export interface Nation {
     name: string
     short_name: string
     description: string
+    web_url: string | null
     icon_img_src: string | null
     pin_img_src: string | null
     cover_img_src: string | null
