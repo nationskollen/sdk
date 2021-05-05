@@ -1,4 +1,18 @@
 /**
+ * Available filtering parameters for paginated requests.
+ * Allows fetching of hidden menus as well.
+ *
+ * @example Fetching ALL menus, including hidden menus
+ * ```javascript
+ * const { data } = useMenus(props.location.id, { hidden: true })
+ * ```
+ */
+export interface PaginationQueryParams {
+    page?: number
+    amount?: number
+}
+
+/**
  * Available filtering parameters for events.
  * These can be used to fetch specific events, e.g. on a certain date, etc.
  *
@@ -25,12 +39,23 @@
  * const { data } = useEvents({ after: new Date() })
  * ```
  */
-export interface EventQueryParams {
+export interface EventQueryParams extends PaginationQueryParams {
     date?: Date
     before?: Date
     after?: Date
-    page?: number
-    amount?: number
+}
+
+/**
+ * Available filtering parameters for menus.
+ * Allows fetching of hidden menus as well.
+ *
+ * @example Fetching ALL menus, including hidden menus
+ * ```javascript
+ * const { data } = useMenus(props.location.id, { hidden: true })
+ * ```
+ */
+export interface MenuQueryParams {
+    hidden?: boolean
 }
 
 const MIN_PAGINATION_PAGE = 1
@@ -52,12 +77,12 @@ function serializeToDateString(date: Date) {
 export function createQueryUrl(
     endpoint: string,
     params: TransformedQueryParams,
-    pageIndex: number
+    pageIndex?: number
 ) {
     const keys = Object.keys(params)
 
     if (keys.length === 0) {
-        return ''
+        return endpoint
     }
 
     let queryString = '?'
@@ -80,18 +105,42 @@ export function createQueryUrl(
 }
 
 /**
+ * Transforms an object containing pagination paramaters into valid menu pagination params.
+ *
+ * @internal
+ */
+export function transformPaginationParams<T extends PaginationQueryParams>(
+    params?: T
+): TransformedQueryParams {
+    const queries: TransformedQueryParams = {}
+
+    if (!params) {
+        queries['amount'] = DEFAULT_PAGINATION_AMOUNT
+        return queries
+    }
+
+    if (params.page) {
+        queries['page'] = Math.max(Math.min(params.page, MAX_PAGINATION_PAGE), MIN_PAGINATION_PAGE)
+    }
+
+    if (params.amount) {
+        queries['amount'] = Math.max(params.amount, MIN_PAGINATION_AMOUNT)
+    }
+
+    return queries
+}
+
+/**
  * Transforms an object of parameters into valid event query params.
  *
  * @internal
  */
 export function transformEventQueryParams(params?: EventQueryParams): TransformedQueryParams {
-    if (!params) {
-        return {
-            amount: DEFAULT_PAGINATION_AMOUNT,
-        }
-    }
+    const queries = transformPaginationParams(params)
 
-    const queries: TransformedQueryParams = {}
+    if (!params) {
+        return queries
+    }
 
     // If filtering by exact date, you can not specify
     // the 'before' or 'after' query params.
@@ -107,13 +156,23 @@ export function transformEventQueryParams(params?: EventQueryParams): Transforme
         }
     }
 
-    // TODO: Can be extracted into a separate transform function
-    if (params.page) {
-        queries['page'] = Math.max(Math.min(params.page, MAX_PAGINATION_PAGE), MIN_PAGINATION_PAGE)
+    return queries
+}
+
+/**
+ * Transforms an object of parameters into valid menu query params.
+ *
+ * @internal
+ */
+export function transformMenuQueryParams(params?: MenuQueryParams): TransformedQueryParams {
+    const queries: TransformedQueryParams = {}
+
+    if (!params) {
+        return queries
     }
 
-    if (params.amount) {
-        queries['amount'] = Math.max(params.amount, MIN_PAGINATION_AMOUNT)
+    if (params.hidden) {
+        queries['hidden'] = true
     }
 
     return queries
