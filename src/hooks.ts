@@ -169,7 +169,7 @@ export function useSDK() {
  * return (
  *     <div>
  *         {// Make the request to the API when the user clicks the button}
- *         <button onClick={response.execute()}>Update description</button>
+ *         <button onClick={response.execute}>Update description</button>
  *         {response.error && <p>Could not update nation: {response.error.message}</p>}
  *         {response.result && <p>New description: {response.result.description}</p>}
  *     </div>
