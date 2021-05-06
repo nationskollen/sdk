@@ -58,6 +58,7 @@ import {
     EventQueryParams,
     MenuQueryParams,
     PaginationQueryParams,
+    TransformedQueryParams,
 } from './query'
 import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
@@ -132,10 +133,8 @@ const NoAutoMutation = {
 }
 
 /* @internal */
-function eventFetcher(endpoint: string, params?: EventQueryParams) {
-    return useSWRInfinite((index: number) =>
-        createQueryUrl(endpoint, transformEventQueryParams(params), index + 1)
-    )
+function eventFetcher(endpoint: string, params: TransformedQueryParams) {
+    return useSWRInfinite((index: number) => createQueryUrl(endpoint, params, index + 1))
 }
 
 /**
@@ -418,8 +417,7 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  * const { data } = useEvent(oid, { date: new Date() })
  * ```
  *
- * Note that you do not need to specify any query data. By default, it will fetch
- * a total of {@link DEFAULT_PAGINATION_AMOUNT} per page.
+ * Note that you do not need to specify any query data.
  *
  * This hook supports **infinite loading**. To fetch more data, e.g. while scrolling,
  * do the following:
@@ -443,7 +441,12 @@ export function useEvents(
     oid?: number,
     params?: EventQueryParams
 ): PaginatedCachedAsyncHookContract<EventCollection> {
-    return createPaginatedResponse(eventFetcher(oid ? `/nations/${oid}/events` : '/events', params))
+    return createPaginatedResponse(
+        eventFetcher(
+            oid ? `/nations/${oid}/events` : '/events',
+            transformEventQueryParams(oid, params)
+        )
+    )
 }
 
 /**
@@ -458,7 +461,7 @@ export function useEvent(
     eventId: number,
     params?: EventQueryParams
 ): CachedAsyncHookContract<Event> {
-    return eventFetcher(`/events/${eventId}`, params)
+    return eventFetcher(`/events/${eventId}`, transformEventQueryParams(undefined, params))
 }
 
 /**

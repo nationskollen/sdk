@@ -25,24 +25,42 @@ export interface PaginationQueryParams {
  * always take precedence. If `date` is specified, `before` and `after` will
  * be **ignored**.
  *
+ * Note that `excludeOids` will not have any effect if `oid` (first parameter) is set.
+ *
+ * @example Fetch events for a single nation
+ * ```javascript
+ * // Fetches events that is created by nation with oid 400
+ * const { data } = useEvents(400)
+ *
+ * // Of course, you may still specify query parameters:
+ * const { data } = useEvents(400, { page: 2, amount: 5, after: new Date() })
+ * ```
+ *
  * @example Fetching events that occurs on a date
  * ```javascript
  * // Fetch all events that occurs today.
  * // Note that the date will be automatically converted into the
  * // correct timezone when parsed at the server (UTC+2).
- * const { data } = useEvents({ date: new Date() })
+ * const { data } = useEvents(null, { date: new Date() })
  * ```
  *
  * @example Fetching events that occurs after a specified date
  * ```javascript
  * // Fetches all events that occurs after today (not including today).
- * const { data } = useEvents({ after: new Date() })
+ * const { data } = useEvents(null, { after: new Date() })
+ * ```
+ *
+ * @example Exclude events from selected nations
+ * ```javascript
+ * // Fetches events that is not created by the nations with oid 400 and 405
+ * const { data } = useEvents(null, { after: new Date(), excludeOids: [400, 405] })
  * ```
  */
 export interface EventQueryParams extends PaginationQueryParams {
     date?: Date
     before?: Date
     after?: Date
+    excludeOids?: Array<number>
 }
 
 /**
@@ -135,7 +153,10 @@ export function transformPaginationParams<T extends PaginationQueryParams>(
  *
  * @internal
  */
-export function transformEventQueryParams(params?: EventQueryParams): TransformedQueryParams {
+export function transformEventQueryParams(
+    oid?: number,
+    params?: EventQueryParams
+): TransformedQueryParams {
     const queries = transformPaginationParams(params)
 
     if (!params) {
@@ -154,6 +175,24 @@ export function transformEventQueryParams(params?: EventQueryParams): Transforme
         if (params.after) {
             queries['after'] = serializeToDateString(params.after)
         }
+    }
+
+    // If oid is defined, we can not specify exclusion oids
+    // (the endpoint does not support that filter)
+    if (params.excludeOids && !oid && params.excludeOids.length > 0) {
+        let csv = ''
+        const length = params.excludeOids.length
+
+        for (let i = 0; i < length; i++) {
+            csv += params.excludeOids[i]
+
+            // Make sure to not include a trailing comma
+            if (i !== length - 1) {
+                csv += ','
+            }
+        }
+
+        queries['exclude_oids'] = csv
     }
 
     return queries

@@ -11,7 +11,11 @@ function Events() {
 
     // amount can also be a state variable if you so wish
     // Replace null with an oid to only fetch events for that nation
-    const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
+    const { data, error, pagination, size, setSize } = useEvents(null, {
+        amount: 9,
+        // To exclude nations from the response:
+        // excludeOids: [400, 405],
+    })
     const [showDescription, setShowDescription] = useState(false)
     const [selectedEvent, setSelectedEvent] = useState(null)
 
