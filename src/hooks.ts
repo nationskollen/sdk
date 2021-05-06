@@ -39,6 +39,7 @@ import {
     User,
     OpeningHour,
     OpeningHourCollection,
+    CategoryCollection,
 } from './responses'
 
 import useSWR, { useSWRInfinite } from 'swr'
@@ -560,4 +561,13 @@ export function useOpeningHour(
         'id',
         openingHourId
     )
+}
+
+/**
+ * Fetches and caches all categories.
+ *
+ * @category Fetcher
+ */
+export function useCategories(): CachedAsyncHookContract<CategoryCollection> {
+    return useSWR(() => '/categories')
 }
