@@ -129,3 +129,4 @@ export type EventCollection = Array<Event>
 export type MenuCollection = Array<Menu>
 export type MenuItemCollection = Array<MenuItem>
 export type OpeningHourCollection = Array<OpeningHour>
+export type CategoryCollection = Array<Category>
