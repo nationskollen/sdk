@@ -24,19 +24,19 @@ Create a new file in your home directory `~/.npmrc` containing the following:
 Create `.npmrc` in your project root (same directory as `package.json`)
 containing the following:
 ```
-@dsp-krabby:registry=https://npm.pkg.github.com/
+@nationskollen:registry=https://npm.pkg.github.com/
 ```
 
 Install the library:
 ```
-npm install --save @dsp-krabby/sdk
+npm install --save @nationskollen/sdk
 ```
 
 ## Usage
 Import the API client using:
 
 ```
-import { Provider } from '@dsp-krabby/sdk'
+import { Provider } from '@nationskollen/sdk'
 ```
 
 ## Development

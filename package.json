@@ -1,12 +1,12 @@
 {
-    "name": "@dsp-krabby/sdk",
+    "name": "@nationskollen/sdk",
     "version": "2.3.3",
     "description": "Nationskollen JavaScript API client SDK",
-    "repository": "git://github.com/dsp-krabby/sdk.git",
-    "author": "Team Krabby",
+    "repository": "git://github.com/nationskollen/sdk.git",
+    "author": "Nationskollen",
     "license": "MIT",
     "publishConfig": {
-        "registry": "https://npm.pkg.github.com/@dsp-krabby"
+        "registry": "https://npm.pkg.github.com/@nationskollen"
     },
     "main": "./lib/index.js",
     "typings": "./lib/index.d.ts",
@@ -49,7 +49,7 @@
         "swr": "^0.5.5"
     },
     "optionalDependencies": {
-        "@dsp-krabby/typedoc-theme-overrides": "^1.0.2",
+        "@nationskollen/typedoc-theme-overrides": "^1.0.2",
         "typedoc": "^0.20.35"
     }
 }
