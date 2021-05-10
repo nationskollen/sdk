@@ -603,7 +603,7 @@ export function useSubscriptionTopic(
     return extractSingleResource(
         useSWR(() => '/subscriptions/topics'),
         'id',
-        id,
+        id
     )
 }
 
@@ -636,7 +636,11 @@ export function useNotifications(
 ): PaginatedCachedAsyncHookContract<NotificationCollection> {
     return createPaginatedResponse(
         useSWRInfinite((index: number) =>
-            createQueryUrl(`/notifications`, transformNotificationQueryParams({ token, ...params }), index + 1)
+            createQueryUrl(
+                `/notifications`,
+                transformNotificationQueryParams({ token, ...params }),
+                index + 1
+            )
         )
     )
 }

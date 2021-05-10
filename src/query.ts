@@ -241,7 +241,9 @@ export function transformMenuQueryParams(params?: MenuQueryParams): TransformedQ
  *
  * @internal
  */
-export function transformNotificationQueryParams(params?: NotificationQueryParams): TransformedQueryParams {
+export function transformNotificationQueryParams(
+    params?: NotificationQueryParams
+): TransformedQueryParams {
     const queries = transformPaginationParams(params)
 
     if (!params) {

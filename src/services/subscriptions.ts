@@ -11,7 +11,7 @@ export class Subscriptions extends BaseService {
         const subscription = await this.$connection.request<SubscriptionResponse>(
             HttpMethod.POST,
             `/subscriptions`,
-            data,
+            data
         )
         return subscription
     }
@@ -20,7 +20,7 @@ export class Subscriptions extends BaseService {
         await this.$connection.request<SubscriptionResponse>(
             HttpMethod.DELETE,
             `/subscriptions/${uuid}`,
-            undefined,
+            undefined
         )
     }
 }
