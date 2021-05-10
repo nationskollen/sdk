@@ -370,6 +370,7 @@ export function useNations(): CachedAsyncHookContract<NationCollection> {
 
 /**
  * Fetches and caches a single Nation.
+ * **Note that the `oid` MUST be a number**, otherwise, the request will fail.
  *
  * @param oid The oid of the {@link Nation} to fetch
  *
