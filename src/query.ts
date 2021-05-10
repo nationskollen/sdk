@@ -254,5 +254,8 @@ export function transformNotificationQueryParams(
         queries['after'] = serializeToDateString(params.after)
     }
 
+    // Make sure to include the token in the query string
+    queries['token'] = params.token
+
     return queries
 }
