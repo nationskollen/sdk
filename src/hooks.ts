@@ -407,6 +407,8 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  * If `oid` is set, e.g. not `undefined` or `null`, only the events for that
  * specific Nation will be fetched.
  *
+ * See all available query parameters here: {@link EventQueryParams}.
+ *
  * @param oid The oid of the {@link Nation} to fetch events for.
  * @param params Event filtering params
  *
@@ -459,6 +461,8 @@ export function useEvents(
 
 /**
  * Fetches and caches a single Event.
+ *
+ * See all available query parameters here: {@link EventQueryParams}.
  *
  * @param eventId The id of the {@link Event} to fetch
  * @param params Event filtering params
@@ -515,6 +519,8 @@ export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
 
 /**
  * Fetches and caches all MenuItems for a Menu.
+ *
+ * See all available query parameters here: {@link PaginationQueryParams}.
  *
  * @param menuId The id of the {@link Menu} to fetch the items of
  *
@@ -627,6 +633,8 @@ export function useSubscription(uuid: string): CachedAsyncHookContract<Subscript
 
 /**
  * Fetches and caches all notifications for a token.
+ *
+ * See all available query parameters here: {@link NotificationQueryParams}.
  *
  * @category Fetcher
  */
