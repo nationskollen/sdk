@@ -40,7 +40,25 @@ import {
     OpeningHour,
     OpeningHourCollection,
     CategoryCollection,
+    SubscriptionTopic,
+    SubscriptionTopicCollection,
+    Subscription,
+    SubscriptionCollection,
+    NotificationCollection,
 } from './responses'
+
+import {
+    createQueryUrl,
+    transformEventQueryParams,
+    transformMenuQueryParams,
+    transformPaginationParams,
+    transformNotificationQueryParams,
+    EventQueryParams,
+    MenuQueryParams,
+    NotificationQueryParams,
+    PaginationQueryParams,
+    TransformedQueryParams,
+} from './query'
 
 import useSWR, { useSWRInfinite } from 'swr'
 import { useAsyncCallback } from 'react-async-hook'
@@ -50,16 +68,6 @@ import { Context } from './context'
 import { ApiError } from './errors'
 import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
-import {
-    createQueryUrl,
-    transformEventQueryParams,
-    transformMenuQueryParams,
-    transformPaginationParams,
-    EventQueryParams,
-    MenuQueryParams,
-    PaginationQueryParams,
-    TransformedQueryParams,
-} from './query'
 import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
 /**
@@ -573,4 +581,62 @@ export function useOpeningHour(
  */
 export function useCategories(): CachedAsyncHookContract<CategoryCollection> {
     return useSWR(() => '/categories')
+}
+
+/**
+ * Fetches and caches all subscription topics.
+ *
+ * @category Fetcher
+ */
+export function useSubscriptionTopics(): CachedAsyncHookContract<SubscriptionTopicCollection> {
+    return useSWR(() => '/subscriptions/topics')
+}
+
+/**
+ * Fetches and caches a single subscription topic.
+ *
+ * @category Fetcher
+ */
+export function useSubscriptionTopic(
+    id: number
+): ExtractedCachedAsyncHookContract<SubscriptionTopic, SubscriptionTopicCollection> {
+    return extractSingleResource(
+        useSWR(() => '/subscriptions/topics'),
+        'id',
+        id,
+    )
+}
+
+/**
+ * Fetches and caches all subscriptions for a token.
+ *
+ * @category Fetcher
+ */
+export function useSubscriptions(token: string): CachedAsyncHookContract<SubscriptionCollection> {
+    return useSWR(() => `/subscriptions?token=${token}`)
+}
+
+/**
+ * Fetches and caches a single subscription.
+ *
+ * @category Fetcher
+ */
+export function useSubscription(uuid: string): CachedAsyncHookContract<Subscription> {
+    return useSWR(() => `/subscriptions/${uuid}`)
+}
+
+/**
+ * Fetches and caches all notifications for a token.
+ *
+ * @category Fetcher
+ */
+export function useNotifications(
+    token: string,
+    params?: Partial<NotificationQueryParams>
+): PaginatedCachedAsyncHookContract<NotificationCollection> {
+    return createPaginatedResponse(
+        useSWRInfinite((index: number) =>
+            createQueryUrl(`/notifications`, transformNotificationQueryParams({ token, ...params }), index + 1)
+        )
+    )
 }
