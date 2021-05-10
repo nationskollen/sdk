@@ -76,6 +76,25 @@ export interface MenuQueryParams {
     hidden?: boolean
 }
 
+/**
+ * Available filtering parameters for notifications.
+ * Allows fetching of notifications for specific token and after date.
+ *
+ * @example Fetching ALL notifications for a token
+ * ```javascript
+ * const { data } = useNotifications('ExponentPushToken[xxx]')
+ * ```
+ *
+ * @example Fetching ALL notifications for a token after a specific date
+ * ```javascript
+ * const { data } = useNotifications('ExponentPushToken[xxx]', { after: <some date object> })
+ * ```
+ */
+export interface NotificationQueryParams extends PaginationQueryParams {
+    token: string
+    after?: Date
+}
+
 const MIN_PAGINATION_PAGE = 1
 const DEFAULT_PAGINATION_AMOUNT = 20
 const MIN_PAGINATION_AMOUNT = 1
@@ -213,6 +232,30 @@ export function transformMenuQueryParams(params?: MenuQueryParams): TransformedQ
     if (params.hidden) {
         queries['hidden'] = true
     }
+
+    return queries
+}
+
+/**
+ * Transforms an object of parameters into valid notification query params.
+ *
+ * @internal
+ */
+export function transformNotificationQueryParams(
+    params?: NotificationQueryParams
+): TransformedQueryParams {
+    const queries = transformPaginationParams(params)
+
+    if (!params) {
+        return queries
+    }
+
+    if (params.after) {
+        queries['after'] = serializeToDateString(params.after)
+    }
+
+    // Make sure to include the token in the query string
+    queries['token'] = params.token
 
     return queries
 }

@@ -123,6 +123,26 @@ export interface User {
     oid: number
 }
 
+export interface SubscriptionTopic {
+    id: number
+    name: string
+}
+
+export interface Subscription {
+    nation_id: number
+    subscription_topic_id: number
+    uuid: string
+}
+
+export interface Notification {
+    id: number
+    nation_id: number
+    subscription_topic_id: number
+    title: string
+    message: string
+    created_at: string
+}
+
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type EventCollection = Array<Event>
@@ -130,3 +150,6 @@ export type MenuCollection = Array<Menu>
 export type MenuItemCollection = Array<MenuItem>
 export type OpeningHourCollection = Array<OpeningHour>
 export type CategoryCollection = Array<Category>
+export type SubscriptionTopicCollection = Array<SubscriptionTopic>
+export type SubscriptionCollection = Array<Subscription>
+export type NotificationCollection = Array<Notification>
