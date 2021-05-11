@@ -27,15 +27,6 @@ export interface PaginationQueryParams {
  *
  * Note that `excludeOids` will not have any effect if `oid` (first parameter) is set.
  *
- * @example Fetch events for a single nation
- * ```javascript
- * // Fetches events that is created by nation with oid 400
- * const { data } = useEvents(400)
- *
- * // Of course, you may still specify query parameters:
- * const { data } = useEvents(400, { page: 2, amount: 5, after: new Date() })
- * ```
- *
  * @example Fetching events that occurs on a date
  * ```javascript
  * // Fetch all events that occurs today.
@@ -50,17 +41,61 @@ export interface PaginationQueryParams {
  * const { data } = useEvents(null, { after: new Date() })
  * ```
  *
+ * @example Fetch events for a single nation
+ * ```javascript
+ * // Fetches events that is created by nation with oid 400
+ * const { data } = useEvents(400)
+ *
+ * // Of course, you may still specify query parameters:
+ * const { data } = useEvents(400, { page: 2, amount: 5, after: new Date() })
+ * ```
+ *
+ * @example Passing in the selected nation as a state variable (or prop)
+ * const [oid, setOid] = useState(null)
+ * const { data } = useEvent(oid, { date: new Date() })
+ * ```
+ *
  * @example Exclude events from selected nations
  * ```javascript
  * // Fetches events that is not created by the nations with oid 400 and 405
  * const { data } = useEvents(null, { after: new Date(), excludeOids: [400, 405] })
+ * ```
+ *
+ * @example Exclude events with selected categories
+ * ```javascript
+ * // Fetches events that is not of categories with ids 1, 2 or 3
+ * const { data } = useEvents(null, { excludeCategories: [1, 2, 3] })
+ * ```
+ *
+ * @example Fetch events for single category
+ * ```javascript
+ * // Fetches events that has category with id 1
+ * const { data } = useEvents(null, { category: 1 })
+ * ```
+ *
+ * @example Fetch events that is only open for students
+ * ```javascript
+ * // You can also set it to false to only include events that
+ * // does not require you to be a student.
+ * const { data } = useEvents(null, { onlyStudents: true })
+ * ```
+ *
+ * @example Fetch events that is only open if you are a member of the nation
+ * ```javascript
+ * // You can also set it to false to only include events that
+ * // does not require you to be a member of the nation
+ * const { data } = useEvents(null, { onlyMembers: true })
  * ```
  */
 export interface EventQueryParams extends PaginationQueryParams {
     date?: Date
     before?: Date
     after?: Date
+    category?: number
     excludeOids?: Array<number>
+    excludeCategories?: Array<number>
+    onlyStudents?: boolean
+    onlyMembers?: boolean
 }
 
 /**
@@ -108,6 +143,29 @@ export type TransformedQueryParams = Record<string, unknown>
  */
 function serializeToDateString(date: Date) {
     return date.toISOString().split('T')[0]
+}
+
+/**
+ * Transforms an array of values into a comma-separated list
+ */
+function serializeArray(array?: Array<unknown>) {
+    if (!array || array.length === 0) {
+        return
+    }
+
+    let csv = ''
+    const length = array.length
+
+    for (let i = 0; i < length; i++) {
+        csv += array[i]
+
+        // Make sure to not include a trailing comma
+        if (i !== length - 1) {
+            csv += ','
+        }
+    }
+
+    return csv
 }
 
 /* @internal */
@@ -196,22 +254,24 @@ export function transformEventQueryParams(
         }
     }
 
+    if (params.category) {
+        queries['category'] = params.category
+    } else if (params.excludeCategories) {
+        queries['exclude_categories'] = serializeArray(params.excludeCategories)
+    }
+
     // If oid is defined, we can not specify exclusion oids
     // (the endpoint does not support that filter)
-    if (params.excludeOids && !oid && params.excludeOids.length > 0) {
-        let csv = ''
-        const length = params.excludeOids.length
+    if (!oid && params.excludeOids) {
+        queries['exclude_oids'] = serializeArray(params.excludeOids)
+    }
 
-        for (let i = 0; i < length; i++) {
-            csv += params.excludeOids[i]
+    if (params.onlyMembers) {
+        queries['only_members'] = params.onlyMembers
+    }
 
-            // Make sure to not include a trailing comma
-            if (i !== length - 1) {
-                csv += ','
-            }
-        }
-
-        queries['exclude_oids'] = csv
+    if (params.onlyStudents) {
+        queries['only_students'] = params.onlyStudents
     }
 
     return queries
