@@ -409,35 +409,21 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  * specific Nation will be fetched.
  *
  * See all available query parameters here: {@link EventQueryParams}.
- *
- * @param oid The oid of the {@link Nation} to fetch events for.
- * @param params Event filtering params
- *
- * @example
- * ```typescript
- * // Fetches ALL available events for today
- * const { data } = useEvents(undefined, { date: new Date() })
- *
- * // Fetches today's events for the selected nation (oid 400)
- * const { data } = useEvents(400, { date: new Date() })
- *
- * // You can of course use a variable (e.g. state or prop) to set it dynamically
- * const { data } = useEvent(props.oid, { date: new Date() })
- * // or
- * const [oid, setOid] = useState(null)
- * const { data } = useEvent(oid, { date: new Date() })
- * ```
- *
  * Note that you do not need to specify any query data.
  *
  * This hook supports **infinite loading**. To fetch more data, e.g. while scrolling,
  * do the following:
+ *
  * ```typescript
  * const { data, error, pagination, size, setSize } = useEvents(null, { amount: 9 })
  * ```
  *
+ * You can then load more events by increasing the `size` using `setSize(size + 1)`.
+ * Of course, you can also decrease the size by doing `setSize(size - 1)`.
+ *
  * To use regular pagination, i.e. to render **only** the data for the page and not
  * the previous pages, you can do the following:
+ *
  * ```typescript
  * const [page, setPage] = useState(1)
  * const { data, error, pagination } = useEvents(null, { page, amount: 9 })
@@ -445,6 +431,9 @@ export function useLocation(locationId: number): CachedAsyncHookContract<Locatio
  *
  * As you can see, the only difference between the two is which state variable you
  * use to decide which page to load.
+ *
+ * @param oid The oid of the {@link Nation} to fetch events for.
+ * @param params Event filtering params
  *
  * @category Fetcher
  */
