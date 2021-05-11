@@ -22,7 +22,11 @@ export class Individuals extends BaseService {
         return individual
     }
 
-    public update = async (oid: number, iid: number, change: Partial<Individual>): Promise<Individual> => {
+    public update = async (
+        oid: number,
+        iid: number,
+        change: Partial<Individual>
+    ): Promise<Individual> => {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.PUT,
             `/nations/${oid}/individuals/${iid}`,
@@ -33,11 +37,17 @@ export class Individuals extends BaseService {
         return individual
     }
 
-    public upload = async (iid: number, field: IndividualUploads, file: Blob): Promise<Individual> => {
+    public upload = async (
+        iid: number,
+        field: IndividualUploads,
+        file: Blob
+    ): Promise<Individual> => {
         const body = createUploadBody({ [field]: file })
-        const individual = await this.$connection.upload<Individual>(`/individuals/${iid}/upload`, body, [
-            Scopes.Admin,
-        ])
+        const individual = await this.$connection.upload<Individual>(
+            `/individuals/${iid}/upload`,
+            body,
+            [Scopes.Admin]
+        )
 
         return individual
     }
