@@ -1,4 +1,5 @@
 import Locations from './Locations'
+import Individuals from './Individuals'
 import { useSDK, useUpload } from './sdk'
 
 const Nation = ({ data }) => {
@@ -32,6 +33,7 @@ const Nation = ({ data }) => {
                 </div>
             </div>
             <Locations oid={data.oid} />
+            <Individuals oid={data.oid} />
         </div>
     )
 }

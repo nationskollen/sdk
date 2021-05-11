@@ -15,5 +15,6 @@ export const Client = (baseURL: string, wsURL: string, useWebSockets?: boolean) 
         activity: new Services.Activity(connection),
         openingHours: new Services.OpeningHours(connection),
         subscriptions: new Services.Subscriptions(connection),
+        individuals: new Services.Individuals(connection),
     }
 }
