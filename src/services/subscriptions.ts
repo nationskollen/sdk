@@ -1,15 +1,7 @@
 import { BaseService } from './base'
+import { SubscriptionCreateData } from './models'
 import { Connection, HttpMethod } from '../connection'
 import { Subscription as SubscriptionResponse } from '../responses'
-
-/**
- * Defines the required data needed to create a subscription.
- */
-export interface SubscriptionCreateData {
-    oid: number
-    topic: number
-    token: string
-}
 
 export class Subscriptions extends BaseService {
     constructor(connection: Connection) {
