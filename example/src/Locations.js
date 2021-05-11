@@ -5,7 +5,7 @@ const Locations = ({ oid }) => {
     const { data, error } = useLocations(oid)
 
     return (
-        <div className="locations">
+        <div className="collection">
             {error && <p>No locations: {error.message}</p>}
             {data ? data.map((it) => <Location key={it.id} data={it} />) : <p>Loading...</p>}
         </div>

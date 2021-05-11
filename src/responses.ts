@@ -143,6 +143,15 @@ export interface Notification {
     created_at: string
 }
 
+export interface Individual {
+    id: number
+    name: string
+    role: string | null
+    description: string | null
+    nation_id: number
+    profile_img_src: string | null
+}
+
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type EventCollection = Array<Event>
@@ -153,3 +162,4 @@ export type CategoryCollection = Array<Category>
 export type SubscriptionTopicCollection = Array<SubscriptionTopic>
 export type SubscriptionCollection = Array<Subscription>
 export type NotificationCollection = Array<Notification>
+export type IndividualCollection = Array<Individual>

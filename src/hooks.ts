@@ -45,6 +45,8 @@ import {
     Subscription,
     SubscriptionCollection,
     NotificationCollection,
+    Individual,
+    IndividualCollection,
 } from './responses'
 
 import {
@@ -641,4 +643,22 @@ export function useNotifications(
             )
         )
     )
+}
+
+/**
+ * Fetches and caches all individuals for a nation.
+ *
+ * @category Fetcher
+ */
+export function useIndividuals(oid: number): CachedAsyncHookContract<IndividualCollection> {
+    return useSWR(() => `/nations/${oid}/individuals`)
+}
+
+/**
+ * Fetches and caches a single individual.
+ *
+ * @category Fetcher
+ */
+export function useIndividual(iid: number): CachedAsyncHookContract<Individual> {
+    return useSWR(() => `/individuals/${iid}`)
 }
