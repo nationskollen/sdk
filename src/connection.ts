@@ -61,6 +61,9 @@ export class Connection {
         let message: string
 
         switch (status) {
+            case HttpErrorCodes.NoContent:
+                message = 'No content'
+                break
             case HttpErrorCodes.NotFound:
                 message = 'Not found'
                 break

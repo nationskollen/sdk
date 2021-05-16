@@ -152,6 +152,14 @@ export interface Individual {
     profile_img_src: string | null
 }
 
+export interface ContactInformation {
+    id: number
+    nation_id: number
+    email: string
+    telephone: string
+    webURL?: string | null
+}
+
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type EventCollection = Array<Event>
