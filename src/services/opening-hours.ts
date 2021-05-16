@@ -1,4 +1,5 @@
 import { BaseService } from './base'
+import { OpeningHourCreateData } from './models'
 import { OpeningHour, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
@@ -7,7 +8,10 @@ export class OpeningHours extends BaseService {
         super(connection)
     }
 
-    public create = async (locationId: number, data: OpeningHour): Promise<OpeningHour> => {
+    public create = async (
+        locationId: number,
+        data: OpeningHourCreateData
+    ): Promise<OpeningHour> => {
         const hour = await this.$connection.request<OpeningHour>(
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
@@ -21,7 +25,7 @@ export class OpeningHours extends BaseService {
     public update = async (
         locationId: number,
         hourId: number,
-        data: Partial<OpeningHour>
+        data: Partial<OpeningHourCreateData>
     ): Promise<OpeningHour> => {
         const hour = await this.$connection.request<OpeningHour>(
             HttpMethod.PUT,

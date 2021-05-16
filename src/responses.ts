@@ -38,7 +38,6 @@ export interface Nation {
     name: string
     short_name: string
     description: string
-    web_url: string | null
     icon_img_src: string | null
     pin_img_src: string | null
     cover_img_src: string | null
@@ -99,7 +98,7 @@ export interface OpeningHour {
 
 export interface Menu {
     id: number
-    oid: number
+    nation_id: number
     location_id: number
     name: string
     hidden: boolean
@@ -145,10 +144,10 @@ export interface Notification {
 
 export interface Individual {
     id: number
+    nation_id: number
     name: string
     role: string | null
     description: string | null
-    nation_id: number
     profile_img_src: string | null
 }
 

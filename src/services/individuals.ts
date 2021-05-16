@@ -1,5 +1,6 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
+import { IndividualCreateData } from './models'
 import { Individual, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
@@ -12,7 +13,7 @@ export class Individuals extends BaseService {
         super(connection)
     }
 
-    public create = async (oid: number, data: Individual): Promise<Individual> => {
+    public create = async (oid: number, data: IndividualCreateData): Promise<Individual> => {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.POST,
             `/nations/${oid}/individuals`,
@@ -25,7 +26,7 @@ export class Individuals extends BaseService {
     public update = async (
         oid: number,
         iid: number,
-        change: Partial<Individual>
+        change: Partial<IndividualCreateData>
     ): Promise<Individual> => {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.PUT,
