@@ -3,7 +3,7 @@ import { ContactCreateData } from './models'
 import { Connection, HttpMethod } from '../connection'
 import { ContactInformation, Scopes } from '../responses'
 
-export class Contacts extends BaseService {
+export class Contact extends BaseService {
     constructor(connection: Connection) {
         super(connection)
     }
