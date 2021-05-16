@@ -47,6 +47,7 @@ import {
     NotificationCollection,
     Individual,
     IndividualCollection,
+    ContactInformation,
 } from './responses'
 
 import {
@@ -661,4 +662,13 @@ export function useIndividuals(oid: number): CachedAsyncHookContract<IndividualC
  */
 export function useIndividual(iid: number): CachedAsyncHookContract<Individual> {
     return useSWR(() => `/individuals/${iid}`)
+}
+
+/**
+ * Fetches and caches the contact information for a nation.
+ *
+ * @category Fetcher
+ */
+export function useContactInformation(oid: number): CachedAsyncHookContract<ContactInformation> {
+    return useSWR(() => `/nations/${oid}/contact`)
 }

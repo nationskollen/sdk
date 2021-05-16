@@ -1,4 +1,5 @@
 import { BaseService } from './base'
+import { EventCreateData } from './models'
 import { createUploadBody } from '../utils'
 import { Event, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
@@ -12,7 +13,7 @@ export class Events extends BaseService {
         super(connection)
     }
 
-    public create = async (oid: number, data: Event): Promise<Event> => {
+    public create = async (oid: number, data: EventCreateData): Promise<Event> => {
         const event = await this.$connection.request<Event>(
             HttpMethod.POST,
             `/nations/${oid}/events`,
@@ -25,7 +26,7 @@ export class Events extends BaseService {
     public update = async (
         oid: number,
         eventId: number,
-        change: Partial<Event>
+        change: Partial<EventCreateData>
     ): Promise<Event> => {
         const event = await this.$connection.request<Event>(
             HttpMethod.PUT,

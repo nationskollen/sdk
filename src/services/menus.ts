@@ -1,4 +1,5 @@
 import { BaseService } from './base'
+import { MenuCreateData } from './models'
 import { createUploadBody } from '../utils'
 import { Menu, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
@@ -12,7 +13,7 @@ export class Menus extends BaseService {
         super(connection)
     }
 
-    public create = async (locationId: number, menuData: Menu): Promise<Menu> => {
+    public create = async (locationId: number, menuData: MenuCreateData): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
@@ -26,7 +27,7 @@ export class Menus extends BaseService {
     public update = async (
         locationId: number,
         menuId: number,
-        menuData: Partial<Menu>
+        menuData: Partial<MenuCreateData>
     ): Promise<Menu> => {
         const menu = await this.$connection.request<Menu>(
             HttpMethod.POST,

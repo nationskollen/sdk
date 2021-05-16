@@ -1,4 +1,5 @@
 import { BaseService } from './base'
+import { NationCreateData } from './models'
 import { createUploadBody } from '../utils'
 import { Nation, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
@@ -13,7 +14,7 @@ export class Nations extends BaseService {
         super(connection)
     }
 
-    public update = async (oid: number, change: Partial<Nation>): Promise<Nation> => {
+    public update = async (oid: number, change: Partial<NationCreateData>): Promise<Nation> => {
         const nation = await this.$connection.request<Nation>(
             HttpMethod.PUT,
             `/nations/${oid}`,
