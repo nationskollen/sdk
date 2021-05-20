@@ -257,13 +257,21 @@ export function transformEventQueryParams(
     if (params.category) {
         queries['category'] = params.category
     } else if (params.excludeCategories) {
-        queries['exclude_categories'] = serializeArray(params.excludeCategories)
+        const array = serializeArray(params.excludeCategories)
+
+        if (array) {
+            queries['exclude_categories'] = array
+        }
     }
 
     // If oid is defined, we can not specify exclusion oids
     // (the endpoint does not support that filter)
     if (!oid && params.excludeOids) {
-        queries['exclude_oids'] = serializeArray(params.excludeOids)
+        const array = serializeArray(params.excludeOids)
+
+        if (array) {
+            queries['exclude_oids'] = array
+        }
     }
 
     if (params.hasOwnProperty('onlyMembers')) {
