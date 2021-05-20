@@ -266,11 +266,11 @@ export function transformEventQueryParams(
         queries['exclude_oids'] = serializeArray(params.excludeOids)
     }
 
-    if (params.onlyMembers) {
+    if (params.hasOwnProperty('onlyMembers')) {
         queries['only_members'] = params.onlyMembers
     }
 
-    if (params.onlyStudents) {
+    if (params.hasOwnProperty('onlyStudents')) {
         queries['only_students'] = params.onlyStudents
     }
 
