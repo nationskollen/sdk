@@ -7,6 +7,7 @@ export const Client = (baseURL: string, wsURL: string, useWebSockets?: boolean) 
     const connection = new Connection(baseURL, wsURL, useWebSockets)
 
     return {
+        connection,
         auth: new Services.Auth(connection),
         nations: new Services.Nations(connection),
         locations: new Services.Locations(connection),

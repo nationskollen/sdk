@@ -12,12 +12,12 @@ export enum HttpMethod {
 type Data = Record<string, any>
 
 export class Connection {
-    private $baseURL: string
+    public baseURL: string
     private $user?: User
     private $ws?: WebSocketConnection
 
     constructor(baseURL: string, wsURL: string, useWebSockets?: boolean) {
-        this.$baseURL = baseURL
+        this.baseURL = baseURL
 
         if (useWebSockets) {
             this.$ws = new WebSocketConnection(wsURL)
@@ -49,10 +49,10 @@ export class Connection {
 
     private createUrl(endpoint: string) {
         if (endpoint.substr(0, 1) === '/') {
-            return `${this.$baseURL}${endpoint}`
+            return `${this.baseURL}${endpoint}`
         }
 
-        return `${this.$baseURL}/${endpoint}`
+        return `${this.baseURL}/${endpoint}`
     }
 
     private checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {

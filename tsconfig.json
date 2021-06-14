@@ -18,9 +18,9 @@
         "skipLibCheck": true,
         "declaration": true,
         "esModuleInterop": true,
-        "types": ["node"],
+        "types": ["node", "jest"],
         "jsx": "react"
     },
-    "include": ["src"],
-    "exclude": ["node_modules", "lib", "**/*.test.ts"]
+    "include": ["src", "tests/setup.ts"],
+    "exclude": ["node_modules", "lib", "tests"]
 }

@@ -38,7 +38,9 @@ export const Provider = ({ children, config }: ProviderProps) => {
             <Context.Provider
                 value={{
                     api: client.current,
-                    environment: selectedEnvironment
+                    environment: selectedEnvironment,
+                    https,
+                    hostname,
                 }}
             >
                 {children}

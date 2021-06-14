@@ -1,6 +1,6 @@
 import { Environment } from './context'
 
-export const HOSTNAMES: Record<Environment, string>   = {
+export const HOSTNAMES: Record<Environment, string> = {
     testing: '0.0.0.0:333',
     production: 'nationskollen.se',
     staging: 'nationskollen-staging.engstrand.nu',
