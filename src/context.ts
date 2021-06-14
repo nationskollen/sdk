@@ -2,8 +2,8 @@ import { createContext } from 'react'
 import { ClientWrapper } from './client'
 
 export type Environment =
+    | 'testing'
     | 'staging'
-    | 'development'
     | 'production'
 
 export interface ContextContract {

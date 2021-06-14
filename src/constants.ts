@@ -1,9 +1,9 @@
 import { Environment } from './context'
 
 export const HOSTNAMES: Record<Environment, string>   = {
-    staging: 'nationskollen-staging.engstrand.nu',
-    development: '0.0.0.0:3333',
+    testing: '0.0.0.0:333',
     production: 'nationskollen.se',
+    staging: 'nationskollen-staging.engstrand.nu',
 }
 
 export const WS_RECONNECT_INTERVAL_MS = 2000

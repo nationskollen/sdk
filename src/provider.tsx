@@ -24,7 +24,7 @@ export const Consumer = Context.Consumer
 
 export const Provider = ({ children, config }: ProviderProps) => {
     const selectedEnvironment = config.environment || 'staging'
-    const https = config.useHTTPS ?? selectedEnvironment !== 'development'
+    const https = config.useHTTPS ?? selectedEnvironment !== 'testing'
     const hostname = config.customHostName ?? HOSTNAMES[selectedEnvironment]
     const wsURL = `${https ? 'wss' : 'ws'}://${hostname}`
     const baseURL = `${https ? 'https' : 'http'}://${hostname}/api/v1`
