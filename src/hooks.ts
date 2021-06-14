@@ -71,6 +71,7 @@ import { Context } from './context'
 import { ApiError } from './errors'
 import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
+import { UploaderFunction, UploadFieldType } from './upload'
 import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
 /**
@@ -86,7 +87,7 @@ import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pag
  */
 export interface AsyncHookContract<T> {
     result?: T
-    error?: Error | ApiError
+    error?: ApiError
     loading: boolean
 }
 
@@ -117,7 +118,7 @@ export interface AsyncHookCallbackContract<T> extends AsyncHookContract<T> {
  */
 export interface CachedAsyncHookContract<T> {
     data?: T
-    error?: Error | ApiError
+    error?: ApiError
     mutate: (data?: T | Promise<T>, shouldRevalidate?: boolean) => Promise<T | undefined>
     isValidating: boolean
 }
@@ -237,58 +238,65 @@ export function useActivityLevel(
 /**
  * Log in a user based on email and password.
  *
+ * @example **Login**
+ * ```javascript
+ * const [email, setEmail] = useState()
+ * const [password, setPassword] = useState()
+ * const { result, error, execute } = useLogout()
+ *
+ *
+ * useEffect(() => {
+ *     if (result) {
+ *         // Successfully logged in.
+ *         // result = {
+ *         //     type: "bearer",
+ *         //     token: "<token>",
+ *         //     scope: "<scope>",
+ *         //     oid: <oid>,
+ *         // }
+ *     }
+ * }, [result])
+
+ * useEffect(() => {
+ *     if (error) {
+ *         console.log(error.type) // e.g. HttpErrorCodes.BadRequest if credentials are invalid
+ *         console.log(error.data) // error message or validation errors
+ *     }
+ * }, [error])
+ *
+ * return (
+ *     <form>
+ *         <input type="email" onChange={..} />
+ *         <input type="password" onChange={..} />
+ *         <button onClick={() => execute(email, password)}>Logout</button>
+ *     </form>
+ * )
+ * ```
+ *
  * @category Auth
  */
 export function useLogin(): AsyncHookCallbackContract<User> {
-    const { api, setUser } = useSDK()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const request = useAsyncCallback(async () => {
-        const result = await api.auth.login(email, password)
-
-        // Update the currently logged in user.
-        // This will trigger the registered effect callbacks
-        // of any components using the 'useUser' hook.
-        setUser(result)
-
-        return result
-    })
-
-    return {
-        ...request,
-        email,
-        password,
-        setEmail,
-        setPassword,
-    }
-}
-
-/**
- * Retrieve a handle to the currently logged in user and all the data associated with the user.
- * If no user is logged in, `null` will be returned. Internally, the user is
- * stored in a state variable and will therefore re-render your component
- * whenever it changes.
- *
- * @category Auth
- *
- * @returns The currently logged in user (if any)
- */
-export function useUser() {
-    return useSDK().user
+    const { api } = useSDK()
+    return useAsyncCallback(api.auth.login)
 }
 
 /**
  * Logout a user.
  *
+ * @example **Logout**
+ * ```javascript
+ * const { execute } = useLogout()
+ *
+ * return (
+ *     <button onClick={execute}>Logout</button>
+ * )
+ * ```
+ *
  * @category Auth
  */
 export function useLogout(): AsyncHookCallbackContract<void> {
-    const { api, setUser } = useSDK()
-    return useAsyncCallback(async () => {
-        await api.auth.logout()
-        setUser(null)
-    })
+    const api = useApi()
+    return useAsyncCallback(api.auth.logout)
 }
 
 /**
@@ -313,53 +321,27 @@ export function useLogout(): AsyncHookCallbackContract<void> {
  * @example **Uploading a cover image to a student nation**
  * ```javascript
  * const api = useApi()
+ * const [image, setImage] = useState()
  *
  * // Specify the student nation and form field that we want to use.
  * // The uploader also exposes all of the members returned by the 'useAsync' hook.
- * const uploader = useUpload(api.nations.upload, [props.nation.oid, 'cover'])
+ * const uploader = useUpload(api.nations.upload)
  *
  * // Using the uploader onChange event handler, the file will be set automatically
  * return (
  *     <div>
- *         <input type="file" onChange={uploader.onFileChanged} />
- *         <button onClick={uploader.execute}>Upload cover image</button>
+ *         <input type="file" onChange={..} />
+ *         <button onClick={() => uploader.execute(props.oid, 'cover', image)}>
+ *             Upload cover image
+ *         </button>
  *     </div>
  * )
  * ```
  */
-export function useUpload<T>(
-    fn: (...args: unknown[]) => Promise<T>,
-    params: unknown[]
+export function useUpload<T, F extends UploadFieldType>(
+    fn: UploaderFunction<T, F>
 ): AsyncHookCallbackContract<T> {
-    const [image, setImage] = useState<Blob | null>(null)
-    const request = useAsyncCallback(async () => {
-        const concatedParamas = [...params, image]
-        const result = await fn(...concatedParamas)
-
-        // Reset image
-        setImage(null)
-
-        return result
-    })
-
-    const onFileChanged = (e: InputEvent) => {
-        if (!e.target) {
-            return
-        }
-
-        const input = e.target as HTMLInputElement
-
-        if (!input.files || !input.files[0]) {
-            return
-        }
-
-        setImage(input.files[0])
-    }
-
-    return {
-        ...request,
-        onFileChanged,
-    }
+    return useAsyncCallback(fn)
 }
 
 /**

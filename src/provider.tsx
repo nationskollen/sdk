@@ -1,7 +1,6 @@
 import { SWRConfig } from 'swr'
-import { User } from './responses'
 import { Context } from './context'
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Client, ClientWrapper } from './client'
 import { HOSTNAME, HOSTNAME_DEV, CACHE_INVALIDATE_INTERVAL } from './constants'
 
@@ -24,7 +23,6 @@ export interface ProviderState {
 export const Consumer = Context.Consumer
 
 export const Provider = ({ children, config }: ProviderProps) => {
-    const [user, setUser] = useState<User | null>(null)
     const https = config.useHTTPS ?? !config.development
     const hostname = config.customHostName ?? (config.development ? HOSTNAME_DEV : HOSTNAME)
     const wsURL = `${https ? 'wss' : 'ws'}://${hostname}`
@@ -36,9 +34,7 @@ export const Provider = ({ children, config }: ProviderProps) => {
             refreshInterval={CACHE_INVALIDATE_INTERVAL}
             value={{ fetcher: (url: string) => fetch(`${baseURL}${url}`).then((r) => r.json()) }}
         >
-            <Context.Provider value={{ api: client.current, user, setUser }}>
-                {children}
-            </Context.Provider>
+            <Context.Provider value={{ api: client.current }}>{children}</Context.Provider>
         </SWRConfig>
     )
 }

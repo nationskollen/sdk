@@ -1,10 +1,16 @@
-import React from 'react'
-import { useLogin, useLogout, useUser } from './sdk'
+import React, { useState } from 'react'
+import { useLogin, useLogout } from './sdk'
 
 const User = () => {
-    const user = useUser()
+    const [user, setUser] = useState(null)
     const login = useLogin()
     const logout = useLogout()
+
+    useEffect(() => {
+        if (result) {
+            setUser(result)
+        }
+    }, [login.result])
 
     return (
         <div className="user">

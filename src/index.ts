@@ -1,4 +1,5 @@
 export * from './hooks'
+export * from './upload'
 export * from './errors'
 export * from './context'
 export * from './provider'

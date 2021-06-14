@@ -32,7 +32,7 @@ export class Connection {
         if (!this.$user || !this.$user.token) {
             throw new ApiError(
                 HttpErrorCodes.BadRequest,
-                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?',
+                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
             )
         }
 
@@ -40,7 +40,7 @@ export class Connection {
         if (scopes && !scopes.includes(this.$user.scope)) {
             throw new ApiError(
                 HttpErrorCodes.Unauthorized,
-                'Invalid bearer token scope. You do not have permissions for this request',
+                'Invalid bearer token scope. You do not have permissions for this request'
             )
         }
 

@@ -64,7 +64,7 @@ export function extractSingleResource<R, T extends Array<R>, K extends keyof R>(
     // not contain the resource we were looking for.
     response.error = new ApiError(
         HttpErrorCodes.NoContent,
-        `Could not find resource with key ${extractKey} and value ${searchValue}`,
+        `Could not find resource with key ${extractKey} and value ${searchValue}`
     )
 
     return response

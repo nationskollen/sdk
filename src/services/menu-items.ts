@@ -2,11 +2,10 @@ import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { MenuItemCreateData } from './models'
 import { MenuItem, Scopes } from '../responses'
+import { UploaderFunctionDouble } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
-export enum MenuItemUploads {
-    Cover = 'cover',
-}
+export type MenuItemUploads = 'cover'
 
 export class MenuItems extends BaseService {
     constructor(connection: Connection) {
@@ -48,12 +47,12 @@ export class MenuItems extends BaseService {
         )
     }
 
-    public upload = async (
+    public upload: UploaderFunctionDouble<MenuItem, MenuItemUploads> = async (
         menuId: number,
         itemId: number,
         field: MenuItemUploads,
         file: Blob
-    ): Promise<MenuItem> => {
+    ) => {
         const body = createUploadBody({ [field]: file })
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,

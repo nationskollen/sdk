@@ -19,14 +19,14 @@ export class Auth extends BaseService {
         if (!user.hasOwnProperty('token')) {
             throw new ApiError(
                 HttpErrorCodes.InternalError,
-                'Could not read token from login response',
+                'Could not read token from login response'
             )
         }
 
         if (!user.hasOwnProperty('scope')) {
             throw new ApiError(
                 HttpErrorCodes.InternalError,
-                'Could not read token scope from login response',
+                'Could not read token scope from login response'
             )
         }
 

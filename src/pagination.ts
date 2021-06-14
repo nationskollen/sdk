@@ -1,5 +1,5 @@
-import { ApiError } from './errors'
 import { CachedAsyncHookContract } from './hooks'
+import { HttpErrorCodes, ApiError } from './errors'
 
 /**
  * ## Paginated cached async hook
@@ -59,7 +59,11 @@ function createPaginationErrorResponse<T, V extends Array<T>>(
 ) {
     return {
         ...hookData,
-        error: new ApiError('Failed to paginate response data', responseData),
+        error: new ApiError(
+            HttpErrorCodes.InternalError,
+            'Failed to paginate response data',
+            responseData
+        ),
         data: undefined,
         pagination: undefined,
         size: 0,
