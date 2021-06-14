@@ -1,5 +1,10 @@
-export const HOSTNAME = 'nationskollen.se'
-export const HOSTNAME_DEV = '0.0.0.0:3333'
+import { Environment } from './context'
+
+export const HOSTNAMES: Record<Environment, string>   = {
+    staging: 'nationskollen-staging.engstrand.nu',
+    development: '0.0.0.0:3333',
+    production: 'nationskollen.se',
+}
 
 export const WS_RECONNECT_INTERVAL_MS = 2000
 export const WS_BACKOFF_MODIFIER = 1.5
