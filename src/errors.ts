@@ -10,8 +10,9 @@ export enum HttpErrorCodes {
 
 export class ApiError extends Error {
     public data?: unknown
+    public type: HttpErrorCodes
 
-    constructor(message: string, data?: unknown) {
+    constructor(type: HttpErrorCodes, message: string, data?: unknown) {
         super(message)
 
         // If you are using react and the 'useAsync', exceptions
@@ -22,5 +23,6 @@ export class ApiError extends Error {
         console.error(`ApiError: ${message} =>`, data)
 
         this.data = data
+        this.type = type
     }
 }

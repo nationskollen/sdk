@@ -1,6 +1,6 @@
-import { User, Scopes } from '../responses'
-import { ApiError } from '../errors'
 import { BaseService } from './base'
+import { User, Scopes } from '../responses'
+import { HttpErrorCodes, ApiError } from '../errors'
 import { Connection, HttpMethod } from '../connection'
 
 export class Auth extends BaseService {
@@ -17,11 +17,17 @@ export class Auth extends BaseService {
         })
 
         if (!user.hasOwnProperty('token')) {
-            throw new ApiError('Could not read token from login response')
+            throw new ApiError(
+                HttpErrorCodes.InternalError,
+                'Could not read token from login response',
+            )
         }
 
         if (!user.hasOwnProperty('scope')) {
-            throw new ApiError('Could not read token scope from login response')
+            throw new ApiError(
+                HttpErrorCodes.InternalError,
+                'Could not read token scope from login response',
+            )
         }
 
         this.user = user
