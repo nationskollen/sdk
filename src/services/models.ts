@@ -11,16 +11,7 @@
  *
  * @module models
  */
-import {
-    Menu,
-    Event,
-    Nation,
-    Location,
-    MenuItem,
-    Individual,
-    OpeningHour,
-    ContactInformation,
-} from '../responses'
+import { Days } from '../responses'
 
 export interface SubscriptionCreateData {
     oid: number
@@ -28,24 +19,66 @@ export interface SubscriptionCreateData {
     token: string
 }
 
-export type NationCreateData = Omit<Nation, 'oid' | 'default_location'>
+export interface NationCreateData {
+    name: string
+    short_name: string
+    description: string
+    accent_color: string | null
+}
 
-export type LocationCreateData = Omit<
-    Location,
-    'id' | 'nation_id' | 'opening_hours' | 'opening_hour_exceptions'
->
+export interface LocationCreateData {
+    name: string
+    description: string
+    address: string
+    max_capacity: number
+    is_default?: boolean
+    show_on_map: boolean
+    latitude?: number | null
+    longitude?: number | null
+}
 
-export type OpeningHourCreateData = Omit<OpeningHour, 'id' | 'location_id'>
+export interface OpeningHourCreateData {
+    type: number
+    is_open: boolean
+    day?: Days | null
+    day_special?: string | null
+    day_special_date?: string | null
+    open?: string | null
+    close?: string | null
+}
 
-export type MenuCreateData = Omit<Menu, 'id' | 'nation_id' | 'location_id'>
+export interface MenuCreateData {
+    name: string
+    hidden: boolean
+}
 
-export type MenuItemCreateData = Omit<MenuItem, 'id' | 'menu_id'>
+export interface MenuItemCreateData {
+    name: string
+    description: string
+    price: number
+    hidden: boolean
+}
 
-export type IndividualCreateData = Omit<Individual, 'id' | 'nation_id'>
+export interface IndividualCreateData {
+    name: string
+    role?: string | null
+    description?: string | null
+}
 
-export type ContactCreateData = Omit<ContactInformation, 'id' | 'nation_id'>
+export interface ContactCreateData {
+    email: string
+    telephone: string
+    web_url?: string | null
+}
 
-export interface EventCreateData
-    extends Omit<Event, 'id' | 'nation_id' | 'location_id' | 'category'> {
-    category_id: number
+export interface EventCreateData {
+    name: string
+    short_description: string
+    long_description: string
+    occurs_at: string
+    ends_at: string
+    only_members?: boolean
+    only_students?: boolean
+    category_id?: number | null
+    location_id?: number | null
 }
