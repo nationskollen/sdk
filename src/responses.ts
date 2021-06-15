@@ -156,7 +156,7 @@ export interface ContactInformation {
     nation_id: number
     email: string
     telephone: string
-    webURL?: string | null
+    web_url?: string | null
 }
 
 export type NationCollection = Array<Nation>
