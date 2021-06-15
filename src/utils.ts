@@ -1,4 +1,4 @@
-import { ApiError } from './errors'
+import { HttpErrorCodes, ApiError } from './errors'
 import { CachedAsyncHookContract, ExtractedCachedAsyncHookContract } from './hooks'
 
 export function removeCallback<T>(array: Array<T>, cb: T) {
@@ -63,6 +63,7 @@ export function extractSingleResource<R, T extends Array<R>, K extends keyof R>(
     // We have received a response from the server, but the data did
     // not contain the resource we were looking for.
     response.error = new ApiError(
+        HttpErrorCodes.NoContent,
         `Could not find resource with key ${extractKey} and value ${searchValue}`
     )
 

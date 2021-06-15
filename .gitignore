@@ -7,3 +7,4 @@ example/src/sdk/
 example/node_modules/
 example/build
 docs/
+tests/coverage

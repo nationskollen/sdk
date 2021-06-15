@@ -2,12 +2,10 @@ import { BaseService } from './base'
 import { NationCreateData } from './models'
 import { createUploadBody } from '../utils'
 import { Nation, Scopes } from '../responses'
+import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
-export enum NationUploads {
-    Icon = 'icon',
-    Cover = 'cover',
-}
+export type NationUploads = 'icon' | 'cover'
 
 export class Nations extends BaseService {
     constructor(connection: Connection) {
@@ -25,7 +23,11 @@ export class Nations extends BaseService {
         return nation
     }
 
-    public upload = async (oid: number, field: NationUploads, file: Blob): Promise<Nation> => {
+    public upload: UploaderFunctionSingle<Nation, NationUploads> = async (
+        oid: number,
+        field: NationUploads,
+        file: Blob
+    ) => {
         const body = createUploadBody({ [field]: file })
         const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body, [
             Scopes.Admin,

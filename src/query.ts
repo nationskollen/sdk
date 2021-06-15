@@ -130,25 +130,29 @@ export interface NotificationQueryParams extends PaginationQueryParams {
     after?: Date
 }
 
-const MIN_PAGINATION_PAGE = 1
-const DEFAULT_PAGINATION_AMOUNT = 20
-const MIN_PAGINATION_AMOUNT = 1
-const MAX_PAGINATION_PAGE = 5000
+export const MIN_PAGINATION_PAGE = 1
+export const DEFAULT_PAGINATION_AMOUNT = 20
+export const MIN_PAGINATION_AMOUNT = 1
+export const MAX_PAGINATION_PAGE = 5000
 
 /* @internal */
 export type TransformedQueryParams = Record<string, unknown>
 
 /**
  * Returns the date part of an ISO string
+ *
+ * @internal
  */
-function serializeToDateString(date: Date) {
+export function serializeToDateString(date: Date) {
     return date.toISOString().split('T')[0]
 }
 
 /**
  * Transforms an array of values into a comma-separated list
+ *
+ * @internal
  */
-function serializeArray(array?: Array<unknown>) {
+export function serializeArray(array?: Array<unknown>) {
     if (!array || array.length === 0) {
         return
     }

@@ -3,10 +3,9 @@ import { createUploadBody } from '../utils'
 import { LocationCreateData } from './models'
 import { Location, Scopes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
+import { UploaderFunctionSingle } from '../upload'
 
-export enum LocationUploads {
-    Cover = 'cover',
-}
+export type LocationUploads = 'cover'
 
 export class Locations extends BaseService {
     constructor(connection: Connection) {
@@ -46,11 +45,11 @@ export class Locations extends BaseService {
         )
     }
 
-    public upload = async (
+    public upload: UploaderFunctionSingle<Location, LocationUploads> = async (
         locationId: number,
         field: LocationUploads,
         file: Blob
-    ): Promise<Location> => {
+    ) => {
         const body = createUploadBody({ [field]: file })
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,

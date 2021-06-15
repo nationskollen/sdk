@@ -12,12 +12,12 @@ export enum HttpMethod {
 type Data = Record<string, any>
 
 export class Connection {
-    private $baseURL: string
+    public baseURL: string
     private $user?: User
     private $ws?: WebSocketConnection
 
     constructor(baseURL: string, wsURL: string, useWebSockets?: boolean) {
-        this.$baseURL = baseURL
+        this.baseURL = baseURL
 
         if (useWebSockets) {
             this.$ws = new WebSocketConnection(wsURL)
@@ -31,6 +31,7 @@ export class Connection {
 
         if (!this.$user || !this.$user.token) {
             throw new ApiError(
+                HttpErrorCodes.BadRequest,
                 'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
             )
         }
@@ -38,6 +39,7 @@ export class Connection {
         // Only allow the request if we have the correct scope
         if (scopes && !scopes.includes(this.$user.scope)) {
             throw new ApiError(
+                HttpErrorCodes.Unauthorized,
                 'Invalid bearer token scope. You do not have permissions for this request'
             )
         }
@@ -47,10 +49,10 @@ export class Connection {
 
     private createUrl(endpoint: string) {
         if (endpoint.substr(0, 1) === '/') {
-            return `${this.$baseURL}${endpoint}`
+            return `${this.baseURL}${endpoint}`
         }
 
-        return `${this.$baseURL}/${endpoint}`
+        return `${this.baseURL}/${endpoint}`
     }
 
     private checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {
@@ -85,9 +87,9 @@ export class Connection {
         }
 
         if (parsedResponse?.hasOwnProperty('errors')) {
-            throw new ApiError(message, parsedResponse.errors)
+            throw new ApiError(status, message, parsedResponse.errors)
         } else {
-            throw new ApiError(message, parsedResponse)
+            throw new ApiError(status, message, parsedResponse)
         }
     }
 

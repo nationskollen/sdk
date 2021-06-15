@@ -2,11 +2,10 @@ import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { IndividualCreateData } from './models'
 import { Individual, Scopes } from '../responses'
+import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
-export enum IndividualUploads {
-    Cover = 'cover',
-}
+export type IndividualUploads = 'cover'
 
 export class Individuals extends BaseService {
     constructor(connection: Connection) {
@@ -38,11 +37,11 @@ export class Individuals extends BaseService {
         return individual
     }
 
-    public upload = async (
+    public upload: UploaderFunctionSingle<Individual, IndividualUploads> = async (
         iid: number,
         field: IndividualUploads,
         file: Blob
-    ): Promise<Individual> => {
+    ) => {
         const body = createUploadBody({ [field]: file })
         const individual = await this.$connection.upload<Individual>(
             `/individuals/${iid}/upload`,

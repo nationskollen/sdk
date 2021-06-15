@@ -2,11 +2,10 @@ import { BaseService } from './base'
 import { EventCreateData } from './models'
 import { createUploadBody } from '../utils'
 import { Event, Scopes } from '../responses'
+import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
-export enum EventUploads {
-    Cover = 'cover',
-}
+export type EventUploads = 'cover'
 
 export class Events extends BaseService {
     constructor(connection: Connection) {
@@ -46,7 +45,11 @@ export class Events extends BaseService {
         )
     }
 
-    public upload = async (eventId: number, field: EventUploads, file: Blob): Promise<Event> => {
+    public upload: UploaderFunctionSingle<Event, EventUploads> = async (
+        eventId: number,
+        field: EventUploads,
+        file: Blob
+    ) => {
         const body = createUploadBody({ [field]: file })
         const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, [
             Scopes.Admin,
