@@ -43,6 +43,11 @@ export enum Days {
     Sunday,
 }
 
+export interface Permission {
+    id: number
+    permissionTypeId: number
+}
+
 export interface Category {
     id: number
     name: string
