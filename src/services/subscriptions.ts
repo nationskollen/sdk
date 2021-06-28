@@ -17,8 +17,8 @@ export class Subscriptions extends BaseService {
         return subscription
     }
 
-    public delete = async (uuid: string): Promise<void> => {
-        await this.$connection.request<SubscriptionResponse>(
+    public delete = async (uuid: string) => {
+        await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/subscriptions/${uuid}`,
             undefined

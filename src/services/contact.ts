@@ -31,8 +31,8 @@ export class Contact extends BaseService {
         return information
     }
 
-    public delete = async (oid: number): Promise<void> => {
-        await this.$connection.request<ContactInformation>(
+    public delete = async (oid: number) => {
+        await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/nations/${oid}/contact`,
             undefined,

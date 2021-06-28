@@ -38,7 +38,7 @@ export class MenuItems extends BaseService {
         return item
     }
 
-    public delete = async (menuId: number, itemId: number): Promise<void> => {
+    public delete = async (menuId: number, itemId: number) => {
         await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
