@@ -13,6 +13,21 @@ export enum ActivityLevels {
     Full,
 }
 
+export enum PermissionTypes {
+    Events = 'Events',
+    Menus = 'Menus',
+    MenuItem = 'MenuItem',
+    Individuals = 'Individuals',
+    Nation = 'Nation',
+    News = 'News',
+    Users = 'Users',
+    OpeningHours = 'OpeningHours',
+    Locations = 'Locations',
+    Contact = 'Contact',
+    Activity = 'Activity',
+    UserPermissions = 'UserPermissions',
+}
+
 export enum OpeningHourType {
     Default,
     Exception,
@@ -26,6 +41,16 @@ export enum Days {
     Friday,
     Saturday,
     Sunday,
+}
+
+export interface PermissionType {
+    id: number
+    type: string
+}
+
+export interface Permission {
+    id: number
+    permission_type_id: number
 }
 
 export interface Category {
@@ -166,6 +191,8 @@ export type MenuCollection = Array<Menu>
 export type MenuItemCollection = Array<MenuItem>
 export type OpeningHourCollection = Array<OpeningHour>
 export type CategoryCollection = Array<Category>
+export type PermissionsCollection = Array<Permission>
+export type PermissionsTypeCollection = Array<PermissionType>
 export type SubscriptionTopicCollection = Array<SubscriptionTopic>
 export type SubscriptionCollection = Array<Subscription>
 export type NotificationCollection = Array<Notification>

@@ -12,10 +12,7 @@ export class Individuals extends BaseService {
         super(connection)
     }
 
-    public create = async (
-        oid: number,
-        data: IndividualCreateData
-    ): Promise<Individual> => {
+    public create = async (oid: number, data: IndividualCreateData): Promise<Individual> => {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.POST,
             `/nations/${oid}/individuals`,
@@ -40,10 +37,7 @@ export class Individuals extends BaseService {
         return individual
     }
 
-    public delete = async (
-        oid: number,
-        iid: number,
-    ) => {
+    public delete = async (oid: number, iid: number) => {
         await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/nations/${oid}/individuals/${iid}`,
