@@ -36,8 +36,8 @@ export class Events extends BaseService {
         return event
     }
 
-    public delete = async (oid: number, eventId: number): Promise<void> => {
-        await this.$connection.request<Event>(
+    public delete = async (oid: number, eventId: number) => {
+        await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/nations/${oid}/events/${eventId}`,
             undefined,
