@@ -18,10 +18,6 @@ export class Subscriptions extends BaseService {
     }
 
     public delete = async (uuid: string) => {
-        await this.$connection.request<void>(
-            HttpMethod.DELETE,
-            `/subscriptions/${uuid}`,
-            undefined
-        )
+        await this.$connection.request<void>(HttpMethod.DELETE, `/subscriptions/${uuid}`, undefined)
     }
 }
