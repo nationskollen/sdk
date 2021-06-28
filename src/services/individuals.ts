@@ -12,7 +12,10 @@ export class Individuals extends BaseService {
         super(connection)
     }
 
-    public create = async (oid: number, data: IndividualCreateData): Promise<Individual> => {
+    public create = async (
+        oid: number,
+        data: IndividualCreateData
+    ): Promise<Individual> => {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.POST,
             `/nations/${oid}/individuals`,
@@ -31,6 +34,20 @@ export class Individuals extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/individuals/${iid}`,
             change,
+            [Scopes.Admin]
+        )
+
+        return individual
+    }
+
+    public delete = async (
+        oid: number,
+        iid: number,
+    ): Promise<void> => {
+        await this.$connection.request<Individual>(
+            HttpMethod.DELETE,
+            `/nations/${oid}/individuals/${iid}`,
+            undefined,
             [Scopes.Admin]
         )
 
