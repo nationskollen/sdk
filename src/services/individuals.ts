@@ -43,15 +43,13 @@ export class Individuals extends BaseService {
     public delete = async (
         oid: number,
         iid: number,
-    ): Promise<void> => {
-        await this.$connection.request<Individual>(
+    ) => {
+        await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/nations/${oid}/individuals/${iid}`,
             undefined,
             [Scopes.Admin]
         )
-
-        return individual
     }
 
     public upload: UploaderFunctionSingle<Individual, IndividualUploads> = async (

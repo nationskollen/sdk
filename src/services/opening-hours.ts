@@ -37,7 +37,7 @@ export class OpeningHours extends BaseService {
         return hour
     }
 
-    public delete = async (locationId: number, hourId: number): Promise<void> => {
+    public delete = async (locationId: number, hourId: number) => {
         await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,

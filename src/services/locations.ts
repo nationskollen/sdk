@@ -36,8 +36,8 @@ export class Locations extends BaseService {
         return location
     }
 
-    public delete = async (oid: number, lid: number): Promise<void> => {
-        await this.$connection.request<Location>(
+    public delete = async (oid: number, lid: number) => {
+        await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
