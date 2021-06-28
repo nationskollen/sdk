@@ -20,8 +20,8 @@ export class Permissions extends BaseService {
     }
 
     public delete = async (permissionData: PermissionCreateData): Promise<void> => {
-        await this.$connection.request<void>(
-            HttpMethod.POST,
+        await this.$connection.request<Permission>(
+            HttpMethod.DELETE,
             `/permissions`,
             permissionData,
             [Scopes.Admin]
