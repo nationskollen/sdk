@@ -73,8 +73,8 @@ export interface IndividualCreateData {
 export interface UsersCreateData {
     full_name: string
     email: string
-	password: string
-	nation_admin: boolean | null
+    password: string
+    nation_admin: boolean | null
 }
 
 export interface ContactCreateData {

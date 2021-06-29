@@ -514,8 +514,8 @@ export function useUsers(
     return createPaginatedResponse(
         useSWRInfinite((index: number) =>
             createQueryUrl(`/nations/${oid}/users`, transformPaginationParams(params), index + 1)
-            )
         )
+    )
 }
 
 /**
