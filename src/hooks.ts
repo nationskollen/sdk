@@ -50,6 +50,7 @@ import {
     Individual,
     IndividualCollection,
     ContactInformation,
+    PermissionsTypeCollection,
 } from './responses'
 
 import {
@@ -600,6 +601,15 @@ export function useOpeningHour(
  */
 export function useCategories(): CachedAsyncHookContract<CategoryCollection> {
     return useSWR(() => '/categories')
+}
+
+/**
+ * Fetches and caches all permission types.
+ *
+ * @category Fetcher
+ */
+export function usePermissionTypes(): CachedAsyncHookContract<PermissionsTypeCollection> {
+    return useSWR(() => '/permissions/types')
 }
 
 /**

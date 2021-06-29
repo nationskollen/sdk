@@ -13,6 +13,11 @@
  */
 import { Days } from '../responses'
 
+export interface PermissionCreateData {
+    user_id: number
+    permission_type_id: number
+}
+
 export interface SubscriptionCreateData {
     oid: number
     topic: number
