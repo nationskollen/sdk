@@ -137,7 +137,7 @@ export interface SingleUser {
     remember_me_token: string | null
     created_at: string
     updated_at: string
-    permissions: Array<Permissions>
+    permissions: Array<Permissions> | null
 }
 
 export interface User {
