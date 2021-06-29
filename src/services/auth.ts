@@ -36,16 +36,15 @@ export class Auth extends BaseService {
     public async setToken(token?: string) {
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
         }
 
         const response = await fetch(this.$connection.createUrl('/auth/me'), {
-            method:HttpMethod.GET,
+            method: HttpMethod.GET,
             headers,
         })
 
         this.$connection.checkForErrors(response.status)
-
 
         const user = await response.json()
 
