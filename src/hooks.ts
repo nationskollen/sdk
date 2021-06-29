@@ -37,6 +37,8 @@ import {
     MenuItem,
     MenuItemCollection,
     User,
+    SingleUser,
+    UsersCollection,
     OpeningHour,
     OpeningHourCollection,
     CategoryCollection,
@@ -490,6 +492,42 @@ export function useMenus(
  */
 export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
     return useSWR(() => `/menus/${menuId}`)
+}
+
+/**
+ * Fetches and caches all users for a Nation.
+ * Hook (route) is session protected, meaning only an authorized user is allowed to
+ * fetch users
+ *
+ * See all available query parameters here: {@link PaginationQueryParams}.
+ *
+ * @param oid The id of the {@link NAtion} to fetch the users of
+ *
+ * @category Fetcher
+ */
+
+export function useUsers(
+    oid: number,
+    params?: PaginationQueryParams
+): PaginatedCachedAsyncHookContract<UsersCollection> {
+    return createPaginatedResponse(
+        useSWRInfinite((index: number) =>
+            createQueryUrl(`/nations/${oid}/users`, transformPaginationParams(params), index + 1)
+            )
+        )
+}
+
+/**
+ * Fetches and caches a single user in a nation.
+ * Hook (route) is session protected, meaning only an authorized user is allowed to
+ * fetch a user
+ *
+ * @param userId The id of the {@link User} to fetch
+ *
+ * @category Fetcher
+ */
+export function useUser(userId: number): CachedAsyncHookContract<SingleUser> {
+    return useSWR(() => `/users/${userId}`)
 }
 
 /**
