@@ -11,10 +11,14 @@ export class Auth extends BaseService {
     }
 
     public login = async (email: string, password: string): Promise<AuthenticatedUser> => {
-        const user = await this.$connection.request<AuthenticatedUser>(HttpMethod.POST, '/users/login', {
-            email,
-            password,
-        })
+        const user = await this.$connection.request<AuthenticatedUser>(
+            HttpMethod.POST,
+            '/users/login',
+            {
+                email,
+                password,
+            }
+        )
 
         if (!user.hasOwnProperty('token')) {
             throw new ApiError(
