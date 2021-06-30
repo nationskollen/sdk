@@ -140,36 +140,26 @@ export interface MenuItem {
     hidden: boolean
 }
 
-export interface ManyUsers {
-    id: number
-    oid: number
-    avatar_img_src: string | null
-    nation_admin: boolean
-    full_name: string
-    email: string
-    remember_me_token: string | null
-    created_at: string
-    updated_at: string
-}
-
-export interface SingleUser {
-    id: number
-    oid: number
-    avatar_img_src: string | null
-    nation_admin: boolean
-    full_name: string
-    email: string
-    remember_me_token: string | null
-    created_at: string
-    updated_at: string
-    permissions: Array<Permissions> | null
-}
-
 export interface User {
+    id: number
+    oid: number
+    avatar_img_src: string | null
+    nation_admin: boolean
+    full_name: string
+    email: string
+    remember_me_token: string | null
+    created_at: string
+    updated_at: string
+}
+
+export interface SingleUser extends User {
+    permissions: Array<Permissions>
+}
+
+export interface AuthenticatedUser extends User {
     type: string
     token: string
     scope: Scopes
-    oid: number
 }
 
 export interface SubscriptionTopic {
@@ -209,8 +199,7 @@ export interface ContactInformation {
     web_url?: string | null
 }
 
-export type UsersCollection = Array<ManyUsers>
-export type UserCollection = Array<SingleUser>
+export type UsersCollection = Array<User>
 export type NationCollection = Array<Nation>
 export type LocationCollection = Array<Location>
 export type EventCollection = Array<Event>

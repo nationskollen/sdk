@@ -1,17 +1,17 @@
 import { BaseService } from './base'
-import { User, Scopes } from '../responses'
+import { AuthenticatedUser, Scopes } from '../responses'
 import { HttpErrorCodes, ApiError } from '../errors'
 import { Connection, HttpMethod } from '../connection'
 
 export class Auth extends BaseService {
-    public user?: User
+    public user?: AuthenticatedUser
 
     constructor(connection: Connection) {
         super(connection)
     }
 
-    public login = async (email: string, password: string): Promise<User> => {
-        const user = await this.$connection.request<User>(HttpMethod.POST, '/users/login', {
+    public login = async (email: string, password: string): Promise<AuthenticatedUser> => {
+        const user = await this.$connection.request<AuthenticatedUser>(HttpMethod.POST, '/users/login', {
             email,
             password,
         })
@@ -36,7 +36,7 @@ export class Auth extends BaseService {
         return user
     }
 
-    public setUser(user?: User) {
+    public setUser(user?: AuthenticatedUser) {
         this.$connection.setUser(user)
     }
 

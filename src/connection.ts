@@ -1,4 +1,4 @@
-import { User, Scopes } from './responses'
+import { AuthenticatedUser, Scopes } from './responses'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 
@@ -13,7 +13,7 @@ type Data = Record<string, any>
 
 export class Connection {
     public baseURL: string
-    private $user?: User
+    private $user?: AuthenticatedUser
     private $ws?: WebSocketConnection
 
     constructor(baseURL: string, wsURL: string, useWebSockets?: boolean) {
@@ -148,7 +148,7 @@ export class Connection {
         return this.$ws
     }
 
-    public setUser(user?: User) {
+    public setUser(user?: AuthenticatedUser) {
         this.$user = user
     }
 
