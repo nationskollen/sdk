@@ -71,7 +71,7 @@ import { useAsyncCallback } from 'react-async-hook'
 import { useContext, useState, useEffect } from 'react'
 
 import { Context } from './context'
-import { ApiError } from './errors'
+import { ApiError, HttpErrorCodes} from './errors'
 import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
 import { UploaderFunction, UploadFieldType } from './upload'
@@ -495,6 +495,23 @@ export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
     return useSWR(() => `/menus/${menuId}`)
 }
 
+function getAuthorizedFetcher() {
+    const { baseURL, api }  = useSDK()
+    const token = api.connection.getToken()
+    if (!token) {
+            throw new ApiError(
+                HttpErrorCodes.Unauthorized,
+                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+            )
+    }
+    return (url: string) => fetch(
+        `${baseURL}${url}`,
+        {
+            headers: {'Authorization': `Bearer ${token}`}
+        }
+    ).then((r) => r.json()) 
+}
+
 /**
  * Fetches and caches all users for a Nation.
  * Hook (route) is session protected, meaning only an authorized user is allowed to
@@ -502,7 +519,7 @@ export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
  *
  * See all available query parameters here: {@link PaginationQueryParams}.
  *
- * @param oid The id of the {@link NAtion} to fetch the users of
+ * @param oid The id of the {@link Nation} to fetch the users of
  *
  * @category Fetcher
  */
@@ -514,6 +531,7 @@ export function useUsers(
     return createPaginatedResponse(
         useSWRInfinite((index: number) =>
             createQueryUrl(`/nations/${oid}/users`, transformPaginationParams(params), index + 1)
+        , getAuthorizedFetcher()
         )
     )
 }

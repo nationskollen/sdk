@@ -31,8 +31,8 @@ export class Connection {
 
         if (!this.$user || !this.$user.token) {
             throw new ApiError(
-                HttpErrorCodes.BadRequest,
-                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+                HttpErrorCodes.Unauthorized,
+                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
             )
         }
 
@@ -150,5 +150,9 @@ export class Connection {
 
     public setUser(user?: User) {
         this.$user = user
+    }
+
+    public getToken() {
+        return this.$user?.token
     }
 }
