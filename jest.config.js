@@ -7,4 +7,6 @@ module.exports = {
     },
     setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    automock: false,
+    resetMocks: false,
 }
