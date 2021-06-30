@@ -9,17 +9,15 @@ const email = 'admin@vdala.se'
 const password = 'vdalaadmin'
 const baseURL = 'http://nationskollen-staging.engstrand.nu/api/v1'
 
-const connection = new Connection(baseURL,'')
+const connection = new Connection(baseURL, '')
 const auth = new Auth(connection)
 
 test('it cannot login a user without token', async () => {
-      fetchMock.mockOnce(() => {
-          return new Promise(() => {
-              throw new ApiError(
-                  HttpErrorCodes.Unauthorized, 'Unauthorized'
-              )
-          })
-      })
+    fetchMock.mockOnce(() => {
+        return new Promise(() => {
+            throw new ApiError(HttpErrorCodes.Unauthorized, 'Unauthorized')
+        })
+    })
 
     await expect(auth.login(email, password)).rejects.toThrow()
 })
@@ -27,19 +25,21 @@ test('it cannot login a user without token', async () => {
 test('it can login a user', async () => {
     fetchMock.mockOnce(() => {
         return new Promise((resolve) => {
-            resolve(JSON.stringify({
-                id: 1,
-                oid: 400,
-                avatar_img_src: null,
-                nation_admin: true,
-                full_name: 'admin',
-                email: 'admin@vdala.se',
-                remember_me_token: null,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-                token: 'asdfasdf',
-                scope: Scopes.Admin
-            }))
+            resolve(
+                JSON.stringify({
+                    id: 1,
+                    oid: 400,
+                    avatar_img_src: null,
+                    nation_admin: true,
+                    full_name: 'admin',
+                    email: 'admin@vdala.se',
+                    remember_me_token: null,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    token: 'asdfasdf',
+                    scope: Scopes.Admin,
+                })
+            )
         })
     })
 
