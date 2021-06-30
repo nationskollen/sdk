@@ -546,7 +546,7 @@ export function useUsers(
  * @category Fetcher
  */
 export function useUser(userId: number): CachedAsyncHookContract<SingleUser> {
-    return useSWR(() => `/users/${userId}`)
+    return useSWR(() => `/users/${userId}`, getAuthorizedFetcher())
 }
 
 /**
