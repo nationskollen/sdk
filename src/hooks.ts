@@ -71,7 +71,7 @@ import { useAsyncCallback } from 'react-async-hook'
 import { useContext, useState, useEffect } from 'react'
 
 import { Context } from './context'
-import { ApiError, HttpErrorCodes} from './errors'
+import { ApiError, HttpErrorCodes } from './errors'
 import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
 import { UploaderFunction, UploadFieldType } from './upload'
@@ -496,20 +496,18 @@ export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
 }
 
 function getAuthorizedFetcher() {
-    const { baseURL, api }  = useSDK()
+    const { baseURL, api } = useSDK()
     const token = api.connection.getToken()
     if (!token) {
-            throw new ApiError(
-                HttpErrorCodes.Unauthorized,
-                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
-            )
+        throw new ApiError(
+            HttpErrorCodes.Unauthorized,
+            'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+        )
     }
-    return (url: string) => fetch(
-        `${baseURL}${url}`,
-        {
-            headers: {'Authorization': `Bearer ${token}`}
-        }
-    ).then((r) => r.json()) 
+    return (url: string) =>
+        fetch(`${baseURL}${url}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        }).then((r) => r.json())
 }
 
 /**
@@ -529,9 +527,14 @@ export function useUsers(
     params?: PaginationQueryParams
 ): PaginatedCachedAsyncHookContract<UsersCollection> {
     return createPaginatedResponse(
-        useSWRInfinite((index: number) =>
-            createQueryUrl(`/nations/${oid}/users`, transformPaginationParams(params), index + 1)
-        , getAuthorizedFetcher()
+        useSWRInfinite(
+            (index: number) =>
+                createQueryUrl(
+                    `/nations/${oid}/users`,
+                    transformPaginationParams(params),
+                    index + 1
+                ),
+            getAuthorizedFetcher()
         )
     )
 }
