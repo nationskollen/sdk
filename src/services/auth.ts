@@ -30,13 +30,26 @@ export class Auth extends BaseService {
             )
         }
 
-        this.user = user
-        this.setUser(user)
+        this.$connection.setUser(user)
 
         return user
     }
 
-    public setUser(user?: AuthenticatedUser) {
+    public async setToken(token?: string) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+
+        const response = await fetch(this.$connection.createUrl('/auth/me'), {
+            method: HttpMethod.GET,
+            headers,
+        })
+
+        this.$connection.checkForErrors(response.status)
+
+        const user = await response.json()
+
         this.$connection.setUser(user)
     }
 
@@ -49,7 +62,6 @@ export class Auth extends BaseService {
             true
         )
 
-        this.user = undefined
-        this.setUser(undefined)
+        this.$connection.setUser(undefined)
     }
 }

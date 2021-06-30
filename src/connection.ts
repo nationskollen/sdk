@@ -47,7 +47,7 @@ export class Connection {
         headers['Authorization'] = `Bearer ${this.$user.token}`
     }
 
-    private createUrl(endpoint: string) {
+    public createUrl(endpoint: string) {
         if (endpoint.substr(0, 1) === '/') {
             return `${this.baseURL}${endpoint}`
         }
@@ -55,7 +55,7 @@ export class Connection {
         return `${this.baseURL}/${endpoint}`
     }
 
-    private checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {
+    public checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {
         if (status === HttpErrorCodes.Ok) {
             return
         }
