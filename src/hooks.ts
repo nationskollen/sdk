@@ -37,6 +37,8 @@ import {
     MenuItem,
     MenuItemCollection,
     User,
+    SingleUser,
+    UsersCollection,
     OpeningHour,
     OpeningHourCollection,
     CategoryCollection,
@@ -69,7 +71,7 @@ import { useAsyncCallback } from 'react-async-hook'
 import { useContext, useState, useEffect } from 'react'
 
 import { Context } from './context'
-import { ApiError } from './errors'
+import { ApiError, HttpErrorCodes } from './errors'
 import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
 import { UploaderFunction, UploadFieldType } from './upload'
@@ -491,6 +493,63 @@ export function useMenus(
  */
 export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
     return useSWR(() => `/menus/${menuId}`)
+}
+
+function getAuthorizedFetcher() {
+    const { baseURL, api } = useSDK()
+    const token = api.connection.getToken()
+    if (!token) {
+        throw new ApiError(
+            HttpErrorCodes.Unauthorized,
+            'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+        )
+    }
+    return (url: string) =>
+        fetch(`${baseURL}${url}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        }).then((r) => r.json())
+}
+
+/**
+ * Fetches and caches all users for a Nation.
+ * Hook (route) is session protected, meaning only an authorized user is allowed to
+ * fetch users
+ *
+ * See all available query parameters here: {@link PaginationQueryParams}.
+ *
+ * @param oid The id of the {@link Nation} to fetch the users of
+ *
+ * @category Fetcher
+ */
+
+export function useUsers(
+    oid: number,
+    params?: PaginationQueryParams
+): PaginatedCachedAsyncHookContract<UsersCollection> {
+    return createPaginatedResponse(
+        useSWRInfinite(
+            (index: number) =>
+                createQueryUrl(
+                    `/nations/${oid}/users`,
+                    transformPaginationParams(params),
+                    index + 1
+                ),
+            getAuthorizedFetcher()
+        )
+    )
+}
+
+/**
+ * Fetches and caches a single user in a nation.
+ * Hook (route) is session protected, meaning only an authorized user is allowed to
+ * fetch a user
+ *
+ * @param userId The id of the {@link User} to fetch
+ *
+ * @category Fetcher
+ */
+export function useUser(userId: number): CachedAsyncHookContract<SingleUser> {
+    return useSWR(() => `/users/${userId}`, getAuthorizedFetcher())
 }
 
 /**

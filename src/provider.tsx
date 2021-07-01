@@ -41,6 +41,7 @@ export const Provider = ({ children, config }: ProviderProps) => {
                     environment: selectedEnvironment,
                     https,
                     hostname,
+                    baseURL,
                 }}
             >
                 {children}
