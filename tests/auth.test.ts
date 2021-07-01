@@ -12,7 +12,7 @@ const baseURL = 'http://nationskollen-staging.engstrand.nu/api/v1'
 const connection = new Connection(baseURL, '')
 const auth = new Auth(connection)
 
-test('it cannot login a user without token', async () => {
+test('it cannot login a user with invalid credentials', async () => {
     fetchMock.mockOnce(() => {
         return new Promise(() => {
             throw new ApiError(HttpErrorCodes.Unauthorized, 'Unauthorized')

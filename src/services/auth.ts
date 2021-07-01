@@ -50,10 +50,9 @@ export class Auth extends BaseService {
             headers,
         })
 
-        this.$connection.checkForErrors(response.status)
-
         const user = await response.json()
 
+        this.$connection.checkForErrors(response.status, user)
         this.$connection.setUser(user)
     }
 
