@@ -36,6 +36,7 @@ export interface LocationCreateData {
     description: string
     address: string
     max_capacity: number
+    activity_level_disabled?: boolean
     is_default?: boolean
     show_on_map: boolean
     latitude?: number | null

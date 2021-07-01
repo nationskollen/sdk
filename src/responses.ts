@@ -98,6 +98,7 @@ export interface Location {
     address: string
     max_capacity: number
     estimated_people_count: number
+    activity_level_disabled: boolean
     activity_level: number
     is_open: boolean
     is_default: boolean
