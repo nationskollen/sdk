@@ -18,6 +18,7 @@ export const Client = (baseURL: string, wsURL: string, useWebSockets?: boolean) 
         subscriptions: new Services.Subscriptions(connection),
         individuals: new Services.Individuals(connection),
         contact: new Services.Contact(connection),
+        users: new Services.Users(connection),
         permissions: new Services.Permissions(connection),
     }
 }

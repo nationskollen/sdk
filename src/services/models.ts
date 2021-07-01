@@ -70,6 +70,12 @@ export interface IndividualCreateData {
     description?: string | null
 }
 
+export interface UsersCreateData {
+    full_name: string
+    email: string
+    password: string
+}
+
 export interface ContactCreateData {
     email: string
     telephone: string

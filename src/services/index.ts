@@ -1,5 +1,6 @@
 export * from './auth'
 export * from './menus'
+export * from './users'
 export * from './events'
 export * from './nations'
 export * from './contact'

@@ -1,20 +1,24 @@
 import { BaseService } from './base'
-import { User, Scopes } from '../responses'
+import { AuthenticatedUser, Scopes } from '../responses'
 import { HttpErrorCodes, ApiError } from '../errors'
 import { Connection, HttpMethod } from '../connection'
 
 export class Auth extends BaseService {
-    public user?: User
+    public user?: AuthenticatedUser
 
     constructor(connection: Connection) {
         super(connection)
     }
 
-    public login = async (email: string, password: string): Promise<User> => {
-        const user = await this.$connection.request<User>(HttpMethod.POST, '/users/login', {
-            email,
-            password,
-        })
+    public login = async (email: string, password: string): Promise<AuthenticatedUser> => {
+        const user = await this.$connection.request<AuthenticatedUser>(
+            HttpMethod.POST,
+            '/users/login',
+            {
+                email,
+                password,
+            }
+        )
 
         if (!user.hasOwnProperty('token')) {
             throw new ApiError(
@@ -30,13 +34,25 @@ export class Auth extends BaseService {
             )
         }
 
-        this.user = user
-        this.setUser(user)
+        this.$connection.setUser(user)
 
         return user
     }
 
-    public setUser(user?: User) {
+    public async setToken(token?: string) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+
+        const response = await fetch(this.$connection.createUrl('/auth/me'), {
+            method: HttpMethod.GET,
+            headers,
+        })
+
+        const user = await response.json()
+
+        this.$connection.checkForErrors(response.status, user)
         this.$connection.setUser(user)
     }
 
@@ -49,7 +65,6 @@ export class Auth extends BaseService {
             true
         )
 
-        this.user = undefined
-        this.setUser(undefined)
+        this.$connection.setUser(undefined)
     }
 }

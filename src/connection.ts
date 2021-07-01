@@ -1,4 +1,4 @@
-import { User, Scopes } from './responses'
+import { AuthenticatedUser, Scopes } from './responses'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 
@@ -13,7 +13,7 @@ type Data = Record<string, any>
 
 export class Connection {
     public baseURL: string
-    private $user?: User
+    private $user?: AuthenticatedUser
     private $ws?: WebSocketConnection
 
     constructor(baseURL: string, wsURL: string, useWebSockets?: boolean) {
@@ -31,8 +31,8 @@ export class Connection {
 
         if (!this.$user || !this.$user.token) {
             throw new ApiError(
-                HttpErrorCodes.BadRequest,
-                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+                HttpErrorCodes.Unauthorized,
+                'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
             )
         }
 
@@ -47,7 +47,7 @@ export class Connection {
         headers['Authorization'] = `Bearer ${this.$user.token}`
     }
 
-    private createUrl(endpoint: string) {
+    public createUrl(endpoint: string) {
         if (endpoint.substr(0, 1) === '/') {
             return `${this.baseURL}${endpoint}`
         }
@@ -55,7 +55,7 @@ export class Connection {
         return `${this.baseURL}/${endpoint}`
     }
 
-    private checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {
+    public checkForErrors(status: HttpErrorCodes, parsedResponse?: Record<string, unknown>) {
         if (status === HttpErrorCodes.Ok) {
             return
         }
@@ -148,7 +148,11 @@ export class Connection {
         return this.$ws
     }
 
-    public setUser(user?: User) {
+    public setUser(user?: AuthenticatedUser) {
         this.$user = user
+    }
+
+    public getToken() {
+        return this.$user?.token
     }
 }
