@@ -17,7 +17,9 @@ export class Auth extends BaseService {
             {
                 email,
                 password,
-            }
+            },
+            false,
+            true
         )
 
         if (!user.hasOwnProperty('token')) {
@@ -61,6 +63,7 @@ export class Auth extends BaseService {
             HttpMethod.POST,
             '/users/logout',
             undefined,
+            true,
             true
         )
 

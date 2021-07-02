@@ -17,6 +17,8 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
+            false,
+            false
         )
 
         return nation
@@ -31,6 +33,7 @@ export class Nations extends BaseService {
         const nation = await this.$connection.upload<Nation>(
             `/nations/${oid}/upload`, 
             body,
+            false
         )
 
         return nation

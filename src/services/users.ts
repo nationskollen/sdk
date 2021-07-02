@@ -17,7 +17,10 @@ export class Users extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/users`,
             data,
+            false,
+            false
         )
+
         return user
     }
 
@@ -26,6 +29,8 @@ export class Users extends BaseService {
             HttpMethod.PUT,
             `/users/${uid}`,
             change,
+            false,
+            false
         )
 
         return user
@@ -36,6 +41,8 @@ export class Users extends BaseService {
             HttpMethod.DELETE, 
             `/users/${uid}`, 
             undefined,
+            true,
+            false
         )
     }
 
@@ -48,6 +55,7 @@ export class Users extends BaseService {
         const user = await this.$connection.upload<SingleUser>(
             `/users/${uid}/upload`,
             body, 
+            false
         )
 
         return user

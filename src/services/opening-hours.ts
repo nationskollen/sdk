@@ -16,6 +16,8 @@ export class OpeningHours extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
             data,
+            false,
+            false
         )
 
         return hour
@@ -30,6 +32,8 @@ export class OpeningHours extends BaseService {
             HttpMethod.PUT,
             `/locations/${locationId}/hours/${hourId}`,
             data,
+            false,
+            false
         )
 
         return hour
@@ -40,6 +44,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
             undefined,
+            false
         )
     }
 }

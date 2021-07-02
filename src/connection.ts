@@ -85,13 +85,16 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        skipParsing?: boolean
+        skipParsing?: boolean,
+        skipAuthentication?: boolean
     ): Promise<T> {
         const headers = {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(headers)
+        if (!skipAuthentication) {
+            this.setBearerTokenIfRequired(headers)
+        }
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -113,10 +116,13 @@ export class Connection {
     public async upload<T>(
         endpoint: string,
         body: FormData,
+        skipAuthentication?: boolean
     ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(headers)
+        if (!skipAuthentication) {
+            this.setBearerTokenIfRequired(headers)
+        }
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,
