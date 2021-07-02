@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { EventCreateData } from './models'
 import { createUploadBody } from '../utils'
-import { Event, PermissionTypes } from '../responses'
+import { Event } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,6 @@ export class Events extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/events`,
             data,
-            [PermissionTypes.Events]
         )
         return event
     }
@@ -31,7 +30,6 @@ export class Events extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/events/${eventId}`,
             change,
-            [PermissionTypes.Events]
         )
         return event
     }
@@ -41,7 +39,6 @@ export class Events extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/events/${eventId}`,
             undefined,
-            [PermissionTypes.Events]
         )
     }
 
@@ -54,7 +51,6 @@ export class Events extends BaseService {
         const event = await this.$connection.upload<Event>(
             `/events/${eventId}/upload`,
             body,
-            [PermissionTypes.Events]
         )
 
         return event

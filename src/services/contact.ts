@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { ContactCreateData } from './models'
 import { Connection, HttpMethod } from '../connection'
-import { ContactInformation, PermissionTypes } from '../responses'
+import { ContactInformation } from '../responses'
 
 export class Contact extends BaseService {
     constructor(connection: Connection) {
@@ -13,7 +13,6 @@ export class Contact extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/contact`,
             data,
-            [PermissionTypes.Contact]
         )
         return information
     }
@@ -26,7 +25,6 @@ export class Contact extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/contact`,
             change,
-            [PermissionTypes.Contact]
         )
         return information
     }
@@ -36,7 +34,6 @@ export class Contact extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/contact`,
             undefined,
-            [PermissionTypes.Contact]
         )
     }
 }

@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { MenuItemCreateData } from './models'
-import { MenuItem, PermissionTypes } from '../responses'
+import { MenuItem } from '../responses'
 import { UploaderFunctionDouble } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,6 @@ export class MenuItems extends BaseService {
             HttpMethod.POST,
             `/menus/${menuId}/items`,
             data,
-            [PermissionTypes.MenuItem]
         )
 
         return item
@@ -32,7 +31,6 @@ export class MenuItems extends BaseService {
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
             data,
-            [PermissionTypes.MenuItem]
         )
 
         return item
@@ -43,7 +41,6 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            [PermissionTypes.MenuItem]
         )
     }
 
@@ -57,7 +54,6 @@ export class MenuItems extends BaseService {
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
             body,
-            [PermissionTypes.MenuItem]
         )
 
         return menuItem

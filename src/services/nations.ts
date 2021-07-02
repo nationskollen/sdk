@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { NationCreateData } from './models'
 import { createUploadBody } from '../utils'
-import { Nation, PermissionTypes } from '../responses'
+import { Nation } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,6 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            [PermissionTypes.Nation]
         )
 
         return nation
@@ -32,7 +31,6 @@ export class Nations extends BaseService {
         const nation = await this.$connection.upload<Nation>(
             `/nations/${oid}/upload`, 
             body,
-            [PermissionTypes.Nation]
         )
 
         return nation

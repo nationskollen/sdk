@@ -148,13 +148,13 @@ export interface User {
 }
 
 export interface SingleUser extends User {
-    permissions: Array<Permissions>
+    permissions: Array<Permission>
 }
 
 export interface AuthenticatedUser extends User {
     type: string
     token: string
-    permissions: PermissionTypes
+    permissions: Array<Permission>
 }
 
 export interface SubscriptionTopic {

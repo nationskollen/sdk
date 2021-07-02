@@ -61,7 +61,6 @@ export class Auth extends BaseService {
             HttpMethod.POST,
             '/users/logout',
             undefined,
-            undefined,
             true
         )
 

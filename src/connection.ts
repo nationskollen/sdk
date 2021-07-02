@@ -1,4 +1,4 @@
-import { AuthenticatedUser, PermissionTypes } from './responses'
+import { AuthenticatedUser } from './responses'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 
@@ -24,23 +24,11 @@ export class Connection {
         }
     }
 
-    private setBearerTokenIfRequired(headers: any, permissions?: Array<PermissionTypes>) {
-        if (!permissions || permissions.length === 0) {
-            return
-        }
-
+    private setBearerTokenIfRequired(headers: any) {
         if (!this.$user || !this.$user.token) {
             throw new ApiError(
                 HttpErrorCodes.Unauthorized,
                 'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
-            )
-        }
-
-        // Only allow the request if we have the correct permission
-        if (permissions && !permissions.includes(this.$user.permissions)) {
-            throw new ApiError(
-                HttpErrorCodes.Unauthorized,
-                'Invalid bearer token permission. You do not have permissions for this request'
             )
         }
 
@@ -97,14 +85,13 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        allowedPermissions?: Array<PermissionTypes>,
         skipParsing?: boolean
     ): Promise<T> {
         const headers = {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(headers, allowedPermissions)
+        this.setBearerTokenIfRequired(headers)
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -126,11 +113,10 @@ export class Connection {
     public async upload<T>(
         endpoint: string,
         body: FormData,
-        allowedPermissions: Array<PermissionTypes>
     ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(headers, allowedPermissions)
+        this.setBearerTokenIfRequired(headers)
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,

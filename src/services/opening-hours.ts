@@ -1,6 +1,6 @@
 import { BaseService } from './base'
 import { OpeningHourCreateData } from './models'
-import { OpeningHour, PermissionTypes } from '../responses'
+import { OpeningHour } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
 export class OpeningHours extends BaseService {
@@ -16,7 +16,6 @@ export class OpeningHours extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
             data,
-            [PermissionTypes.OpeningHours]
         )
 
         return hour
@@ -31,7 +30,6 @@ export class OpeningHours extends BaseService {
             HttpMethod.PUT,
             `/locations/${locationId}/hours/${hourId}`,
             data,
-            [PermissionTypes.OpeningHours]
         )
 
         return hour
@@ -42,7 +40,6 @@ export class OpeningHours extends BaseService {
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
             undefined,
-            [PermissionTypes.OpeningHours]
         )
     }
 }

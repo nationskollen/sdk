@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { UsersCreateData } from './models'
-import { SingleUser, PermissionTypes} from '../responses'
+import { SingleUser } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,6 @@ export class Users extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/users`,
             data,
-            [PermissionTypes.Users]
         )
         return user
     }
@@ -27,7 +26,6 @@ export class Users extends BaseService {
             HttpMethod.PUT,
             `/users/${uid}`,
             change,
-            [PermissionTypes.Users]
         )
 
         return user
@@ -38,7 +36,6 @@ export class Users extends BaseService {
             HttpMethod.DELETE, 
             `/users/${uid}`, 
             undefined,
-            [PermissionTypes.Users]
         )
     }
 
@@ -51,7 +48,6 @@ export class Users extends BaseService {
         const user = await this.$connection.upload<SingleUser>(
             `/users/${uid}/upload`,
             body, 
-            [PermissionTypes.Users]
         )
 
         return user
