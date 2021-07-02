@@ -1,5 +1,5 @@
 import { BaseService } from './base'
-import { AuthenticatedUser, Scopes } from '../responses'
+import { AuthenticatedUser } from '../responses'
 import { HttpErrorCodes, ApiError } from '../errors'
 import { Connection, HttpMethod } from '../connection'
 
@@ -27,10 +27,10 @@ export class Auth extends BaseService {
             )
         }
 
-        if (!user.hasOwnProperty('scope')) {
+        if (!user.hasOwnProperty('permissions')) {
             throw new ApiError(
                 HttpErrorCodes.InternalError,
-                'Could not read token scope from login response'
+                'Could not read token permissions from login response'
             )
         }
 
@@ -61,7 +61,7 @@ export class Auth extends BaseService {
             HttpMethod.POST,
             '/users/logout',
             undefined,
-            [Scopes.Admin, Scopes.Staff],
+            undefined,
             true
         )
 

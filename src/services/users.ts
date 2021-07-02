@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { UsersCreateData } from './models'
-import { SingleUser, Scopes } from '../responses'
+import { SingleUser, PermissionTypes} from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,7 @@ export class Users extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/users`,
             data,
-            [Scopes.Admin]
+            [PermissionTypes.Users]
         )
         return user
     }
@@ -27,16 +27,19 @@ export class Users extends BaseService {
             HttpMethod.PUT,
             `/users/${uid}`,
             change,
-            [Scopes.Admin]
+            [PermissionTypes.Users]
         )
 
         return user
     }
 
     public delete = async (uid: number) => {
-        await this.$connection.request<SingleUser>(HttpMethod.DELETE, `/users/${uid}`, undefined, [
-            Scopes.Admin,
-        ])
+        await this.$connection.request<SingleUser>(
+            HttpMethod.DELETE, 
+            `/users/${uid}`, 
+            undefined,
+            [PermissionTypes.Users]
+        )
     }
 
     public upload: UploaderFunctionSingle<SingleUser, UsersUploads> = async (
@@ -45,9 +48,11 @@ export class Users extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const user = await this.$connection.upload<SingleUser>(`/users/${uid}/upload`, body, [
-            Scopes.Admin,
-        ])
+        const user = await this.$connection.upload<SingleUser>(
+            `/users/${uid}/upload`,
+            body, 
+            [PermissionTypes.Users]
+        )
 
         return user
     }

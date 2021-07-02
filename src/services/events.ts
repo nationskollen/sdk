@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { EventCreateData } from './models'
 import { createUploadBody } from '../utils'
-import { Event, Scopes } from '../responses'
+import { Event, PermissionTypes } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,7 @@ export class Events extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/events`,
             data,
-            [Scopes.Admin]
+            [PermissionTypes.Events]
         )
         return event
     }
@@ -31,7 +31,7 @@ export class Events extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/events/${eventId}`,
             change,
-            [Scopes.Admin]
+            [PermissionTypes.Events]
         )
         return event
     }
@@ -41,7 +41,7 @@ export class Events extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/events/${eventId}`,
             undefined,
-            [Scopes.Admin]
+            [PermissionTypes.Events]
         )
     }
 
@@ -51,9 +51,11 @@ export class Events extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, [
-            Scopes.Admin,
-        ])
+        const event = await this.$connection.upload<Event>(
+            `/events/${eventId}/upload`,
+            body,
+            [PermissionTypes.Events]
+        )
 
         return event
     }

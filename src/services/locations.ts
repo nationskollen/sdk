@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { LocationCreateData } from './models'
-import { Location, Scopes } from '../responses'
+import { Location, PermissionTypes } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 import { UploaderFunctionSingle } from '../upload'
 
@@ -17,7 +17,7 @@ export class Locations extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/locations`,
             data,
-            [Scopes.Admin]
+            [PermissionTypes.Locations]
         )
         return location
     }
@@ -31,7 +31,7 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change,
-            [Scopes.Admin]
+            [PermissionTypes.Locations]
         )
         return location
     }
@@ -41,7 +41,7 @@ export class Locations extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
-            [Scopes.Admin]
+            [PermissionTypes.Locations]
         )
     }
 
@@ -54,7 +54,7 @@ export class Locations extends BaseService {
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
             body,
-            [Scopes.Admin]
+            [PermissionTypes.Locations]
         )
 
         return location

@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { MenuCreateData } from './models'
 import { createUploadBody } from '../utils'
-import { Menu, Scopes } from '../responses'
+import { Menu, PermissionTypes } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
             menuData,
-            [Scopes.Admin]
+            [PermissionTypes.Menus]
         )
 
         return menu
@@ -32,7 +32,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             menuData,
-            [Scopes.Admin]
+            [PermissionTypes.Menus]
         )
 
         return menu
@@ -43,7 +43,7 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             undefined,
-            [Scopes.Admin]
+            [PermissionTypes.Menus]
         )
     }
 
@@ -53,9 +53,11 @@ export class Menus extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const menu = await this.$connection.upload<Menu>(`/menus/${menuId}/upload`, body, [
-            Scopes.Admin,
-        ])
+        const menu = await this.$connection.upload<Menu>(
+            `/menus/${menuId}/upload`,
+            body, 
+            [PermissionTypes.Menus]
+        )
 
         return menu
     }

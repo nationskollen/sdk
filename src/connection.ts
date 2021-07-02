@@ -1,4 +1,4 @@
-import { AuthenticatedUser, Scopes } from './responses'
+import { AuthenticatedUser, PermissionTypes } from './responses'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 
@@ -24,8 +24,8 @@ export class Connection {
         }
     }
 
-    private setBearerTokenIfRequired(headers: any, scopes?: Array<Scopes>) {
-        if (!scopes || scopes.length === 0) {
+    private setBearerTokenIfRequired(headers: any, permissions?: Array<PermissionTypes>) {
+        if (!permissions || permissions.length === 0) {
             return
         }
 
@@ -36,11 +36,11 @@ export class Connection {
             )
         }
 
-        // Only allow the request if we have the correct scope
-        if (scopes && !scopes.includes(this.$user.scope)) {
+        // Only allow the request if we have the correct permission
+        if (permissions && !permissions.includes(this.$user.permissions)) {
             throw new ApiError(
                 HttpErrorCodes.Unauthorized,
-                'Invalid bearer token scope. You do not have permissions for this request'
+                'Invalid bearer token permission. You do not have permissions for this request'
             )
         }
 
@@ -97,14 +97,14 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        allowedScopes?: Array<Scopes>,
+        allowedPermissions?: Array<PermissionTypes>,
         skipParsing?: boolean
     ): Promise<T> {
         const headers = {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(headers, allowedScopes)
+        this.setBearerTokenIfRequired(headers, allowedPermissions)
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -126,11 +126,11 @@ export class Connection {
     public async upload<T>(
         endpoint: string,
         body: FormData,
-        allowedScopes: Array<Scopes>
+        allowedPermissions: Array<PermissionTypes>
     ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(headers, allowedScopes)
+        this.setBearerTokenIfRequired(headers, allowedPermissions)
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,
