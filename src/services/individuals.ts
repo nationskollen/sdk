@@ -20,7 +20,7 @@ export class Individuals extends BaseService {
             false,
             false
         )
-        
+
         return individual
     }
 
@@ -59,7 +59,7 @@ export class Individuals extends BaseService {
         const individual = await this.$connection.upload<Individual>(
             `/individuals/${iid}/upload`,
             body,
-            false,
+            false
         )
 
         return individual

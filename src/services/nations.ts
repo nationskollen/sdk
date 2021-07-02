@@ -30,11 +30,7 @@ export class Nations extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const nation = await this.$connection.upload<Nation>(
-            `/nations/${oid}/upload`, 
-            body,
-            false
-        )
+        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body, false)
 
         return nation
     }

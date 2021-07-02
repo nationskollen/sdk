@@ -40,9 +40,9 @@ test('it can login a user', async () => {
                         {
                             id: 2,
                             user_id: 1,
-                            permission_type_id: 2
-                        }
-                    ]
+                            permission_type_id: 2,
+                        },
+                    ],
                 })
             )
         })

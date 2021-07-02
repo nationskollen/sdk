@@ -38,8 +38,8 @@ export class Users extends BaseService {
 
     public delete = async (uid: number) => {
         await this.$connection.request<SingleUser>(
-            HttpMethod.DELETE, 
-            `/users/${uid}`, 
+            HttpMethod.DELETE,
+            `/users/${uid}`,
             undefined,
             true,
             false
@@ -52,11 +52,7 @@ export class Users extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const user = await this.$connection.upload<SingleUser>(
-            `/users/${uid}/upload`,
-            body, 
-            false
-        )
+        const user = await this.$connection.upload<SingleUser>(`/users/${uid}/upload`, body, false)
 
         return user
     }

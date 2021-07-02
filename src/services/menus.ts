@@ -56,11 +56,7 @@ export class Menus extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const menu = await this.$connection.upload<Menu>(
-            `/menus/${menuId}/upload`,
-            body, 
-            false
-        )
+        const menu = await this.$connection.upload<Menu>(`/menus/${menuId}/upload`, body, false)
 
         return menu
     }

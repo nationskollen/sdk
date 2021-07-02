@@ -56,11 +56,7 @@ export class Events extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const event = await this.$connection.upload<Event>(
-            `/events/${eventId}/upload`,
-            body,
-            false
-        )
+        const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, false)
 
         return event
     }
