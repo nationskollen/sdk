@@ -36,6 +36,13 @@ test('it can login a user', async () => {
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
                     token: 'asdfasdf',
+                    permissions: [
+                        {
+                            id: 2,
+                            user_id: 1,
+                            permission_type_id: 2
+                        }
+                    ]
                 })
             )
         })
