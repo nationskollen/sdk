@@ -648,7 +648,7 @@ export function useCategories(): CachedAsyncHookContract<CategoryCollection> {
  * @category Fetcher
  */
 export function usePermissionTypes(): CachedAsyncHookContract<PermissionsTypeCollection> {
-    return useSWR(() => '/permissions/types', getAuthorizedFetcher)
+    return useSWR(() => '/permissions/types', getAuthorizedFetcher())
 }
 
 /**
