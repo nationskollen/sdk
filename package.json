@@ -1,6 +1,6 @@
 {
     "name": "@nationskollen/sdk",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "description": "Nationskollen JavaScript API client SDK",
     "repository": "git://github.com/nationskollen/sdk.git",
     "author": "Nationskollen",
