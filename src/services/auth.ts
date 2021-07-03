@@ -32,7 +32,7 @@ export class Auth extends BaseService {
         if (!user.hasOwnProperty('permissions')) {
             throw new ApiError(
                 HttpErrorCodes.InternalError,
-                'Could not read token permissions from login response'
+                'Could not read permissions from login response'
             )
         }
 
