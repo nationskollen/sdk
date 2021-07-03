@@ -39,7 +39,8 @@ export class OpeningHours extends BaseService {
         await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
-            undefined
+            undefined,
+            true
         )
     }
 }
