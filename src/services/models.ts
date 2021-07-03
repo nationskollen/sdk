@@ -43,6 +43,11 @@ export interface LocationCreateData {
     longitude?: number | null
 }
 
+export interface LocationActivityUpdateData {
+    change?: number
+    exact_amount?: number
+}
+
 export interface OpeningHourCreateData {
     type: number
     is_open: boolean
