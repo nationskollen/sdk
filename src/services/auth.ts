@@ -41,7 +41,7 @@ export class Auth extends BaseService {
         return user
     }
 
-    public async setToken(token?: string) {
+    public async setToken(token?: string): Promise<AuthenticatedUser> {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -56,6 +56,8 @@ export class Auth extends BaseService {
 
         this.$connection.checkForErrors(response.status, user)
         this.$connection.setUser(user)
+
+        return user
     }
 
     public logout = async (): Promise<void> => {
