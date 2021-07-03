@@ -42,9 +42,7 @@ test('it cannot login a user with invalid credentials', async () => {
 test('it can login a user', async () => {
     fetchMock.mockOnce(() => {
         return new Promise((resolve) => {
-            resolve(
-                JSON.stringify({ ...TEST_USER_DATA, token: 'token' })
-            )
+            resolve(JSON.stringify({ ...TEST_USER_DATA, token: 'token' }))
         })
     })
 
@@ -60,9 +58,7 @@ test('it can login a user via token', async () => {
 
     fetchMock.mockOnce(() => {
         return new Promise((resolve) => {
-            resolve(
-                JSON.stringify(TEST_USER_DATA)
-            )
+            resolve(JSON.stringify(TEST_USER_DATA))
         })
     })
 

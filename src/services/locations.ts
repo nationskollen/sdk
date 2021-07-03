@@ -37,10 +37,7 @@ export class Locations extends BaseService {
         return location
     }
 
-    public setOpen = async (
-        lid: number,
-        isOpen: boolean
-    ): Promise<Location> => {
+    public setOpen = async (lid: number, isOpen: boolean): Promise<Location> => {
         let endpoint = 'open'
 
         // If we want to close the location, set the correct endpoint
@@ -50,7 +47,7 @@ export class Locations extends BaseService {
 
         const location = await this.$connection.request<Location>(
             HttpMethod.PUT,
-            `/locations/${lid}/${endpoint}`,
+            `/locations/${lid}/${endpoint}`
         )
 
         return location
@@ -63,14 +60,14 @@ export class Locations extends BaseService {
         if (!data.hasOwnProperty('change') && !data.hasOwnProperty('exact_amount')) {
             throw new ApiError(
                 HttpErrorCodes.ValidationError,
-                'Updating the activity requires at least one of the properties "change" or "exact_amount"',
+                'Updating the activity requires at least one of the properties "change" or "exact_amount"'
             )
         }
 
         if (data.exact_amount !== undefined && data.exact_amount < 0) {
             throw new ApiError(
                 HttpErrorCodes.ValidationError,
-                'Setting the current visitor amount of a location requires a positive integer',
+                'Setting the current visitor amount of a location requires a positive integer'
             )
         }
 
