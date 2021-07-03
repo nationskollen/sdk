@@ -1,5 +1,5 @@
 import { BaseService } from './base'
-import { AuthenticatedUser, Scopes } from '../responses'
+import { AuthenticatedUser } from '../responses'
 import { HttpErrorCodes, ApiError } from '../errors'
 import { Connection, HttpMethod } from '../connection'
 
@@ -17,7 +17,9 @@ export class Auth extends BaseService {
             {
                 email,
                 password,
-            }
+            },
+            false,
+            true
         )
 
         if (!user.hasOwnProperty('token')) {
@@ -27,10 +29,10 @@ export class Auth extends BaseService {
             )
         }
 
-        if (!user.hasOwnProperty('scope')) {
+        if (!user.hasOwnProperty('permissions')) {
             throw new ApiError(
                 HttpErrorCodes.InternalError,
-                'Could not read token scope from login response'
+                'Could not read permissions from login response'
             )
         }
 
@@ -39,7 +41,7 @@ export class Auth extends BaseService {
         return user
     }
 
-    public async setToken(token?: string) {
+    public async setToken(token?: string): Promise<AuthenticatedUser> {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -54,16 +56,12 @@ export class Auth extends BaseService {
 
         this.$connection.checkForErrors(response.status, user)
         this.$connection.setUser(user)
+
+        return user
     }
 
     public logout = async (): Promise<void> => {
-        await this.$connection.request(
-            HttpMethod.POST,
-            '/users/logout',
-            undefined,
-            [Scopes.Admin, Scopes.Staff],
-            true
-        )
+        await this.$connection.request(HttpMethod.POST, '/users/logout', undefined, true)
 
         this.$connection.setUser(undefined)
     }

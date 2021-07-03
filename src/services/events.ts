@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { EventCreateData } from './models'
 import { createUploadBody } from '../utils'
-import { Event, Scopes } from '../responses'
+import { Event } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -16,9 +16,9 @@ export class Events extends BaseService {
         const event = await this.$connection.request<Event>(
             HttpMethod.POST,
             `/nations/${oid}/events`,
-            data,
-            [Scopes.Admin]
+            data
         )
+
         return event
     }
 
@@ -30,9 +30,9 @@ export class Events extends BaseService {
         const event = await this.$connection.request<Event>(
             HttpMethod.PUT,
             `/nations/${oid}/events/${eventId}`,
-            change,
-            [Scopes.Admin]
+            change
         )
+
         return event
     }
 
@@ -41,7 +41,7 @@ export class Events extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/events/${eventId}`,
             undefined,
-            [Scopes.Admin]
+            true
         )
     }
 
@@ -51,9 +51,7 @@ export class Events extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, [
-            Scopes.Admin,
-        ])
+        const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body)
 
         return event
     }

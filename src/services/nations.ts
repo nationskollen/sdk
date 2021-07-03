@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { NationCreateData } from './models'
 import { createUploadBody } from '../utils'
-import { Nation, Scopes } from '../responses'
+import { Nation } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -16,8 +16,7 @@ export class Nations extends BaseService {
         const nation = await this.$connection.request<Nation>(
             HttpMethod.PUT,
             `/nations/${oid}`,
-            change,
-            [Scopes.Admin]
+            change
         )
 
         return nation
@@ -29,9 +28,7 @@ export class Nations extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body, [
-            Scopes.Admin,
-        ])
+        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body)
 
         return nation
     }

@@ -1,6 +1,6 @@
 import { BaseService } from './base'
 import { PermissionCreateData } from './models'
-import { Permission, Scopes } from '../responses'
+import { Permission } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
 export class Permissions extends BaseService {
@@ -12,8 +12,7 @@ export class Permissions extends BaseService {
         const permission = await this.$connection.request<Permission>(
             HttpMethod.POST,
             `/permissions`,
-            permissionData,
-            [Scopes.Admin]
+            permissionData
         )
 
         return permission
@@ -24,7 +23,7 @@ export class Permissions extends BaseService {
             HttpMethod.DELETE,
             `/permissions`,
             permissionData,
-            [Scopes.Admin]
+            true
         )
     }
 }

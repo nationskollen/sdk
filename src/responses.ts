@@ -1,9 +1,3 @@
-export enum Scopes {
-    Admin = 'admin',
-    Staff = 'staff',
-    None = 'none',
-}
-
 export enum ActivityLevels {
     Closed,
     Low,
@@ -154,13 +148,12 @@ export interface User {
 }
 
 export interface SingleUser extends User {
-    permissions: Array<Permissions>
+    permissions: Array<Permission>
 }
 
-export interface AuthenticatedUser extends User {
+export interface AuthenticatedUser extends SingleUser {
     type: string
     token: string
-    scope: Scopes
 }
 
 export interface SubscriptionTopic {

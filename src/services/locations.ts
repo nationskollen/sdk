@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { LocationCreateData } from './models'
-import { Location, Scopes } from '../responses'
+import { Location } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 import { UploaderFunctionSingle } from '../upload'
 
@@ -16,9 +16,9 @@ export class Locations extends BaseService {
         const location = await this.$connection.request<Location>(
             HttpMethod.POST,
             `/nations/${oid}/locations`,
-            data,
-            [Scopes.Admin]
+            data
         )
+
         return location
     }
 
@@ -30,9 +30,9 @@ export class Locations extends BaseService {
         const location = await this.$connection.request<Location>(
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
-            change,
-            [Scopes.Admin]
+            change
         )
+
         return location
     }
 
@@ -41,7 +41,7 @@ export class Locations extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/locations/${lid}`,
             undefined,
-            [Scopes.Admin]
+            true
         )
     }
 
@@ -53,8 +53,7 @@ export class Locations extends BaseService {
         const body = createUploadBody({ [field]: file })
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
-            body,
-            [Scopes.Admin]
+            body
         )
 
         return location

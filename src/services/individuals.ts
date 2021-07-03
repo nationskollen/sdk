@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { IndividualCreateData } from './models'
-import { Individual, Scopes } from '../responses'
+import { Individual } from '../responses'
 import { UploaderFunctionSingle } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -16,9 +16,9 @@ export class Individuals extends BaseService {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.POST,
             `/nations/${oid}/individuals`,
-            data,
-            [Scopes.Admin]
+            data
         )
+
         return individual
     }
 
@@ -30,8 +30,7 @@ export class Individuals extends BaseService {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.PUT,
             `/nations/${oid}/individuals/${iid}`,
-            change,
-            [Scopes.Admin]
+            change
         )
 
         return individual
@@ -42,7 +41,7 @@ export class Individuals extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/individuals/${iid}`,
             undefined,
-            [Scopes.Admin]
+            true
         )
     }
 
@@ -54,8 +53,7 @@ export class Individuals extends BaseService {
         const body = createUploadBody({ [field]: file })
         const individual = await this.$connection.upload<Individual>(
             `/individuals/${iid}/upload`,
-            body,
-            [Scopes.Admin]
+            body
         )
 
         return individual

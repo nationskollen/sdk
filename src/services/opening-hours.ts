@@ -1,6 +1,6 @@
 import { BaseService } from './base'
 import { OpeningHourCreateData } from './models'
-import { OpeningHour, Scopes } from '../responses'
+import { OpeningHour } from '../responses'
 import { Connection, HttpMethod } from '../connection'
 
 export class OpeningHours extends BaseService {
@@ -15,8 +15,7 @@ export class OpeningHours extends BaseService {
         const hour = await this.$connection.request<OpeningHour>(
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
-            data,
-            [Scopes.Admin]
+            data
         )
 
         return hour
@@ -30,8 +29,7 @@ export class OpeningHours extends BaseService {
         const hour = await this.$connection.request<OpeningHour>(
             HttpMethod.PUT,
             `/locations/${locationId}/hours/${hourId}`,
-            data,
-            [Scopes.Admin]
+            data
         )
 
         return hour
@@ -42,7 +40,7 @@ export class OpeningHours extends BaseService {
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
             undefined,
-            [Scopes.Admin]
+            true
         )
     }
 }

@@ -1,4 +1,4 @@
-import { AuthenticatedUser, Scopes } from './responses'
+import { AuthenticatedUser } from './responses'
 import { WebSocketConnection } from './websockets'
 import { HttpErrorCodes, ApiError } from './errors'
 
@@ -24,23 +24,11 @@ export class Connection {
         }
     }
 
-    private setBearerTokenIfRequired(headers: any, scopes?: Array<Scopes>) {
-        if (!scopes || scopes.length === 0) {
-            return
-        }
-
+    private setBearerTokenIfRequired(headers: any) {
         if (!this.$user || !this.$user.token) {
             throw new ApiError(
                 HttpErrorCodes.Unauthorized,
                 'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
-            )
-        }
-
-        // Only allow the request if we have the correct scope
-        if (scopes && !scopes.includes(this.$user.scope)) {
-            throw new ApiError(
-                HttpErrorCodes.Unauthorized,
-                'Invalid bearer token scope. You do not have permissions for this request'
             )
         }
 
@@ -97,14 +85,16 @@ export class Connection {
         method: HttpMethod,
         endpoint: string,
         data?: Data,
-        allowedScopes?: Array<Scopes>,
-        skipParsing?: boolean
+        skipParsing?: boolean,
+        skipAuthentication?: boolean
     ): Promise<T> {
         const headers = {
             'Content-Type': 'application/json',
         }
 
-        this.setBearerTokenIfRequired(headers, allowedScopes)
+        if (!skipAuthentication) {
+            this.setBearerTokenIfRequired(headers)
+        }
 
         const response = await fetch(this.createUrl(endpoint), {
             method,
@@ -126,11 +116,13 @@ export class Connection {
     public async upload<T>(
         endpoint: string,
         body: FormData,
-        allowedScopes: Array<Scopes>
+        skipAuthentication?: boolean
     ): Promise<T> {
         const headers = {}
 
-        this.setBearerTokenIfRequired(headers, allowedScopes)
+        if (!skipAuthentication) {
+            this.setBearerTokenIfRequired(headers)
+        }
 
         const response = await fetch(this.createUrl(endpoint), {
             method: HttpMethod.POST,

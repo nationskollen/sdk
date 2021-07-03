@@ -2,7 +2,6 @@ import { expect, test } from '@jest/globals'
 import { Auth } from '../src/services/auth'
 import { Connection } from '../src/connection'
 import 'jest-fetch-mock'
-import { Scopes } from '../src/responses'
 import { ApiError, HttpErrorCodes } from '../src/errors'
 
 const email = 'admin@vdala.se'
@@ -37,7 +36,13 @@ test('it can login a user', async () => {
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
                     token: 'asdfasdf',
-                    scope: Scopes.Admin,
+                    permissions: [
+                        {
+                            id: 2,
+                            user_id: 1,
+                            permission_type_id: 2,
+                        },
+                    ],
                 })
             )
         })

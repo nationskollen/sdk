@@ -36,8 +36,8 @@ import {
     MenuCollection,
     MenuItem,
     MenuItemCollection,
-    User,
     SingleUser,
+    AuthenticatedUser,
     UsersCollection,
     OpeningHour,
     OpeningHourCollection,
@@ -92,6 +92,39 @@ export interface AsyncHookContract<T> {
     result?: T
     error?: ApiError
     loading: boolean
+}
+
+/**
+ * ## Get authorized fetcher
+ *
+ * Provides authorization checking when using hooks (fetching data).
+ * For example `usePermissionTypes` needs authentication, this method below
+ * makes sure a user is authenticated and that there is a token in the SDK.
+ *
+ * Used within SWR methods that accept headers.
+ *
+ * @example **Updating a student nation description**
+ * ```javascript
+ * useSWR('/route/that/needs/authentication', getAuthorizedFetcher())
+ * ```
+ *
+ * @returns headers - Return headers containgin the Authorization token
+ */
+function getAuthorizedFetcher() {
+    const { baseURL, api } = useSDK()
+    const token = api.connection.getToken()
+
+    if (!token) {
+        throw new ApiError(
+            HttpErrorCodes.Unauthorized,
+            'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
+        )
+    }
+
+    return (url: string) =>
+        fetch(`${baseURL}${url}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        }).then((r) => r.json())
 }
 
 /**
@@ -278,7 +311,7 @@ export function useActivityLevel(
  *
  * @category Auth
  */
-export function useLogin(): AsyncHookCallbackContract<User> {
+export function useLogin(): AsyncHookCallbackContract<AuthenticatedUser> {
     const { api } = useSDK()
     return useAsyncCallback(api.auth.login)
 }
@@ -495,21 +528,6 @@ export function useMenu(menuId: number): CachedAsyncHookContract<Menu> {
     return useSWR(() => `/menus/${menuId}`)
 }
 
-function getAuthorizedFetcher() {
-    const { baseURL, api } = useSDK()
-    const token = api.connection.getToken()
-    if (!token) {
-        throw new ApiError(
-            HttpErrorCodes.Unauthorized,
-            'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
-        )
-    }
-    return (url: string) =>
-        fetch(`${baseURL}${url}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        }).then((r) => r.json())
-}
-
 /**
  * Fetches and caches all users for a Nation.
  * Hook (route) is session protected, meaning only an authorized user is allowed to
@@ -630,7 +648,7 @@ export function useCategories(): CachedAsyncHookContract<CategoryCollection> {
  * @category Fetcher
  */
 export function usePermissionTypes(): CachedAsyncHookContract<PermissionsTypeCollection> {
-    return useSWR(() => '/permissions/types')
+    return useSWR(() => '/permissions/types', getAuthorizedFetcher())
 }
 
 /**

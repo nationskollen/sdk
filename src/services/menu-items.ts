@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { createUploadBody } from '../utils'
 import { MenuItemCreateData } from './models'
-import { MenuItem, Scopes } from '../responses'
+import { MenuItem } from '../responses'
 import { UploaderFunctionDouble } from '../upload'
 import { Connection, HttpMethod } from '../connection'
 
@@ -16,8 +16,7 @@ export class MenuItems extends BaseService {
         const item = await this.$connection.request<MenuItem>(
             HttpMethod.POST,
             `/menus/${menuId}/items`,
-            data,
-            [Scopes.Admin]
+            data
         )
 
         return item
@@ -31,8 +30,7 @@ export class MenuItems extends BaseService {
         const item = await this.$connection.request<MenuItem>(
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
-            data,
-            [Scopes.Admin]
+            data
         )
 
         return item
@@ -43,7 +41,7 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            [Scopes.Admin]
+            true
         )
     }
 
@@ -56,8 +54,7 @@ export class MenuItems extends BaseService {
         const body = createUploadBody({ [field]: file })
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
-            body,
-            [Scopes.Admin]
+            body
         )
 
         return menuItem

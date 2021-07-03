@@ -1,7 +1,7 @@
 import { BaseService } from './base'
 import { ContactCreateData } from './models'
 import { Connection, HttpMethod } from '../connection'
-import { ContactInformation, Scopes } from '../responses'
+import { ContactInformation } from '../responses'
 
 export class Contact extends BaseService {
     constructor(connection: Connection) {
@@ -12,9 +12,9 @@ export class Contact extends BaseService {
         const information = await this.$connection.request<ContactInformation>(
             HttpMethod.POST,
             `/nations/${oid}/contact`,
-            data,
-            [Scopes.Admin]
+            data
         )
+
         return information
     }
 
@@ -25,9 +25,9 @@ export class Contact extends BaseService {
         const information = await this.$connection.request<ContactInformation>(
             HttpMethod.PUT,
             `/nations/${oid}/contact`,
-            change,
-            [Scopes.Admin]
+            change
         )
+
         return information
     }
 
@@ -36,7 +36,7 @@ export class Contact extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/contact`,
             undefined,
-            [Scopes.Admin]
+            true
         )
     }
 }
