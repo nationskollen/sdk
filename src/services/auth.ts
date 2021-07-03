@@ -61,7 +61,7 @@ export class Auth extends BaseService {
     }
 
     public logout = async (): Promise<void> => {
-        await this.$connection.request(HttpMethod.POST, '/users/logout', undefined, true, true)
+        await this.$connection.request(HttpMethod.POST, '/users/logout', undefined, true)
 
         this.$connection.setUser(undefined)
     }
