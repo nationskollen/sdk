@@ -17,8 +17,6 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus`,
             menuData,
-            false,
-            false
         )
 
         return menu
@@ -33,8 +31,6 @@ export class Menus extends BaseService {
             HttpMethod.POST,
             `/locations/${locationId}/menus/${menuId}`,
             menuData,
-            false,
-            false
         )
 
         return menu
@@ -46,7 +42,6 @@ export class Menus extends BaseService {
             `/locations/${locationId}/menus/${menuId}`,
             undefined,
             true,
-            false
         )
     }
 
@@ -56,7 +51,10 @@ export class Menus extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const menu = await this.$connection.upload<Menu>(`/menus/${menuId}/upload`, body, false)
+        const menu = await this.$connection.upload<Menu>(
+            `/menus/${menuId}/upload`, 
+            body
+        )
 
         return menu
     }

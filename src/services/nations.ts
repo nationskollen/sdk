@@ -17,8 +17,6 @@ export class Nations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}`,
             change,
-            false,
-            false
         )
 
         return nation
@@ -30,7 +28,10 @@ export class Nations extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const nation = await this.$connection.upload<Nation>(`/nations/${oid}/upload`, body, false)
+        const nation = await this.$connection.upload<Nation>(
+            `/nations/${oid}/upload`,
+            body, 
+        )
 
         return nation
     }

@@ -13,8 +13,6 @@ export class Permissions extends BaseService {
             HttpMethod.POST,
             `/permissions`,
             permissionData,
-            false,
-            false
         )
 
         return permission
@@ -26,7 +24,6 @@ export class Permissions extends BaseService {
             `/permissions`,
             permissionData,
             true,
-            false
         )
     }
 }

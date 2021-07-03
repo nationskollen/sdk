@@ -13,8 +13,6 @@ export class Contact extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/contact`,
             data,
-            false,
-            false
         )
 
         return information
@@ -28,8 +26,6 @@ export class Contact extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/contact`,
             change,
-            false,
-            false
         )
 
         return information
@@ -41,7 +37,6 @@ export class Contact extends BaseService {
             `/nations/${oid}/contact`,
             undefined,
             true,
-            false
         )
     }
 }

@@ -17,8 +17,6 @@ export class Locations extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/locations`,
             data,
-            false,
-            false
         )
 
         return location
@@ -33,8 +31,6 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change,
-            false,
-            false
         )
 
         return location
@@ -46,7 +42,6 @@ export class Locations extends BaseService {
             `/nations/${oid}/locations/${lid}`,
             undefined,
             true,
-            false
         )
     }
 
@@ -59,7 +54,6 @@ export class Locations extends BaseService {
         const location = await this.$connection.upload<Location>(
             `/locations/${locationId}/upload`,
             body,
-            false
         )
 
         return location

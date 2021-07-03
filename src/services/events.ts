@@ -17,8 +17,6 @@ export class Events extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/events`,
             data,
-            false,
-            false
         )
 
         return event
@@ -33,8 +31,6 @@ export class Events extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/events/${eventId}`,
             change,
-            false,
-            false
         )
 
         return event
@@ -46,7 +42,6 @@ export class Events extends BaseService {
             `/nations/${oid}/events/${eventId}`,
             undefined,
             true,
-            false
         )
     }
 
@@ -56,7 +51,10 @@ export class Events extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const event = await this.$connection.upload<Event>(`/events/${eventId}/upload`, body, false)
+        const event = await this.$connection.upload<Event>(
+            `/events/${eventId}/upload`,
+            body
+        )
 
         return event
     }

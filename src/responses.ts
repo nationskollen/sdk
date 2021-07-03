@@ -151,10 +151,9 @@ export interface SingleUser extends User {
     permissions: Array<Permission>
 }
 
-export interface AuthenticatedUser extends User {
+export interface AuthenticatedUser extends SingleUser {
     type: string
     token: string
-    permissions: Array<Permission>
 }
 
 export interface SubscriptionTopic {

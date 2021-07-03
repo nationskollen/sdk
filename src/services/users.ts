@@ -17,8 +17,6 @@ export class Users extends BaseService {
             HttpMethod.POST,
             `/nations/${oid}/users`,
             data,
-            false,
-            false
         )
 
         return user
@@ -29,8 +27,6 @@ export class Users extends BaseService {
             HttpMethod.PUT,
             `/users/${uid}`,
             change,
-            false,
-            false
         )
 
         return user
@@ -42,7 +38,6 @@ export class Users extends BaseService {
             `/users/${uid}`,
             undefined,
             true,
-            false
         )
     }
 
@@ -52,7 +47,10 @@ export class Users extends BaseService {
         file: Blob
     ) => {
         const body = createUploadBody({ [field]: file })
-        const user = await this.$connection.upload<SingleUser>(`/users/${uid}/upload`, body, false)
+        const user = await this.$connection.upload<SingleUser>(
+            `/users/${uid}/upload`, 
+            body
+        )
 
         return user
     }
