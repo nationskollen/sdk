@@ -117,7 +117,7 @@ function getAuthorizedFetcher() {
     if (!token) {
         throw new ApiError(
             HttpErrorCodes.Unauthorized,
-            'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setUser()"?'
+            'Missing bearer token. Did you forget to run "api.auth.login()" or "api.auth.setToken()"?'
         )
     }
 
