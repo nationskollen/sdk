@@ -12,7 +12,7 @@ export class Contact extends BaseService {
         const information = await this.$connection.request<ContactInformation>(
             HttpMethod.POST,
             `/nations/${oid}/contact`,
-            data,
+            data
         )
 
         return information
@@ -25,7 +25,7 @@ export class Contact extends BaseService {
         const information = await this.$connection.request<ContactInformation>(
             HttpMethod.PUT,
             `/nations/${oid}/contact`,
-            change,
+            change
         )
 
         return information
@@ -36,7 +36,7 @@ export class Contact extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/contact`,
             undefined,
-            true,
+            true
         )
     }
 }

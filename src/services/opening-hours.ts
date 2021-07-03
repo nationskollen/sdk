@@ -15,7 +15,7 @@ export class OpeningHours extends BaseService {
         const hour = await this.$connection.request<OpeningHour>(
             HttpMethod.POST,
             `/locations/${locationId}/hours`,
-            data,
+            data
         )
 
         return hour
@@ -29,7 +29,7 @@ export class OpeningHours extends BaseService {
         const hour = await this.$connection.request<OpeningHour>(
             HttpMethod.PUT,
             `/locations/${locationId}/hours/${hourId}`,
-            data,
+            data
         )
 
         return hour
@@ -39,7 +39,7 @@ export class OpeningHours extends BaseService {
         await this.$connection.request<void>(
             HttpMethod.DELETE,
             `/locations/${locationId}/hours/${hourId}`,
-            undefined,
+            undefined
         )
     }
 }

@@ -12,7 +12,7 @@ export class Permissions extends BaseService {
         const permission = await this.$connection.request<Permission>(
             HttpMethod.POST,
             `/permissions`,
-            permissionData,
+            permissionData
         )
 
         return permission
@@ -23,7 +23,7 @@ export class Permissions extends BaseService {
             HttpMethod.DELETE,
             `/permissions`,
             permissionData,
-            true,
+            true
         )
     }
 }

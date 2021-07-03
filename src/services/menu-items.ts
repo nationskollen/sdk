@@ -16,7 +16,7 @@ export class MenuItems extends BaseService {
         const item = await this.$connection.request<MenuItem>(
             HttpMethod.POST,
             `/menus/${menuId}/items`,
-            data,
+            data
         )
 
         return item
@@ -30,7 +30,7 @@ export class MenuItems extends BaseService {
         const item = await this.$connection.request<MenuItem>(
             HttpMethod.PUT,
             `/menus/${menuId}/items/${itemId}`,
-            data,
+            data
         )
 
         return item
@@ -41,7 +41,7 @@ export class MenuItems extends BaseService {
             HttpMethod.DELETE,
             `/menus/${menuId}/items/${itemId}`,
             undefined,
-            true,
+            true
         )
     }
 
@@ -54,7 +54,7 @@ export class MenuItems extends BaseService {
         const body = createUploadBody({ [field]: file })
         const menuItem = await this.$connection.upload<MenuItem>(
             `/menus/${menuId}/items/${itemId}/upload`,
-            body,
+            body
         )
 
         return menuItem

@@ -16,7 +16,7 @@ export class Individuals extends BaseService {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.POST,
             `/nations/${oid}/individuals`,
-            data,
+            data
         )
 
         return individual
@@ -30,7 +30,7 @@ export class Individuals extends BaseService {
         const individual = await this.$connection.request<Individual>(
             HttpMethod.PUT,
             `/nations/${oid}/individuals/${iid}`,
-            change,
+            change
         )
 
         return individual
@@ -41,7 +41,7 @@ export class Individuals extends BaseService {
             HttpMethod.DELETE,
             `/nations/${oid}/individuals/${iid}`,
             undefined,
-            true,
+            true
         )
     }
 
@@ -53,7 +53,7 @@ export class Individuals extends BaseService {
         const body = createUploadBody({ [field]: file })
         const individual = await this.$connection.upload<Individual>(
             `/individuals/${iid}/upload`,
-            body,
+            body
         )
 
         return individual

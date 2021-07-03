@@ -122,13 +122,10 @@ function getAuthorizedFetcher() {
     }
 
     return (url: string) =>
-        fetch(`${baseURL}${url}`, 
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            }
-        ).then((r) => r.json())
+        fetch(`${baseURL}${url}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        }).then((r) => r.json())
 }
-
 
 /**
  * ## Async hook callback
