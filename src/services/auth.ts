@@ -55,9 +55,18 @@ export class Auth extends BaseService {
         const user = await response.json()
 
         this.$connection.checkForErrors(response.status, user)
-        this.$connection.setUser(user)
 
-        return user
+        // Make sure to include the token and type to fulfill the
+        // `AuthenticatedUser` type interface.
+        const extendedUser = {
+            ...user,
+            token,
+            type: 'bearer',
+        }
+
+        this.$connection.setUser(extendedUser)
+
+        return extendedUser
     }
 
     public logout = async (): Promise<void> => {

@@ -1,9 +1,10 @@
 import { BaseService } from './base'
-import { createUploadBody } from '../utils'
-import { LocationCreateData } from './models'
 import { Location } from '../responses'
-import { Connection, HttpMethod } from '../connection'
+import { createUploadBody } from '../utils'
 import { UploaderFunctionSingle } from '../upload'
+import { HttpErrorCodes, ApiError } from '../errors'
+import { Connection, HttpMethod } from '../connection'
+import { LocationCreateData, LocationActivityUpdateData } from './models'
 
 export type LocationUploads = 'cover'
 
@@ -31,6 +32,49 @@ export class Locations extends BaseService {
             HttpMethod.PUT,
             `/nations/${oid}/locations/${lid}`,
             change
+        )
+
+        return location
+    }
+
+    public setOpen = async (lid: number, isOpen: boolean): Promise<Location> => {
+        let endpoint = 'open'
+
+        // If we want to close the location, set the correct endpoint
+        if (!isOpen) {
+            endpoint = 'close'
+        }
+
+        const location = await this.$connection.request<Location>(
+            HttpMethod.PUT,
+            `/locations/${lid}/${endpoint}`
+        )
+
+        return location
+    }
+
+    public setActivity = async (
+        lid: number,
+        data: LocationActivityUpdateData
+    ): Promise<Location> => {
+        if (!data.hasOwnProperty('change') && !data.hasOwnProperty('exact_amount')) {
+            throw new ApiError(
+                HttpErrorCodes.ValidationError,
+                'Updating the activity requires at least one of the properties "change" or "exact_amount"'
+            )
+        }
+
+        if (data.exact_amount !== undefined && data.exact_amount < 0) {
+            throw new ApiError(
+                HttpErrorCodes.ValidationError,
+                'Setting the current visitor amount of a location requires a positive integer'
+            )
+        }
+
+        const location = await this.$connection.request<Location>(
+            HttpMethod.PUT,
+            `/locations/${lid}/activity`,
+            data
         )
 
         return location
