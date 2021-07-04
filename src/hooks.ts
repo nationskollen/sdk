@@ -143,6 +143,14 @@ export interface AsyncHookCallbackContract<T> extends AsyncHookContract<T> {
 }
 
 /**
+ * ## Fetcher hook mutator function
+ * Allows mutation of the data cache.
+ *
+ * @typeParam T - Data type to be manipulated
+ */
+export type MutateFunction<T> = (data?: T, shouldRevalidate?: boolean) => Promise<T | undefined>
+
+/**
  * ## Cached async hook
  * Extends the return type defined by {@link
  * https://github.com/vercel/swr/blob/11533ee8d5df6136726c4fc7a05bdbf1ac82fb35/src/types.ts#L118-L130|`useSWR`}.
@@ -155,7 +163,7 @@ export interface AsyncHookCallbackContract<T> extends AsyncHookContract<T> {
 export interface CachedAsyncHookContract<T> {
     data?: T
     error?: ApiError
-    mutate: (data?: T | Promise<T>, shouldRevalidate?: boolean) => Promise<T | undefined>
+    mutate: MutateFunction<T>
     isValidating: boolean
 }
 
