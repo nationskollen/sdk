@@ -37,7 +37,7 @@ export class Locations extends BaseService {
         return location
     }
 
-    public setOpen = async (lid: number, isOpen: boolean): Promise<Location> => {
+    public setOpen = async (lid: number, isOpen: boolean): Promise<void> => {
         let endpoint = 'open'
 
         // If we want to close the location, set the correct endpoint
@@ -45,18 +45,10 @@ export class Locations extends BaseService {
             endpoint = 'close'
         }
 
-        const location = await this.$connection.request<Location>(
-            HttpMethod.PUT,
-            `/locations/${lid}/${endpoint}`
-        )
-
-        return location
+        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/${endpoint}`)
     }
 
-    public setActivity = async (
-        lid: number,
-        data: LocationActivityUpdateData
-    ): Promise<Location> => {
+    public setActivity = async (lid: number, data: LocationActivityUpdateData): Promise<void> => {
         if (!data.hasOwnProperty('change') && !data.hasOwnProperty('exact_amount')) {
             throw new ApiError(
                 HttpErrorCodes.ValidationError,
@@ -71,13 +63,7 @@ export class Locations extends BaseService {
             )
         }
 
-        const location = await this.$connection.request<Location>(
-            HttpMethod.PUT,
-            `/locations/${lid}/activity`,
-            data
-        )
-
-        return location
+        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/activity`, data)
     }
 
     public delete = async (oid: number, lid: number) => {
