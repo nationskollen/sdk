@@ -6,6 +6,7 @@ export interface ActivityData {
     oid: number
     location_id: number
     activity_level: number
+    estimated_people_count: number
 }
 
 export enum Subscriptions {
