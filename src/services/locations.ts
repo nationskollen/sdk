@@ -45,16 +45,10 @@ export class Locations extends BaseService {
             endpoint = 'close'
         }
 
-        await this.$connection.request<void>(
-            HttpMethod.PUT,
-            `/locations/${lid}/${endpoint}`
-        )
+        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/${endpoint}`)
     }
 
-    public setActivity = async (
-        lid: number,
-        data: LocationActivityUpdateData
-    ): Promise<void> => {
+    public setActivity = async (lid: number, data: LocationActivityUpdateData): Promise<void> => {
         if (!data.hasOwnProperty('change') && !data.hasOwnProperty('exact_amount')) {
             throw new ApiError(
                 HttpErrorCodes.ValidationError,
@@ -69,11 +63,7 @@ export class Locations extends BaseService {
             )
         }
 
-        await this.$connection.request<void>(
-            HttpMethod.PUT,
-            `/locations/${lid}/activity`,
-            data
-        )
+        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/activity`, data)
     }
 
     public delete = async (oid: number, lid: number) => {
