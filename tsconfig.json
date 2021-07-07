@@ -21,6 +21,6 @@
         "types": ["node", "jest"],
         "jsx": "react"
     },
-    "include": ["src", "tests/setup.ts"],
+    "include": ["src"],
     "exclude": ["node_modules", "lib", "tests"]
 }

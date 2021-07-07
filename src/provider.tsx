@@ -1,9 +1,3 @@
-// Sometimes, the expect type is not extended with
-// the dom assertions. This seems to fix it?
-// We also have this in the `test/setup.ts` file,
-// but it seems like it is not always running as expected.
-import '@testing-library/jest-dom'
-
 import { SWRConfig } from 'swr'
 import React, { useRef } from 'react'
 import { Client, ClientWrapper } from './client'
