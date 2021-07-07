@@ -1,7 +1,7 @@
-import { expect, test } from '@jest/globals'
-import { Auth } from '../src/services/auth'
-import { Connection } from '../src/connection'
 import 'jest-fetch-mock'
+import { Auth } from '../src/services/auth'
+import { expect, test } from '@jest/globals'
+import { Connection } from '../src/connection'
 import { ApiError, HttpErrorCodes } from '../src/errors'
 
 const EMAIL = 'admin@vdala.se'
