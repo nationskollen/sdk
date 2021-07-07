@@ -635,10 +635,7 @@ export function useOpeningHours(
  *
  * @category Fetcher
  */
-export function useOpeningHour(
-    locationId: number,
-    openingHourId: number
-) {
+export function useOpeningHour(locationId: number, openingHourId: number) {
     return extractSingleResource<OpeningHour>(
         useSWR(() => `/locations/${locationId}/hours`),
         'id',
@@ -678,9 +675,7 @@ export function useSubscriptionTopics(): CachedAsyncHookContract<SubscriptionTop
  *
  * @category Fetcher
  */
-export function useSubscriptionTopic(
-    id: number
-) {
+export function useSubscriptionTopic(id: number) {
     return extractSingleResource<SubscriptionTopic>(
         useSWR(() => '/subscriptions/topics'),
         'id',

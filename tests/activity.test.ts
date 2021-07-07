@@ -17,16 +17,18 @@ const MOCK_ACTIVITY_DATA = {
         location_id: MOCK_LOCATION_ID,
         activity_level: ActivityLevels.Low,
         estimated_people_count: 0,
-    }
+    },
 }
 
 test('it can subscribe to activity changes', async () => {
     await server.connected
 
     const activity = new Activity(connection)
-    const promise = new Promise((resolve) => activity.subscribe(MOCK_LOCATION_ID, (data) => {
-        resolve(data)
-    }))
+    const promise = new Promise((resolve) =>
+        activity.subscribe(MOCK_LOCATION_ID, (data) => {
+            resolve(data)
+        })
+    )
 
     server.send(MOCK_ACTIVITY_DATA)
 
@@ -35,7 +37,7 @@ test('it can subscribe to activity changes', async () => {
     expect(receivedData).not.toBeNull()
     expect(receivedData).toStrictEqual({
         level: MOCK_ACTIVITY_DATA.data.activity_level,
-        people: MOCK_ACTIVITY_DATA.data.estimated_people_count
+        people: MOCK_ACTIVITY_DATA.data.estimated_people_count,
     })
 })
 

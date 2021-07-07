@@ -5,7 +5,7 @@ import { ActivityLevels } from '../responses'
 import { WebSocketConnection, Subscriptions, ActivityData } from '../websockets'
 
 export interface ActivityChangeData {
-    level: ActivityLevels,
+    level: ActivityLevels
     people: number
 }
 
@@ -26,15 +26,21 @@ export class Activity extends BaseService {
         this.$ws = connection.getWebSocket()
     }
 
-    private handleActivityChange({ location_id, activity_level, estimated_people_count }: ActivityData) {
+    private handleActivityChange({
+        location_id,
+        activity_level,
+        estimated_people_count,
+    }: ActivityData) {
         if (!this.$callbacks.hasOwnProperty(location_id)) {
             return
         }
 
-        this.$callbacks[location_id].forEach((cb) => cb({
-            level: activity_level,
-            people: estimated_people_count,
-        }))
+        this.$callbacks[location_id].forEach((cb) =>
+            cb({
+                level: activity_level,
+                people: estimated_people_count,
+            })
+        )
     }
 
     private subscribeToActivityChange() {
