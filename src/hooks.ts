@@ -175,10 +175,9 @@ export interface CachedAsyncHookContract<T> {
  * prevent unnecessary requests.
  *
  * @typeParam T - Resource collection type, e.g. {@link NationCollection}
- * @typeParam R - Extracted resource from the collection in T, e.g. {@link Nation}
  */
-export interface ExtractedCachedAsyncHookContract<R, T extends Array<R>>
-    extends Omit<CachedAsyncHookContract<T>, 'data'> {
+export interface ExtractedCachedAsyncHookContract<R>
+    extends Omit<CachedAsyncHookContract<Array<R>>, 'data'> {
     data?: R
 }
 
@@ -411,8 +410,8 @@ export function useNations(): CachedAsyncHookContract<NationCollection> {
  *
  * @category Fetcher
  */
-export function useNation(oid: number): ExtractedCachedAsyncHookContract<Nation, NationCollection> {
-    return extractSingleResource(useSWR(`/nations`, NoAutoMutation), 'oid', oid)
+export function useNation(oid: number) {
+    return extractSingleResource<Nation>(useSWR(`/nations`, NoAutoMutation), 'oid', oid)
 }
 
 /**
@@ -639,8 +638,8 @@ export function useOpeningHours(
 export function useOpeningHour(
     locationId: number,
     openingHourId: number
-): ExtractedCachedAsyncHookContract<OpeningHour, OpeningHourCollection> {
-    return extractSingleResource(
+) {
+    return extractSingleResource<OpeningHour>(
         useSWR(() => `/locations/${locationId}/hours`),
         'id',
         openingHourId
@@ -681,8 +680,8 @@ export function useSubscriptionTopics(): CachedAsyncHookContract<SubscriptionTop
  */
 export function useSubscriptionTopic(
     id: number
-): ExtractedCachedAsyncHookContract<SubscriptionTopic, SubscriptionTopicCollection> {
-    return extractSingleResource(
+) {
+    return extractSingleResource<SubscriptionTopic>(
         useSWR(() => '/subscriptions/topics'),
         'id',
         id
