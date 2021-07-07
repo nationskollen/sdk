@@ -51,6 +51,7 @@ import {
     IndividualCollection,
     ContactInformation,
     PermissionsTypeCollection,
+    ActivityLevels,
 } from './responses'
 
 import {
@@ -270,10 +271,17 @@ export function useApi() {
  */
 export function useActivity(
     locationId: number,
-    initialActivityData: ActivityChangeData
-): ActivityChangeData {
+    initialActivityData?: Partial<ActivityChangeData>
+) {
     const { activity } = useApi()
-    const [activityData, setActivityData] = useState(initialActivityData)
+
+    // The intial state will be set to closed unless other data is provided.
+    // TODO: Read from cache/request activity data when subscribing to activity?
+    const [activityData, setActivityData] = useState<ActivityChangeData>({
+        level: ActivityLevels.Closed,
+        people: 0,
+        ...initialActivityData,
+    })
 
     useEffect(() => {
         activity.subscribe(locationId, setActivityData)

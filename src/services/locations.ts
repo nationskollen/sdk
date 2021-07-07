@@ -45,7 +45,7 @@ export class Locations extends BaseService {
             endpoint = 'close'
         }
 
-        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/${endpoint}`)
+        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/${endpoint}`, undefined, true)
     }
 
     public setActivity = async (lid: number, data: LocationActivityUpdateData): Promise<void> => {
@@ -63,7 +63,7 @@ export class Locations extends BaseService {
             )
         }
 
-        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/activity`, data)
+        await this.$connection.request<void>(HttpMethod.PUT, `/locations/${lid}/activity`, data, true)
     }
 
     public delete = async (oid: number, lid: number) => {
