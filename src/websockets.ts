@@ -1,6 +1,5 @@
-import { WS_RECONNECT_INTERVAL_MS, WS_BACKOFF_MAX, WS_BACKOFF_MODIFIER } from './constants'
-
 import { removeCallback } from './utils'
+import { WS_RECONNECT_INTERVAL_MS, WS_BACKOFF_MAX, WS_BACKOFF_MODIFIER } from './constants'
 
 export interface ActivityData {
     oid: number
@@ -128,5 +127,9 @@ export class WebSocketConnection {
 
     public unsubscribe<T extends Subscriptions>(event: T, cb: SubscriptionsCallbackMap[T]) {
         removeCallback(this.$callbacks[event] as Array<SubscriptionsCallbackMap[T]>, cb)
+    }
+
+    public isAlive() {
+        return this.$alive
     }
 }

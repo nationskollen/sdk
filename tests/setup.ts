@@ -6,5 +6,6 @@ fetchMock.enableMocks()
 
 global.console = {
     ...global.console,
+    info: jest.fn(), // console.error are ignored in tests
     error: jest.fn(), // console.error are ignored in tests
 }

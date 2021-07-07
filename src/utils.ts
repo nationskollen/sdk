@@ -35,13 +35,13 @@ export function createUploadBody(data: Record<string, Blob>) {
  * would not automatically invalidate the single resource, since it was fetched
  * using a unique key.
  */
-export function extractSingleResource<R, T extends Array<R>, K extends keyof R>(
-    hookData: CachedAsyncHookContract<T>,
-    extractKey: K,
-    searchValue: R[K]
-): ExtractedCachedAsyncHookContract<R, T> {
+export function extractSingleResource<R>(
+    hookData: CachedAsyncHookContract<Array<R>>,
+    extractKey: keyof R,
+    searchValue: R[keyof R]
+): ExtractedCachedAsyncHookContract<R> {
     // Create a default error response
-    const response: ExtractedCachedAsyncHookContract<R, T> = {
+    const response: ExtractedCachedAsyncHookContract<R> = {
         ...hookData,
         data: undefined,
     }

@@ -1,13 +1,19 @@
 import { BaseService } from './base'
 import { removeCallback } from '../utils'
 import { Connection } from '../connection'
+import { ActivityLevels } from '../responses'
 import { WebSocketConnection, Subscriptions, ActivityData } from '../websockets'
+
+export interface ActivityChangeData {
+    level: ActivityLevels
+    people: number
+}
+
+export type ActivityChangeCallback = (data: ActivityChangeData) => void
 
 interface Callbacks {
     [key: number]: Array<ActivityChangeCallback>
 }
-
-export type ActivityChangeCallback = (activityLevel: number) => void
 
 export class Activity extends BaseService {
     private $ws?: WebSocketConnection
@@ -20,12 +26,21 @@ export class Activity extends BaseService {
         this.$ws = connection.getWebSocket()
     }
 
-    private handleActivityChange({ location_id, activity_level }: ActivityData) {
+    private handleActivityChange({
+        location_id,
+        activity_level,
+        estimated_people_count,
+    }: ActivityData) {
         if (!this.$callbacks.hasOwnProperty(location_id)) {
             return
         }
 
-        this.$callbacks[location_id].forEach((cb) => cb(activity_level))
+        this.$callbacks[location_id].forEach((cb) =>
+            cb({
+                level: activity_level,
+                people: estimated_people_count,
+            })
+        )
     }
 
     private subscribeToActivityChange() {
@@ -62,5 +77,9 @@ export class Activity extends BaseService {
 
         removeCallback(this.$callbacks[locationId], cb)
         // TODO: Remove internal activity change callback if no registered callbacks exists?
+    }
+
+    public getCallbacks() {
+        return this.$callbacks
     }
 }

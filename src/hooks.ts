@@ -71,9 +71,9 @@ import { useAsyncCallback } from 'react-async-hook'
 import { useContext, useState, useEffect } from 'react'
 
 import { Context } from './context'
-import { ApiError, HttpErrorCodes } from './errors'
-import { ActivityLevels } from './responses'
 import { extractSingleResource } from './utils'
+import { ApiError, HttpErrorCodes } from './errors'
+import { ActivityChangeData } from './services/activity'
 import { UploaderFunction, UploadFieldType } from './upload'
 import { PaginatedCachedAsyncHookContract, createPaginatedResponse } from './pagination'
 
@@ -175,10 +175,9 @@ export interface CachedAsyncHookContract<T> {
  * prevent unnecessary requests.
  *
  * @typeParam T - Resource collection type, e.g. {@link NationCollection}
- * @typeParam R - Extracted resource from the collection in T, e.g. {@link Nation}
  */
-export interface ExtractedCachedAsyncHookContract<R, T extends Array<R>>
-    extends Omit<CachedAsyncHookContract<T>, 'data'> {
+export interface ExtractedCachedAsyncHookContract<R>
+    extends Omit<CachedAsyncHookContract<Array<R>>, 'data'> {
     data?: R
 }
 
@@ -237,7 +236,7 @@ export function useApi() {
 }
 
 /**
- * Subscribe to activity level changes of a location. Usage of this hook will
+ * Subscribe to activity changes of a location. Usage of this hook will
  * re-render your component whenever activity data is received from the server
  * Your component will be automatically unsubscribed from a location whenever
  * your component is unmounted or the `locationId` changes.
@@ -245,38 +244,44 @@ export function useApi() {
  * @category Activity
  *
  * @param locationId - The id of the location to subscribe to
- * @param initialActivityLevel - The activity level that will be set on initial render
- * @returns The current activity level of the location
+ * @param initialActivityData - The activity data that will be set on initial render
+ * @returns The current activity data of the location
  *
  * @example **Subscribing to activity changes of location**
  * ```javascript
  * // Dynamically subscribes to a locations activity and sets the intial
- * // activity level to the value received after fetching.
- * const activityLevel = useActivityLevel(
+ * // activity data to the value received after fetching.
+ * const activity = useActivity(
  *     props.location.id,
- *     props.location.activity_level
+ *     {
+ *         level: props.location.activity_level,
+ *         people: props.location.estimated_people_count,
+ *     }
  * )
  *
- * // Will re-render in realtime whenever the activity level is updated on the server
+ * // Will re-render in realtime whenever the activity is updated on the server
  * return (
- *     <p>Current activity level: {activityLevel}</p>
+ *     <div>
+ *         <p>Current activity level: {activity.level}</p>
+ *         <p>Current visitor count: {activity.people}</p>
+ *     </div>
  * )
  * ```
  */
-export function useActivityLevel(
+export function useActivity(
     locationId: number,
-    initialActivityLevel?: ActivityLevels
-): ActivityLevels {
+    initialActivityData: ActivityChangeData
+): ActivityChangeData {
     const { activity } = useApi()
-    const [activityLevel, setActivityLevel] = useState(initialActivityLevel ?? 0)
+    const [activityData, setActivityData] = useState(initialActivityData)
 
     useEffect(() => {
-        activity.subscribe(locationId, setActivityLevel)
+        activity.subscribe(locationId, setActivityData)
         // Cleanup
-        return () => activity.unsubscribe(locationId, setActivityLevel)
+        return () => activity.unsubscribe(locationId, setActivityData)
     })
 
-    return activityLevel
+    return activityData
 }
 
 /**
@@ -405,8 +410,8 @@ export function useNations(): CachedAsyncHookContract<NationCollection> {
  *
  * @category Fetcher
  */
-export function useNation(oid: number): ExtractedCachedAsyncHookContract<Nation, NationCollection> {
-    return extractSingleResource(useSWR(`/nations`, NoAutoMutation), 'oid', oid)
+export function useNation(oid: number) {
+    return extractSingleResource<Nation>(useSWR(`/nations`, NoAutoMutation), 'oid', oid)
 }
 
 /**
@@ -630,11 +635,8 @@ export function useOpeningHours(
  *
  * @category Fetcher
  */
-export function useOpeningHour(
-    locationId: number,
-    openingHourId: number
-): ExtractedCachedAsyncHookContract<OpeningHour, OpeningHourCollection> {
-    return extractSingleResource(
+export function useOpeningHour(locationId: number, openingHourId: number) {
+    return extractSingleResource<OpeningHour>(
         useSWR(() => `/locations/${locationId}/hours`),
         'id',
         openingHourId
@@ -673,10 +675,8 @@ export function useSubscriptionTopics(): CachedAsyncHookContract<SubscriptionTop
  *
  * @category Fetcher
  */
-export function useSubscriptionTopic(
-    id: number
-): ExtractedCachedAsyncHookContract<SubscriptionTopic, SubscriptionTopicCollection> {
-    return extractSingleResource(
+export function useSubscriptionTopic(id: number) {
+    return extractSingleResource<SubscriptionTopic>(
         useSWR(() => '/subscriptions/topics'),
         'id',
         id
