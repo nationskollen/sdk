@@ -10,6 +10,8 @@ First, create a new Personal token in your Github settings:
 Settings > Developer Settings > Personal access tokens
 ```
 
+Then click `Generate new token`.
+
 Select the `write:packages` and `read:packages` scopes and click "Generate
 token".
 
@@ -21,7 +23,7 @@ Create a new file in your home directory `~/.npmrc` containing the following:
 [Github Docs](https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-with-a-personal-access-token)
 
 ## Installation
-Create `.npmrc` in your project root (same directory as `package.json`)
+Create `.npmrc` in your project root (same directory as `package.json` in sdk)
 containing the following:
 ```
 @nationskollen:registry=https://npm.pkg.github.com/

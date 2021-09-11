@@ -51,5 +51,8 @@
     "optionalDependencies": {
         "@nationskollen/typedoc-theme-overrides": "^1.0.2",
         "typedoc": "^0.20.35"
+    },
+    "dependencies": {
+        "@nationskollen/sdk": "^2.4.2"
     }
 }
